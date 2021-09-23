@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">UU</string>
+    <string name="title_route">Route</string>
+    <string name="title_record">Record</string>
+    <string name="title_running">Running</string>
+    <string name="title_club">Club</string>
+</resources>

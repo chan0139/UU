@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@drawable/bottom_border"
+    android:elevation="4dp"
+    app:contentInsetStart="0dp">
+
+    <ImageButton
+        android:id="@+id/profile"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#00FFFFFF"
+        android:src="@drawable/ic_user_circle"
+        android:layout_marginStart="20dp"
+        android:layout_gravity="start"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="center"
+        android:textColor="#454545"
+        android:text="Running"
+        android:textSize="40dp" />
+
+    <ImageButton
+        android:id="@+id/settings"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#00FFFFFF"
+        android:src="@drawable/ic_settings"
+        android:layout_marginEnd="20dp"
+        android:layout_gravity="end"/>
+
+
+</androidx.appcompat.widget.Toolbar>
