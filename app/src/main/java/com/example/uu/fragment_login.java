@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import android.content.pm.PackageInfo;
@@ -27,6 +28,7 @@ import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.kakao.usermgmt.callback.MeV2ResponseCallback;
 import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.util.exception.KakaoException;
@@ -38,13 +40,14 @@ import java.security.NoSuchAlgorithmException;
 public class fragment_login extends Fragment{
     private ISessionCallback mSessionCallback;
 
+    public static fragment_login newInstance() {
+        return new fragment_login();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootview=(ViewGroup) inflater.inflate(R.layout.fragment_login,container,false);
-
-
-
 
         //로그인 관리
         mSessionCallback = new ISessionCallback() {
@@ -67,11 +70,11 @@ public class fragment_login extends Fragment{
                     @Override
                     public void onSuccess(MeV2Response result) {  //MeV2Response result에 프로필 정보 등 요구했던 정보들이 담겨 있음.
                         //로그인 성공
-                        Intent intent = new Intent(rootview.getContext(), MainActivity.class);
+                        Intent intent = new Intent(rootview.getContext(), MainActivity.class);  //회원정보 여기서 넘기고,, 받는거 생각
                         intent.putExtra("name", result.getKakaoAccount().getProfile().getNickname());
                         intent.putExtra("profileImg", result.getKakaoAccount().getProfile().getProfileImageUrl());
-                        startActivity(intent);
                         Toast.makeText(rootview.getContext(), "Success to Login", Toast.LENGTH_SHORT).show();
+                        ((MainActivity)getActivity()).replaceFragment(fragment_running.newInstance());
                     }
                 });
             }
@@ -113,8 +116,10 @@ public class fragment_login extends Fragment{
         }
     }
 
-
-
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Session.getCurrentSession().removeCallback(mSessionCallback);
+    }
 }
 
