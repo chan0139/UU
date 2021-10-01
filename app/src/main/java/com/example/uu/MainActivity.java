@@ -37,6 +37,10 @@ public class MainActivity extends AppCompatActivity {
         //appbar 이름 view
         title=(TextView) findViewById(R.id.title);
 
+        title.setText("Recruitment");
+        selectedFragment=new fragment_recruitment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+
         ImageButton profile=(ImageButton)findViewById(R.id.profile);
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
