@@ -27,17 +27,16 @@ public class MainActivity extends AppCompatActivity {
         Intent intent=new Intent(this,LoadingActivity.class);
         startActivity(intent);
 
-
-
-
         //toolbar를 찾아 인프레이션하고 actionbar로 변경(actionbar가 기능이 많음)
         toolbar =findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //의문점 actionbar로 바꿈으로써 actionbar의 기능을 사용하는가?
-        //그렇지 않다면 굳이 actionbar로 바꾸지말고 그냥 toolbar의 view들을 따로 인플레이션해서 사용하는건 어떤가
 
         //appbar 이름 view
         title=(TextView) findViewById(R.id.title);
+
+        title.setText("Recruitment");
+        selectedFragment=new fragment_recruitment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
 
         ImageButton profile=(ImageButton)findViewById(R.id.profile);
         profile.setOnClickListener(new View.OnClickListener() {
