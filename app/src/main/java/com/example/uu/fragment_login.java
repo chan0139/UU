@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Base64;
 import android.util.Log;
@@ -35,6 +36,7 @@ import com.kakao.util.exception.KakaoException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Set;
 
 
 public class fragment_login extends Fragment{
@@ -70,11 +72,22 @@ public class fragment_login extends Fragment{
                     @Override
                     public void onSuccess(MeV2Response result) {  //MeV2Response result에 프로필 정보 등 요구했던 정보들이 담겨 있음.
                         //로그인 성공
-                        Intent intent = new Intent(rootview.getContext(), MainActivity.class);  //회원정보 여기서 넘기고,, 받는거 생각
-                        intent.putExtra("name", result.getKakaoAccount().getProfile().getNickname());
-                        intent.putExtra("profileImg", result.getKakaoAccount().getProfile().getProfileImageUrl());
+//                        Intent intent = new Intent(rootview.getContext(), MainActivity.class);  //회원정보 여기서 메인 액으로 넘기고,, 받는거 생각
+//                        intent.putExtra("name", result.getKakaoAccount().getProfile().getNickname());
+//                        intent.putExtra("profileImg", result.getKakaoAccount().getProfile().getProfileImageUrl());
+                        String name = result.getKakaoAccount().getProfile().getNickname();
+                        String urlLink = result.getKakaoAccount().getProfile().getProfileImageUrl();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("name", name);
+                        bundle.putString("profileImg", urlLink);
+
+                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        bar_profile profile = new bar_profile();
+                        profile.setArguments(bundle);
+                        ((MainActivity)getActivity()).replaceFragment(profile);
+                        transaction.commit();
                         Toast.makeText(rootview.getContext(), "Success to Login", Toast.LENGTH_SHORT).show();
-                        ((MainActivity)getActivity()).replaceFragment(fragment_running.newInstance());
                     }
                 });
             }
