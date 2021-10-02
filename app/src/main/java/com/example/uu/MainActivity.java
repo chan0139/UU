@@ -2,19 +2,37 @@ package com.example.uu;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.kakao.auth.ISessionCallback;
+import com.kakao.auth.Session;
+import com.kakao.network.ErrorResult;
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.MeV2ResponseCallback;
+import com.kakao.usermgmt.response.MeV2Response;
+import com.kakao.util.exception.KakaoException;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -28,8 +46,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
 
-
-
         //toolbar를 찾아 인프레이션하고 actionbar로 변경(actionbar가 기능이 많음)
         toolbar =findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -38,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
 
         //appbar 이름 view
         title=(TextView) findViewById(R.id.title);
+        fragment_login fragment_login = new fragment_login();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_login).commit();
+
 
         title.setText("Recruitment");
         selectedFragment=new fragment_recruitment();
@@ -68,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
 
         hideNavigationBar();
+
     }
     private void hideNavigationBar() {
         int uiOptions = getWindow().getDecorView().getSystemUiVisibility();
@@ -107,4 +127,12 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
+
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment).commit();      // Fragment로 사용할 MainActivity내의 layout공간을 선택합니다.
+    }
+
+
 }
