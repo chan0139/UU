@@ -36,35 +36,44 @@ public class bar_profile extends Fragment {
     private DatabaseReference mDatabaseRef;
     private String userId, userProfileUrl;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootview=(ViewGroup) inflater.inflate(R.layout.bar_profile,container,false);
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("UU");
-        String uid = user != null ? user.getUid() : null;
+        Button button = rootview.findViewById(R.id.logoutButton);
         TextView nickname = rootview.findViewById(R.id.ninkname);
         ImageView profile = rootview.findViewById(R.id.profile);
-
-        mDatabaseRef.child("UserAccount").child(uid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                userObject info = snapshot.getValue(userObject.class);
-                userId = info.getUserId();
-                userProfileUrl = info.getUserProfileUrl();
-                nickname.setText(userId);
-                Glide.with(getContext()).load(userProfileUrl).into(profile);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user != null) {
+            mFirebaseAuth = FirebaseAuth.getInstance();
+            mDatabaseRef = FirebaseDatabase.getInstance().getReference("UU");
+            String uid = user != null ? user.getUid() : null;
 
 
+            mDatabaseRef.child("UserAccount").child(uid).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    userObject info = snapshot.getValue(userObject.class);
+                    userId = info.getUserId();
+                    userProfileUrl = info.getUserProfileUrl();
+                    nickname.setText(userId);
+                    Glide.with(getContext()).load(userProfileUrl).into(profile);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+        }
+        else{
+                profile.setImageResource(R.drawable.no_login_user_image);
+                nickname.setText("익명의 오리너구리");
+                button.setText("로그인 먼저 진행해주세요.");
+        }
         
 
 
@@ -73,7 +82,6 @@ public class bar_profile extends Fragment {
 
 
 
-        Button button = rootview.findViewById(R.id.logoutButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
