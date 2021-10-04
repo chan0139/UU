@@ -1,5 +1,6 @@
 package com.example.uu;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -24,7 +25,14 @@ import android.widget.Toast;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
@@ -37,10 +45,14 @@ import com.kakao.util.exception.KakaoException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Set;
+import java.util.concurrent.Executor;
 
 
 public class fragment_login extends Fragment{
     private ISessionCallback mSessionCallback;
+    private FirebaseAuth mFirebaseAuth;
+    private DatabaseReference mDatabaseRef;
+
 
     public static fragment_login newInstance() {
         return new fragment_login();
@@ -50,6 +62,10 @@ public class fragment_login extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootview=(ViewGroup) inflater.inflate(R.layout.fragment_login,container,false);
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("UU");
+
 
         //로그인 관리
         mSessionCallback = new ISessionCallback() {
@@ -75,9 +91,33 @@ public class fragment_login extends Fragment{
 //                        Intent intent = new Intent(rootview.getContext(), MainActivity.class);  //회원정보 여기서 메인 액으로 넘기고,, 받는거 생각
 //                        intent.putExtra("name", result.getKakaoAccount().getProfile().getNickname());
 //                        intent.putExtra("profileImg", result.getKakaoAccount().getProfile().getProfileImageUrl());
+
                         String name = result.getKakaoAccount().getProfile().getNickname();
                         String urlLink = result.getKakaoAccount().getProfile().getProfileImageUrl();
+                        String email = "chan4756@naver.com";
+                        String defaultPwd = "wh21dasfgr124!@";
+                        mFirebaseAuth.createUserWithEmailAndPassword(email, defaultPwd).addOnCompleteListener((Activity) getContext(), new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()){
+                                    FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+                                    userObject user = new userObject();
+                                    user.setUserId(email);
+                                    user.setDefaultPwd(defaultPwd);
+                                    user.setIdToken(firebaseUser.getUid());
+                                    user.setUserProfileUrl(urlLink);
 
+                                    //setValue -> db에 insert
+                                    mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(user);
+                                    Toast.makeText(rootview.getContext(), "Success to save in DB", Toast.LENGTH_SHORT).show();
+
+                                }
+                                else{
+                                    Toast.makeText(rootview.getContext(), "Fail to save in DB", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                        /*
                         Bundle bundle = new Bundle();
                         bundle.putString("name", name);
                         bundle.putString("profileImg", urlLink);
@@ -85,9 +125,20 @@ public class fragment_login extends Fragment{
                         FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                         bar_profile profile = new bar_profile();
                         profile.setArguments(bundle);
-                        ((MainActivity)getActivity()).replaceFragment(profile);
-                        transaction.commit();
-                        Toast.makeText(rootview.getContext(), "Success to Login", Toast.LENGTH_SHORT).show();
+                        */
+
+                        mFirebaseAuth.signInWithEmailAndPassword(email, defaultPwd).addOnCompleteListener((Activity) getContext(), new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()){
+                                    Toast.makeText(rootview.getContext(), "Success to login", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                        fragment_recruitment fragment_recruitment = new fragment_recruitment();
+                        ((MainActivity)getActivity()).replaceFragment(fragment_recruitment);
+
+                        //Toast.makeText(rootview.getContext(), "Success to Login", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -133,6 +184,10 @@ public class fragment_login extends Fragment{
     public void onDestroy() {
         super.onDestroy();
         Session.getCurrentSession().removeCallback(mSessionCallback);
+    }
+
+    private void updateUI(FirebaseUser user) {
+
     }
 }
 
