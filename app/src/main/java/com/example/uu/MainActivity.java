@@ -34,6 +34,8 @@ import com.kakao.util.exception.KakaoException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+
+
 public class MainActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView title;
@@ -87,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
         hideNavigationBar();
 
     }
+
+
     private void hideNavigationBar() {
         int uiOptions = getWindow().getDecorView().getSystemUiVisibility();
         int newUiOptions = uiOptions;
