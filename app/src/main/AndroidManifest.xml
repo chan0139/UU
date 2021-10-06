@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.uu">
+    <!-- 인터넷 사용 권한 설정 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
+        android:name=".CustomApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.UU">
+        android:theme="@style/Theme.UU"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".LoadingActivity"
             android:exported="true" />
@@ -27,7 +32,9 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${GMP_KEY}"/>
+            android:value="${GMP_KEY}"
+            android:name="com.kakao.sdk.AppKey"
+            android:value="1e0e3c6d218603a6e7eca24db2fd36d9" />
     </application>
 
 

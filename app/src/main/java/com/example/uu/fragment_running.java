@@ -20,6 +20,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class fragment_running extends Fragment {
 
+    public static fragment_running newInstance() {
+        return new fragment_running();
+    }
 
     @Nullable
     @Override
