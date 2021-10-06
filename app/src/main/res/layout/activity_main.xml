@@ -15,6 +15,7 @@
         android:layout_above="@+id/bottomNavBar"
         android:layout_below="@id/appBar">
 
+
     </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
