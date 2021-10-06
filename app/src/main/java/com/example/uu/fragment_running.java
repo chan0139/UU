@@ -9,7 +9,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import net.daum.mf.map.api.MapView;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 
 public class fragment_running extends Fragment {
 
@@ -17,12 +24,37 @@ public class fragment_running extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        //initialize
         ViewGroup rootview=(ViewGroup) inflater.inflate(R.layout.fragment_running,container,false);
 
-        MapView mapView = new MapView((MainActivity)getActivity());
+        //init map
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
-        ViewGroup mapViewContainer = (ViewGroup)rootview.findViewById(R.id.map_view);
-        mapViewContainer.addView(mapView);
+        //Async
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull GoogleMap googleMap) {
+                //when map is loaded
+                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(@NonNull LatLng latLng) {
+                        //when map clicked
+                        MarkerOptions markerOptions=new MarkerOptions();
+                        //set marker position
+                        markerOptions.position(latLng);
+                        //set marker title
+                        markerOptions.title("position : "+latLng.latitude + " , "+latLng.longitude);
+
+                        googleMap.clear();
+                        //animation for zoom
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
+                        googleMap.addMarker(markerOptions);
+
+                    }
+                });
+            }
+        });
 
         return rootview;
     }
