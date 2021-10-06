@@ -32,7 +32,8 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${GMP_KEY}"
+            android:value="${GMP_KEY}"/>
+        <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="1e0e3c6d218603a6e7eca24db2fd36d9" />
     </application>
