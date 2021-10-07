@@ -40,6 +40,7 @@ import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.kakao.usermgmt.callback.MeV2ResponseCallback;
 import com.kakao.usermgmt.response.MeV2Response;
+import com.kakao.usermgmt.response.model.Gender;
 import com.kakao.util.exception.KakaoException;
 
 import java.security.MessageDigest;
@@ -93,15 +94,18 @@ public class fragment_login extends Fragment{
 //                        intent.putExtra("profileImg", result.getKakaoAccount().getProfile().getProfileImageUrl());
 
                         String name = result.getKakaoAccount().getProfile().getNickname();
+                        String gender = String.valueOf(result.getKakaoAccount().getGender());
                         String urlLink = result.getKakaoAccount().getProfile().getProfileImageUrl();
-                        String email = "chan4756@naver.com";
-                        String defaultPwd = "wh21dasfgr124!@";
+                        String email = result.getKakaoAccount().getEmail();
+                        String defaultPwd = "wh21dasfgr124!@";      //firebaseauth 이용 위해서는 필수, 그러나 우리는 카카오 아이디로 하기때문에 그냥 임시값으로 저장..
                         mFirebaseAuth.createUserWithEmailAndPassword(email, defaultPwd).addOnCompleteListener((Activity) getContext(), new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
                                     FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
                                     userObject user = new userObject();
+                                    user.setUserName(name);
+                                    user.setUserGender(gender);
                                     user.setUserId(email);
                                     user.setDefaultPwd(defaultPwd);
                                     user.setIdToken(firebaseUser.getUid());
@@ -117,15 +121,6 @@ public class fragment_login extends Fragment{
                                 }
                             }
                         });
-                        /*
-                        Bundle bundle = new Bundle();
-                        bundle.putString("name", name);
-                        bundle.putString("profileImg", urlLink);
-
-                        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                        bar_profile profile = new bar_profile();
-                        profile.setArguments(bundle);
-                        */
 
                         mFirebaseAuth.signInWithEmailAndPassword(email, defaultPwd).addOnCompleteListener((Activity) getContext(), new OnCompleteListener<AuthResult>() {
                             @Override
