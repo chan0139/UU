@@ -101,7 +101,7 @@ public class fragment_login extends Fragment{
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
                                     FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-                                    userObject user = new userObject();
+                                    user_Object user = new user_Object();
                                     user.setUserId(email);
                                     user.setDefaultPwd(defaultPwd);
                                     user.setIdToken(firebaseUser.getUid());

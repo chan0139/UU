@@ -54,7 +54,7 @@ public class bar_profile extends Fragment {
             mDatabaseRef.child("UserAccount").child(uid).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    userObject info = snapshot.getValue(userObject.class);
+                    user_Object info = snapshot.getValue(user_Object.class);
                     userId = info.getUserId();
                     userProfileUrl = info.getUserProfileUrl();
                     nickname.setText(userId);

@@ -1,6 +1,6 @@
 package com.example.uu;
 
-public class userObject {
+public class user_Object {
     private String userId;
     private String defaultPwd;
     private String userProfileUrl;
@@ -14,7 +14,7 @@ public class userObject {
         this.idToken = idToken;
     }
 
-    public userObject() { } //빈 생성자 필수, firebase에서
+    public user_Object() { } //빈 생성자 필수, firebase에서
 
     public String getUserId() {
         return userId;

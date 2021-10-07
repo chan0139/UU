@@ -1,5 +1,6 @@
 package com.example.uu;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -7,10 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,18 +30,13 @@ public class fragment_recruitment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootview=(ViewGroup) inflater.inflate(R.layout.fragment_recruitment,container,false);
 
-
         Button recruit=(Button)rootview.findViewById(R.id.recruit);
         recruit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dialog recruit=new Dialog(getActivity());
-                recruit.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                recruit.setContentView(R.layout.dialog_recruit);
-                recruit.setCancelable(true);
+                customDialog dialog = new customDialog(getActivity());
 
-                recruit.show();
-
+                dialog.show();
             }
         });
 
