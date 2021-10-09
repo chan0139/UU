@@ -66,7 +66,6 @@ public class fragment_login extends Fragment{
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("UU");
 
-
         //로그인 관리
         mSessionCallback = new ISessionCallback() {
             @Override

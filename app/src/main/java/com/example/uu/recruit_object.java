@@ -1,14 +1,40 @@
 package com.example.uu;
 
 public class recruit_object {
+    private String mapUrl;
     private String leader;
-    private String currentUserNum;
+    private int currentUserNum;
+    private int totalUserNum;
     private String date;
     private String time;
     private String userInfo;
     private String runningSpeed;
 
+    public int getCurrentUserNum() {
+        return currentUserNum;
+    }
+
+    public void setCurrentUserNum(int currentUserNum) {
+        this.currentUserNum = currentUserNum;
+    }
+
+    public int getTotalUserNum() {
+        return totalUserNum;
+    }
+
+    public void setTotalUserNum(int totalUserNum) {
+        this.totalUserNum = totalUserNum;
+    }
+
     public recruit_object() { }
+
+    public String getMapUrl() {
+        return mapUrl;
+    }
+
+    public void setMapUrl(String mapUrl) {
+        this.mapUrl = mapUrl;
+    }
 
     public String getLeader() {
         return leader;
@@ -18,13 +44,6 @@ public class recruit_object {
         this.leader = leader;
     }
 
-    public String getCurrentUserNum() {
-        return currentUserNum;
-    }
-
-    public void setCurrentUserNum(String currentUserNum) {
-        this.currentUserNum = currentUserNum;
-    }
 
     public String getDate() {
         return date;
