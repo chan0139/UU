@@ -66,7 +66,6 @@ public class fragment_login extends Fragment{
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("UU");
 
-
         //로그인 관리
         mSessionCallback = new ISessionCallback() {
             @Override
@@ -101,7 +100,7 @@ public class fragment_login extends Fragment{
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
                                     FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-                                    userObject user = new userObject();
+                                    user_Object user = new user_Object();
                                     user.setUserId(email);
                                     user.setDefaultPwd(defaultPwd);
                                     user.setIdToken(firebaseUser.getUid());

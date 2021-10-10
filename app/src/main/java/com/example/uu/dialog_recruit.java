@@ -23,12 +23,6 @@ public class dialog_recruit extends Dialog {
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_recruit);
 
-        findViewById(R.id.show_map).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
     }
 
