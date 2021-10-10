@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -26,18 +27,11 @@ public class fragment_recruitment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootview=(ViewGroup) inflater.inflate(R.layout.fragment_recruitment,container,false);
 
-
         Button recruit=(Button)rootview.findViewById(R.id.recruit);
         recruit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dialog recruit=new Dialog(getActivity());
-                recruit.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                recruit.setContentView(R.layout.dialog_recruit);
-                recruit.setCancelable(true);
-
-                recruit.show();
-
+                new dialog_map().show(getChildFragmentManager(),dialog_map.TAG);
             }
         });
 

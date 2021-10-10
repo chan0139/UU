@@ -6,39 +6,47 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="map"/>
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="350dp"
+            android:background="@color/purple_200"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="몇명"/>
+        <Button
+            android:id="@+id/show_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="map"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="구성원 정보"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="일시 : "/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="스피드"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="인원 제한 : "/>
 
-            <LinearLayout
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="스피드 : "/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/noBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <Button
-                    android:id="@+id/noBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="no"/>
-                <Button
-                    android:id="@+id/yesBtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="yes"/>
-            </LinearLayout>
+                android:text="취소"/>
+            <Button
+                android:id="@+id/yesBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="생성"/>
+        </LinearLayout>
 </LinearLayout>
