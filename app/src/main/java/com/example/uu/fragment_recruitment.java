@@ -80,7 +80,6 @@ public class fragment_recruitment extends Fragment{
         });
 
         adapter = new recruitAdapter(arrayList, getContext());
-        Log.e("cnt",String.valueOf(adapter.getItemCount()));
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
 
         Button recruit=(Button)rootview.findViewById(R.id.recruit);

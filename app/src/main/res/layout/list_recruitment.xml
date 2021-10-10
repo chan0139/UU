@@ -26,12 +26,6 @@
                 android:layout_height="wrap_content"
                 android:text="날짜"
                 android:layout_margin="5dp"/>
-            <TextView
-                android:id="@+id/leader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="주관"
-                android:layout_margin="5dp"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -39,29 +33,59 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="주관"
+                    android:layout_margin="5dp"/>
+                <TextView
+                    android:id="@+id/leader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="none"
+                    android:layout_margin="5dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="현재 인원"
+                    android:layout_margin="5dp"/>
+
+                <TextView
                     android:id="@+id/currentUserNum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="현재 모집인원"
+                    android:text="0"
+                    android:layout_margin="5dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="모집 인원"
                     android:layout_margin="5dp"/>
 
                 <TextView
                     android:id="@+id/totalUserNum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="총 인원"
+                    android:text="0"
                     android:layout_margin="5dp"/>
             </LinearLayout>
 
 
         </LinearLayout>
 
-    <Button
-        android:id="@+id/joinButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text="join"/>
+        <Button
+            android:id="@+id/joinButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="join"/>
 
     </LinearLayout>
 
