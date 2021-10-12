@@ -1,16 +1,12 @@
 package com.example.uu;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,17 +20,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
-
-import org.w3c.dom.Text;
 
 public class bar_profile extends Fragment {
 
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
     private String userId, userProfileUrl;
+    private String userName, userGender;
 
 
     @Nullable
@@ -42,8 +36,10 @@ public class bar_profile extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootview=(ViewGroup) inflater.inflate(R.layout.bar_profile,container,false);
         Button button = rootview.findViewById(R.id.logoutButton);
-        TextView nickname = rootview.findViewById(R.id.ninkname);
+        TextView email = rootview.findViewById(R.id.email);
         ImageView profile = rootview.findViewById(R.id.profile);
+        TextView name = rootview.findViewById(R.id.name);
+        TextView gender = rootview.findViewById(R.id.gender);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null) {
             mFirebaseAuth = FirebaseAuth.getInstance();
@@ -54,10 +50,14 @@ public class bar_profile extends Fragment {
             mDatabaseRef.child("UserAccount").child(uid).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    user_Object info = snapshot.getValue(user_Object.class);
+                    userObject info = snapshot.getValue(userObject.class);
                     userId = info.getUserId();
+                    userName = info.getUserName();
+                    userGender = info.getUserGender();
                     userProfileUrl = info.getUserProfileUrl();
-                    nickname.setText(userId);
+                    email.setText(userId);
+                    name.setText(userName);
+                    gender.setText("/  " + userGender);
                     Glide.with(getContext()).load(userProfileUrl).into(profile);
 
                 }
@@ -71,15 +71,11 @@ public class bar_profile extends Fragment {
         }
         else{
                 profile.setImageResource(R.drawable.no_login_user_image);
-                nickname.setText("익명의 오리너구리");
+                name.setText("  익 명");
+                gender.setText("/  성 별");
+                email.setText("이 메 일");
                 button.setText("로그인 먼저 진행해주세요.");
         }
-        
-
-
-
-        //DatabaseReference id = mDatabase.child("UserAccount").child(uid).child("userId");
-
 
 
         button.setOnClickListener(new View.OnClickListener() {

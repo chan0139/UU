@@ -86,9 +86,7 @@ public class fragment_recruitment extends Fragment{
         recruit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customDialog dialog = new customDialog(getActivity());
-
-                dialog.show();
+                new dialog_map().show(getChildFragmentManager(),dialog_map.TAG);
             }
         });
 
