@@ -133,6 +133,7 @@ public class fragment_recruitment extends Fragment{
 
         }
 
+
         return rootview;
     }
 
