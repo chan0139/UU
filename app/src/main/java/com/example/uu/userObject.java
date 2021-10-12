@@ -1,10 +1,28 @@
 package com.example.uu;
 
-public class user_Object {
+public class userObject {
     private String userId;
     private String defaultPwd;
     private String userProfileUrl;
+    private String userGender;
+    private String userName;
     private String idToken;
+
+    public String getUserGender() {
+        return userGender;
+    }
+
+    public void setUserGender(String userGender) {
+        this.userGender = userGender;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public String getIdToken() {
         return idToken;
@@ -14,7 +32,7 @@ public class user_Object {
         this.idToken = idToken;
     }
 
-    public user_Object() { } //빈 생성자 필수, firebase에서
+    public userObject() { } //빈 생성자 필수, firebase에서
 
     public String getUserId() {
         return userId;
