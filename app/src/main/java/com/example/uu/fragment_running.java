@@ -88,128 +88,6 @@ public class fragment_running extends Fragment
     private static final int FASTEST_UPDATE_INTERVAL_MS = 500; // 0.5초
 
     //draw polyline
-    public List<Polyline> polylines = new List<Polyline>() {
-        @Override
-        public int size() {
-            return 0;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return false;
-        }
-
-        @Override
-        public boolean contains(@Nullable Object o) {
-            return false;
-        }
-
-        @NonNull
-        @Override
-        public Iterator<Polyline> iterator() {
-            return null;
-        }
-
-        @NonNull
-        @Override
-        public Object[] toArray() {
-            return new Object[0];
-        }
-
-        @NonNull
-        @Override
-        public <T> T[] toArray(@NonNull T[] ts) {
-            return null;
-        }
-
-        @Override
-        public boolean add(Polyline polyline) {
-            return false;
-        }
-
-        @Override
-        public boolean remove(@Nullable Object o) {
-            return false;
-        }
-
-        @Override
-        public boolean containsAll(@NonNull Collection<?> collection) {
-            return false;
-        }
-
-        @Override
-        public boolean addAll(@NonNull Collection<? extends Polyline> collection) {
-            return false;
-        }
-
-        @Override
-        public boolean addAll(int i, @NonNull Collection<? extends Polyline> collection) {
-            return false;
-        }
-
-        @Override
-        public boolean removeAll(@NonNull Collection<?> collection) {
-            return false;
-        }
-
-        @Override
-        public boolean retainAll(@NonNull Collection<?> collection) {
-            return false;
-        }
-
-        @Override
-        public void clear() {
-
-        }
-
-        @Override
-        public Polyline get(int i) {
-            return null;
-        }
-
-        @Override
-        public Polyline set(int i, Polyline polyline) {
-            return null;
-        }
-
-        @Override
-        public void add(int i, Polyline polyline) {
-
-        }
-
-        @Override
-        public Polyline remove(int i) {
-            return null;
-        }
-
-        @Override
-        public int indexOf(@Nullable Object o) {
-            return 0;
-        }
-
-        @Override
-        public int lastIndexOf(@Nullable Object o) {
-            return 0;
-        }
-
-        @NonNull
-        @Override
-        public ListIterator<Polyline> listIterator() {
-            return null;
-        }
-
-        @NonNull
-        @Override
-        public ListIterator<Polyline> listIterator(int i) {
-            return null;
-        }
-
-        @NonNull
-        @Override
-        public List<Polyline> subList(int i, int i1) {
-            return null;
-        }
-    };
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private Location mCurrentLocation;
@@ -389,7 +267,9 @@ public class fragment_running extends Fragment
                 currentPosition
                         = new LatLng(location.getLatitude(), location.getLongitude());
 
-                checkpoints.add(currentPosition);
+               if(walkState){
+                   checkpoints.add(currentPosition);
+               }
 
 
                 String markerTitle = getCurrentAddress(currentPosition);
@@ -409,8 +289,6 @@ public class fragment_running extends Fragment
         }
 
     };
-
-
 
     private void startLocationUpdates() {
 
