@@ -7,6 +7,7 @@ import android.app.FragmentTransaction;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -97,6 +98,15 @@ public class customDialog extends Dialog {
             @Override
             public void onClick(View view) {
                 showTime();
+            }
+        });
+
+        Button setMap=findViewById(R.id.setMap);
+        setMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(context,DrawingMapActivity.class);
+                context.startActivity(intent);
             }
         });
 

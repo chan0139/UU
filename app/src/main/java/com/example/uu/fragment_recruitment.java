@@ -2,7 +2,13 @@ package com.example.uu;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.media.Image;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -15,10 +21,12 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
@@ -34,10 +42,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class fragment_recruitment extends Fragment{
+public class fragment_recruitment extends Fragment implements DrawingMapActivity.OnBitmapCreated{
     private View linear_recruitment;
     private View linear_crew;
     private LinearLayout linear_dialog;
@@ -47,11 +61,15 @@ public class fragment_recruitment extends Fragment{
     private ArrayList<recruit_object> arrayList;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
+    private ViewGroup rootview;
+
+    ImageView show_map;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootview=(ViewGroup) inflater.inflate(R.layout.fragment_recruitment,container,false);
+
+        rootview=(ViewGroup) inflater.inflate(R.layout.fragment_recruitment,container,false);
         recyclerView = rootview.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
@@ -86,7 +104,8 @@ public class fragment_recruitment extends Fragment{
         recruit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new dialog_map().show(getChildFragmentManager(),dialog_map.TAG);
+                customDialog dialog = new customDialog(getActivity());
+                dialog.show();
             }
         });
 
@@ -115,7 +134,14 @@ public class fragment_recruitment extends Fragment{
             }
         });
 
+
+
         return rootview;
     }
 
+    @Override
+    public void saveBitmap(Bitmap bm) {
+        //show_map=(ImageView)rootview.findViewById(R.id.testMap);
+        show_map.setImageBitmap(bm);
+    }
 }
