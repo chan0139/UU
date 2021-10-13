@@ -34,7 +34,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
-
+import java.util.Random;
 
 
 public class customDialog extends Dialog {
@@ -188,6 +188,8 @@ public class customDialog extends Dialog {
     void saveRecruitInfo(){
         String date;
         String time;
+        String randomStr = RandomGenerator();
+
         time = Integer.toString(selectedHour) + ':' + Integer.toString(selectedMin);
         date = Integer.toString(selectedMonth) + '/' + Integer.toString(selectedDay);
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
@@ -199,9 +201,33 @@ public class customDialog extends Dialog {
         recruit.setTotalUserNum(getUserNum);
         recruit.setCurrentUserNum(1);
         recruit.setRunningSpeed(selectedSpeed);
-
-        mDatabaseRef.child(firebaseUser.getUid()).setValue(recruit);
+        recruit.setRecruitId(randomStr);
+        recruit.setHostId(firebaseUser.getUid());
+        mDatabaseRef.child(randomStr).setValue(recruit);
         Toast.makeText(getContext(), "Success to save in DB", Toast.LENGTH_SHORT).show();
+    }
+
+    String RandomGenerator(){               //recruitId 생성기
+        StringBuffer temp = new StringBuffer();
+        Random rnd = new Random();
+        for (int i = 0; i < 20; i++) {
+            int rIndex = rnd.nextInt(3);
+            switch (rIndex) {
+                case 0:
+                    // a-z
+                    temp.append((char) ((int) (rnd.nextInt(26)) + 97));
+                    break;
+                case 1:
+                    // A-Z
+                    temp.append((char) ((int) (rnd.nextInt(26)) + 65));
+                    break;
+                case 2:
+                    // 0-9
+                    temp.append((rnd.nextInt(10)));
+                    break;
+            }
+        }
+    return new String(temp);
     }
 }
 

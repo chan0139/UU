@@ -1,6 +1,10 @@
 package com.example.uu;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class recruit_object {
+    private String recruitId;
     private String mapUrl;
     private String leader;
     private int currentUserNum;
@@ -8,7 +12,29 @@ public class recruit_object {
     private String date;
     private String time;
     private String userInfo;
+    private String hostId;
     private String runningSpeed;
+
+    private Map<String, Object> users = new HashMap<String, Object>();
+
+
+
+
+    public String getRecruitId() {
+        return recruitId;
+    }
+
+    public String getHostId() {
+        return hostId;
+    }
+
+    public void setHostId(String hostId) {
+        this.hostId = hostId;
+    }
+
+    public void setRecruitId(String recruitId) {
+        this.recruitId = recruitId;
+    }
 
     public int getCurrentUserNum() {
         return currentUserNum;
@@ -77,3 +103,4 @@ public class recruit_object {
         this.runningSpeed = runningSpeed;
     }
 }
+
