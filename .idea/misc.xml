@@ -7,14 +7,24 @@
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/activity_main.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/activity_temp.xml" value="0.3151041666666667" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/bar_profile.xml" value="0.27708333333333335" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/dialog_recruit.xml" value="0.33" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_login.xml" value="0.27708333333333335" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_ranking.xml" value="0.27708333333333335" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_recruitment.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_running.xml" value="0.2864583333333333" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/list_recruitment.xml" value="0.33" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_club.xml" value="0.38229166666666664" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_route.xml" value="0.27708333333333335" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_savemap.xml" value="0.2046875" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_settings.xml" value="0.2046875" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_undo.xml" value="0.2046875" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/activity_drawing_map.xml" value="0.18854166666666666" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/activity_loading.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/dialog_recruit.xml" value="0.14791666666666667" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/draw_map.xml" value="0.19" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fragment_club.xml" value="0.2609375" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fragment_ranking.xml" value="0.2609375" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fragment_recruitment.xml" value="0.18854166666666666" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/simon/GitHub/UU/app/src/main/res/drawable/bottom_border.xml" value="0.3072916666666667" />
         <entry key="..\:/Users/simon/GitHub/UU/app/src/main/res/drawable/ic_running.xml" value="0.3072916666666667" />
