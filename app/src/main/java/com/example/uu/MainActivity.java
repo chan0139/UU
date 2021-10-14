@@ -36,7 +36,7 @@ import java.security.NoSuchAlgorithmException;
 
 
 
-public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener {
+public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,fragment_login.OnLogInCompleteListener {
     Toolbar toolbar;
     TextView title;
     Fragment selectedFragment=null;
@@ -140,6 +140,16 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
     @Override
     public void OnSecheduleCreated() {
+       showRecruitmentFragment();
+       hideNavigationBar();
+    }
+
+    @Override
+    public void loginComplete() {
+        title.setText("Recruitment");
+        showRecruitmentFragment();
+    }
+    public void showRecruitmentFragment(){
         selectedFragment=new fragment_recruitment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
     }
