@@ -43,6 +43,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class fragment_recruitment extends Fragment implements DrawingMapActivity.OnBitmapCreated{
     private View linear_recruitment;

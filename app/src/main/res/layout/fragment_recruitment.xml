@@ -11,15 +11,18 @@
 
         <ImageButton
             android:id="@+id/show_recruitment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="28dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/ic_recruitment"/>
 
         <ImageButton
             android:id="@+id/show_crew"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_crew"/>
+            android:layout_width="24dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="3dp"
+            android:background="@drawable/ic_crew" />
 
     </LinearLayout>
 
@@ -41,6 +44,8 @@
                 android:id="@+id/recruit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
                 android:text="add"/>
 
         </LinearLayout>
