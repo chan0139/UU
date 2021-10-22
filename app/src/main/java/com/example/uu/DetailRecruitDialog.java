@@ -35,7 +35,7 @@ public class DetailRecruitDialog extends DialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootview=(ViewGroup) inflater.inflate(R.layout.dialog_detail_recruit,container,false);
         //추후에 인원정보도 추가..
-        
+
         TextView textLeader = (TextView) rootview.findViewById(R.id.leader);
         TextView textTime = (TextView) rootview.findViewById(R.id.time);
         TextView textDate = (TextView) rootview.findViewById(R.id.date);
