@@ -119,6 +119,7 @@ public class fragment_running extends Fragment
 
 
         // start&stop running
+        /*
         Button runningBtn = rootview.findViewById(R.id.runBtn);
         runningBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +127,8 @@ public class fragment_running extends Fragment
                 changeWalkState();
             }
         });
+
+         */
 
         return rootview;
     }
@@ -436,15 +439,23 @@ public class fragment_running extends Fragment
 
 
     // For drawing polyline after running finished
-    private void changeWalkState() {
-        if (!walkState) {
-            Toast.makeText(getContext(), "운동 시작!", Toast.LENGTH_SHORT).show();
-            walkState = true;
-        }else{
-            Toast.makeText(getContext(), "운동 종료!", Toast.LENGTH_SHORT).show();
-            drawPath();
-            walkState = false;
-        }
+
+    public void onButtonStart()
+    {
+        Toast.makeText(getContext(), "운동 시작!", Toast.LENGTH_SHORT).show();
+        walkState = true;
+    }
+
+    public void onButtonPause()
+    {
+        walkState = false;
+    }
+
+    public void onButtonEnd()
+    {
+        Toast.makeText(getContext(), "운동 종료!", Toast.LENGTH_SHORT).show();
+        drawPath();
+        walkState = false;
     }
 
     private void drawPath(){        //polyline을 그려주는 메소드
