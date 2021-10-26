@@ -80,6 +80,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
             }
         });
 
+        //모집 상세화면
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

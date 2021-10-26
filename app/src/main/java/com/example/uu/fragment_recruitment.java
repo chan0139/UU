@@ -52,6 +52,7 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
     private LinearLayout linear_dialog;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
+
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<recruit_object> arrayList;
     private FirebaseDatabase database;
@@ -189,21 +190,45 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
         guAdapter = ArrayAdapter.createFromResource(getContext(), R.array.seoul_gu, android.R.layout.simple_spinner_item);
         guSpinner.setAdapter(guAdapter);
 
-        //크루 리스트 show
-        //crewRecyclerView = rootview.findViewById(R.id.crewRecyclerView);
-        //crewRecyclerView.setHasFixedSize(true);
-        //crewLayoutManager = new LinearLayoutManager(getContext());
-        //crewRecyclerView.setLayoutManager(crewLayoutManager);
-
-
         Button createCrewBtn =(Button) rootview.findViewById(R.id.crewAdd);
         createCrewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                crewAddDialog crewDialog = new crewAddDialog(getActivity());
+                crewDialog.show();
             }
         });
 
+        //크루 리스트 show
+        crewRecyclerView = rootview.findViewById(R.id.crewRecyclerView);
+        crewRecyclerView.setHasFixedSize(true);
+        crewLayoutManager = new LinearLayoutManager(getContext());
+        crewRecyclerView.setLayoutManager(crewLayoutManager);
+        crewArrayList = new ArrayList<>();
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference("Crew");
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // DB data를 받아오는곳
+                crewArrayList.clear(); // 기존 배열리스트 초기화
+                for(DataSnapshot Snapshot : dataSnapshot.getChildren()){
+                    crewObject recruit = Snapshot.getValue(crewObject.class);
+                    crewArrayList.add(recruit);
+                }
+                crewAdapter.notifyDataSetChanged(); //리스트 저장 및 새로고침
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                //DB 받아오던 중 에러 발생하는 경우
+                Log.e("Error", String.valueOf(error.toException()));
+            }
+        });
+
+        crewAdapter = new crewAdapter(crewArrayList, getContext());
+        crewRecyclerView.setAdapter(crewAdapter); //리사이클러뷰에 어댑터 연결
 
         //크루에 속한 유저 초기화면
 

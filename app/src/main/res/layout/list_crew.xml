@@ -10,7 +10,7 @@
 
         <ImageView
             android:id="@+id/testImage"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="80dp"
             android:layout_margin="5dp"
             android:src="@drawable/ic_launcher_background"/>
@@ -21,10 +21,10 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/date"
+                android:id="@+id/crewName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="날짜"
+                android:text="크루명"
                 android:layout_margin="5dp"/>
 
             <LinearLayout
@@ -32,16 +32,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="주관"
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="18dp"
+                    android:background="@drawable/location"
                     android:layout_margin="5dp"/>
                 <TextView
-                    android:id="@+id/leader"
+                    android:id="@+id/crewLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="none"
+                    android:text="활동 지역"
                     android:layout_margin="5dp"/>
             </LinearLayout>
 
@@ -50,32 +50,20 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="현재 인원"
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="18dp"
+                    android:background="@drawable/ic_crew"
                     android:layout_margin="5dp"/>
-
                 <TextView
-                    android:id="@+id/currentUserNum"
+                    android:id="@+id/crewUserNum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0"
-                    android:layout_margin="5dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="모집 인원"
-                    android:layout_margin="5dp"/>
-
-                <TextView
-                    android:id="@+id/totalUserNum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="0"
+                    android:text="유저수"
                     android:layout_margin="5dp"/>
             </LinearLayout>
+
+
 
 
         </LinearLayout>

@@ -8,10 +8,19 @@ public class crewObject {
     private String leader;
     private String Explanation;
     private String crewImage;
+    private String location;
     private int totalUserNum;
     private Map<String, Object> userList = new HashMap<String, Object>();
 
     public crewObject() { }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public String getCrewName() {
         return crewName;
