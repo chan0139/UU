@@ -97,6 +97,7 @@ public class fragment_login extends Fragment{
                         String gender = String.valueOf(result.getKakaoAccount().getGender());
                         String urlLink = result.getKakaoAccount().getProfile().getProfileImageUrl();
                         String email = result.getKakaoAccount().getEmail();
+                        String crew = "none";
                         String defaultPwd = "wh21dasfgr124!@";      //firebaseauth 이용 위해서는 필수, 그러나 우리는 카카오 아이디로 하기때문에 그냥 임시값으로 저장..
                         mFirebaseAuth.createUserWithEmailAndPassword(email, defaultPwd).addOnCompleteListener((Activity) getContext(), new OnCompleteListener<AuthResult>() {
                             @Override
@@ -110,6 +111,7 @@ public class fragment_login extends Fragment{
                                     user.setDefaultPwd(defaultPwd);
                                     user.setIdToken(firebaseUser.getUid());
                                     user.setUserProfileUrl(urlLink);
+                                    user.setCurrentCrew(crew);
 
                                     //setValue -> db에 insert
                                     mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(user);
@@ -127,11 +129,12 @@ public class fragment_login extends Fragment{
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
                                     Toast.makeText(rootview.getContext(), "Success to login", Toast.LENGTH_SHORT).show();
+                                    fragment_recruitment fragment_recruitment = new fragment_recruitment();
+                                    ((MainActivity)getActivity()).replaceFragment(fragment_recruitment);
                                 }
                             }
                         });
-                        fragment_recruitment fragment_recruitment = new fragment_recruitment();
-                        ((MainActivity)getActivity()).replaceFragment(fragment_recruitment);
+
 
                         //Toast.makeText(rootview.getContext(), "Success to Login", Toast.LENGTH_SHORT).show();
                     }
