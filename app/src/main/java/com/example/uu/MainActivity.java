@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     TextView title;
     Fragment selectedFragment=null;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

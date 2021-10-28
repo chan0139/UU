@@ -26,8 +26,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -65,10 +67,12 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
     private RecyclerView.Adapter crewAdapter;
     private RecyclerView.LayoutManager crewLayoutManager;
     private ArrayList<crewObject> crewArrayList;
+    private ArrayList<crewObject> filteredList;
     private String currentCrew;
 
     ImageView show_map;
     private FirebaseAuth mFirebaseAuth;
+    String selectedGu;
 
     @Nullable
     @Override
@@ -107,7 +111,7 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
 
 
         //******* linear_recruitment 부분 코딩
-        /*
+
         recyclerView = rootview.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
@@ -115,7 +119,7 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
         arrayList = new ArrayList<>();
         database = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+
         if(firebaseUser != null) {
             databaseReference = database.getReference("Recruit");
 
@@ -158,7 +162,7 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
             fragment_login login = new fragment_login();
             ((MainActivity)getActivity()).replaceFragment(login);
         }
-        */
+
 
 
         //******* linear_crew 부분 코딩
@@ -167,6 +171,7 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
 
 
         //크루 존재 여부 check
+        /*
         databaseReference = database.getReference("UU");
         databaseReference.child("UserAccount").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -180,6 +185,8 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
             }
         });
 
+         */
+
 
         //유저가 크루가 없는 경우 초기 화면
         if (currentCrew == "none"){
@@ -190,12 +197,17 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
         guAdapter = ArrayAdapter.createFromResource(getContext(), R.array.seoul_gu, android.R.layout.simple_spinner_item);
         guSpinner.setAdapter(guAdapter);
 
+
+
         Button createCrewBtn =(Button) rootview.findViewById(R.id.crewAdd);
         createCrewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                crewAddDialog crewDialog = new crewAddDialog(getActivity());
-                crewDialog.show();
+
+
+                crewAddDialog crewDialog = new crewAddDialog();
+                //crewDialog.show(getActivity().getFragmentManager(), "test");
+                crewDialog.show(getChildFragmentManager(), "crew");
             }
         });
 
@@ -205,6 +217,7 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
         crewLayoutManager = new LinearLayoutManager(getContext());
         crewRecyclerView.setLayoutManager(crewLayoutManager);
         crewArrayList = new ArrayList<>();
+        filteredList = new ArrayList<>();
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Crew");
 
@@ -227,20 +240,50 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
             }
         });
 
+        guSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedGu = (String) adapterView.getSelectedItem();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
         crewAdapter = new crewAdapter(crewArrayList, getContext());
         crewRecyclerView.setAdapter(crewAdapter); //리사이클러뷰에 어댑터 연결
 
+        Button crewSearchBtn = rootview.findViewById(R.id.searchCrewBtn);
+        crewSearchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        // DB data를 받아오는곳
+                        crewArrayList.clear(); // 기존 배열리스트 초기화
+                        for(DataSnapshot Snapshot : dataSnapshot.getChildren()){
+                            crewObject recruit = Snapshot.getValue(crewObject.class);
+                            if( recruit.getLocation().equals(selectedGu)){
+                                crewArrayList.add(recruit);
+                            }
+
+                        }
+                        crewAdapter.notifyDataSetChanged(); //리스트 저장 및 새로고침
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        //DB 받아오던 중 에러 발생하는 경우
+                        Log.e("Error", String.valueOf(error.toException()));
+                    }
+                });
+
+            }
+        });
+
+
         //크루에 속한 유저 초기화면
-
-
-
-
-
-
-
-
-
-
 
 
         return rootview;
@@ -251,4 +294,18 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
         //show_map=(ImageView)rootview.findViewById(R.id.testMap);
         show_map.setImageBitmap(bm);
     }
+
+    public void searchFilter(String searchText) {
+
+
+        for (int i = 0; i < crewArrayList.size(); i++) {
+            if (crewArrayList.get(i).getLocation().equals(selectedGu)) {
+                filteredList.add(crewArrayList.get(i));
+            }
+        }
+
+        //crewAdapter.filterList(filteredList);
+    }
+
+
 }
