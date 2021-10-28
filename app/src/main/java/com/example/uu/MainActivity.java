@@ -36,7 +36,7 @@ import java.security.NoSuchAlgorithmException;
 
 
 
-public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener {
+public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,crewAddDialog.OnCrewAddedListener {
     Toolbar toolbar;
     TextView title;
     Fragment selectedFragment=null;
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
                     switch (item.getItemId()){
                         case R.id.recruitment:
                             title.setText("Recruitment");
-                            selectedFragment=new fragment_recruitment();
+                            selectedFragment=new fragment_recruitment(R.id.show_recruitment);
                             break;
                         case R.id.running:
                             title.setText("Running");
@@ -142,7 +142,13 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
     @Override
     public void OnSecheduleCreated() {
-        selectedFragment=new fragment_recruitment();
+        selectedFragment=new fragment_recruitment(R.id.show_recruitment);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+    }
+
+    @Override
+    public void OnCrewAdded() {
+        selectedFragment= new fragment_recruitment(R.id.show_crew);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
     }
 }

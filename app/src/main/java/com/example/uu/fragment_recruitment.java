@@ -51,6 +51,8 @@ import java.util.Comparator;
 public class fragment_recruitment extends Fragment implements DrawingMapActivity.OnBitmapCreated{
     private View linear_recruitment;
     private View linear_crew;
+    private ImageButton show_recruitment;
+    private ImageButton show_crew;
     private LinearLayout linear_dialog;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -74,6 +76,10 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
     private FirebaseAuth mFirebaseAuth;
     String selectedGu;
 
+    int which_layout=R.id.show_recruitment;
+    fragment_recruitment(int id_layout){
+        which_layout=id_layout;
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -86,26 +92,23 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
 
         linear_recruitment= (LinearLayout) rootview.findViewById(R.id.linear_Recruitment);
         linear_crew= (LinearLayout) rootview.findViewById(R.id.linear_crew);
-        linear_crew.setVisibility(View.INVISIBLE);
 
-        ImageButton show_recruitment=(ImageButton) rootview.findViewById(R.id.show_recruitment);
-        ImageButton show_crew=(ImageButton) rootview.findViewById(R.id.show_crew);
+        show_recruitment=(ImageButton) rootview.findViewById(R.id.show_recruitment);
+        show_crew=(ImageButton) rootview.findViewById(R.id.show_crew);
+
+        layoutConverter(which_layout);
 
         show_recruitment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                show_crew.setBackgroundResource(R.drawable.ic_crew);
-                linear_recruitment.setVisibility(View.VISIBLE);
-                linear_crew.setVisibility(View.INVISIBLE);
+                layoutConverter(R.id.show_recruitment);
             }
         });
 
         show_crew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                show_crew.setBackgroundResource(R.drawable.ic_crew_selected);
-                linear_recruitment.setVisibility(View.INVISIBLE);
-                linear_crew.setVisibility(View.VISIBLE);
+                layoutConverter(R.id.show_crew);
             }
         });
 
@@ -307,5 +310,18 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
         //crewAdapter.filterList(filteredList);
     }
 
+    public void layoutConverter(int which_layout){
+        if(which_layout==R.id.show_recruitment){
+            show_crew.setBackgroundResource(R.drawable.ic_crew);
+            linear_recruitment.setVisibility(View.VISIBLE);
+            linear_crew.setVisibility(View.INVISIBLE);
+        }
+        else if(which_layout==R.id.show_crew){
+            show_crew.setBackgroundResource(R.drawable.ic_crew_selected);
+            linear_recruitment.setVisibility(View.INVISIBLE);
+            linear_crew.setVisibility(View.VISIBLE);
+        }
+
+    }
 
 }

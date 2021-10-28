@@ -129,7 +129,7 @@ public class fragment_login extends Fragment{
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
                                     Toast.makeText(rootview.getContext(), "Success to login", Toast.LENGTH_SHORT).show();
-                                    fragment_recruitment fragment_recruitment = new fragment_recruitment();
+                                    fragment_recruitment fragment_recruitment = new fragment_recruitment(R.id.show_recruitment);
                                     ((MainActivity)getActivity()).replaceFragment(fragment_recruitment);
                                 }
                             }

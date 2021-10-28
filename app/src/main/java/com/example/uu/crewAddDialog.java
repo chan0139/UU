@@ -5,6 +5,7 @@ package com.example.uu;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,6 +50,11 @@ import kotlin.jvm.internal.Intrinsics;
 public class crewAddDialog extends DialogFragment {
     public static String TAG="dialog_crew_add";
 
+    public OnCrewAddedListener crewAddedListener;
+    interface OnCrewAddedListener{
+        void  OnCrewAdded();
+    }
+
     ImageView clubImg;
     FloatingActionButton fab;
     Uri uri;
@@ -59,6 +65,12 @@ public class crewAddDialog extends DialogFragment {
     private DatabaseReference mDatabaseRef;
     private DatabaseReference mDatabaseRefUser;
     private FirebaseStorage storage;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        crewAddedListener=(OnCrewAddedListener) context;
+    }
 
     @Nullable
     @Override
@@ -146,7 +158,7 @@ public class crewAddDialog extends DialogFragment {
 
                 saveCrewInfo();
 
-                //scheduleCreatedListener.OnScheduleCreated();
+                crewAddedListener.OnCrewAdded();
 
                 dismiss();
 
