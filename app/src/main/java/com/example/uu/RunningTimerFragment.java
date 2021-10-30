@@ -35,6 +35,8 @@ public class RunningTimerFragment extends Fragment {
     private Thread timeThread = null;
     private Boolean walkState = false;
 
+    int time = 0;
+
     public RunningTimerFragment() {
         // Required empty public constructor
     }
@@ -143,8 +145,14 @@ public class RunningTimerFragment extends Fragment {
         timeThread.interrupt();
         walkState=false;
         try {
+            Bundle result = new Bundle();
+            result.putInt("bundleKey", time);
+            getParentFragmentManager().setFragmentResult("requestKey", result);
+
             fragment_running parentFragment=(fragment_running) getParentFragment();
             parentFragment.onButtonEnd();
+
+            time=0;
         }catch (Exception e){
             Log.d("FragmentReferenceError","cannot resolve parent fragment");
         }
@@ -169,12 +177,12 @@ public class RunningTimerFragment extends Fragment {
     public class timeThread implements Runnable {
         @Override
         public void run() {
-            int i = 0;
+            time = 0;
 
             while (true) {
                 while (!walkState) { //일시정지를 누르면 멈춤
                     Message msg = new Message();
-                    msg.arg1 = i++;
+                    msg.arg1 = time++;
                     handler.sendMessage(msg);
 
                     try {

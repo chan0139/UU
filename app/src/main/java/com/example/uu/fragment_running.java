@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentResultListener;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -67,6 +68,7 @@ public class fragment_running extends Fragment
 
     private LocationManager locationManager;
     private boolean walkState = false;                    //걸음 상태
+    private int runningTime=0;
     private List<LatLng> checkpoints=new ArrayList<>();
 
     // onRequestPermissionsResult에서 수신된 결과에서 ActivityCompat.requestPermissions를 사용한 퍼미션 요청을 구별하기 위해 사용
@@ -86,6 +88,19 @@ public class fragment_running extends Fragment
 
 
     private View mLayout;  // Snackbar 사용하기 위해서는 View가 필요
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // get data from timer when running ends
+        getChildFragmentManager().setFragmentResultListener("requestKey", this, new FragmentResultListener() {
+            @Override
+            public void onFragmentResult(@NonNull String key, @NonNull Bundle bundle) {
+                runningTime = bundle.getInt("bundleKey");
+            }
+        });
+    }
 
     @Nullable
     @Override
@@ -116,19 +131,6 @@ public class fragment_running extends Fragment
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         //set callback
         mapFragment.getMapAsync(this);
-
-
-        // start&stop running
-        /*
-        Button runningBtn = rootview.findViewById(R.id.runBtn);
-        runningBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                changeWalkState();
-            }
-        });
-
-         */
 
         return rootview;
     }
@@ -423,16 +425,12 @@ public class fragment_running extends Fragment
                 //사용자가 GPS 활성 시켰는지 검사
                 if (checkLocationServicesStatus()) {
                     if (checkLocationServicesStatus()) {
-
                         Log.d(TAG, "onActivityResult : GPS 활성화 되있음");
 
-
                         needRequest = true;
-
                         return;
                     }
                 }
-
                 break;
         }
     }
@@ -453,8 +451,25 @@ public class fragment_running extends Fragment
 
     public void onButtonEnd()
     {
-        Toast.makeText(getContext(), "운동 종료!", Toast.LENGTH_SHORT).show();
-        drawPath();
+        AlertDialog.Builder dlg = new AlertDialog.Builder(getActivity());
+        String msg="";
+        String min=Integer.toString((runningTime/100)/60);
+        String sec=Integer.toString((runningTime/100)%60);
+
+        dlg.setTitle("오늘의 운동!"); //제목
+
+        msg="얼마나 뛰었을까? "+min+"분 "+sec+"초\n";
+        msg+="얼만큼 뛰었을까? "+"0m\n";
+        msg+="얼만큼 빠졌을까? "+"0Kcal\n";
+        dlg.setMessage(msg); // 메시지
+
+        dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getActivity(),"운동 종료!",Toast.LENGTH_SHORT).show();
+                drawPath();
+            }
+        });
+        dlg.show();
         walkState = false;
     }
 
