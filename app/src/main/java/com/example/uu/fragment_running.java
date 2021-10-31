@@ -221,10 +221,28 @@ public class fragment_running extends Fragment
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(walkState) {
+            AlertDialog.Builder dlg = new AlertDialog.Builder(getActivity());
+
+            dlg.setTitle("운동이 진행중입니다!"); //제목
+            dlg.setMessage("종료할까요?"); // 메시지
+
+            dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    //Toast.makeText(getActivity(), "운동 종료!", Toast.LENGTH_SHORT).show();
+                }
+            });
+            dlg.show();
+        }
+    }
+
     /*
-    통합 위치 정보 제공자는 LocationCallback.onLocationResult() 콜백 메서드를 호출합니다. 수신 인수에는 위치의 위도 및 경도가 포함되어 있는 목록 Location 객체가 있습니다.
-    다음 스니펫은 LocationCallback 인터페이스를 구현하고 메서드를 정의한 후 위치 업데이트의 타임스탬프를 가져오고 앱의 사용자 인터페이스에 위도, 경도 및 타임스탬프를 표시하는 방법을 보여줍니다.
-     */
+        통합 위치 정보 제공자는 LocationCallback.onLocationResult() 콜백 메서드를 호출합니다. 수신 인수에는 위치의 위도 및 경도가 포함되어 있는 목록 Location 객체가 있습니다.
+        다음 스니펫은 LocationCallback 인터페이스를 구현하고 메서드를 정의한 후 위치 업데이트의 타임스탬프를 가져오고 앱의 사용자 인터페이스에 위도, 경도 및 타임스탬프를 표시하는 방법을 보여줍니다.
+         */
     LocationCallback locationCallback = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
@@ -441,6 +459,8 @@ public class fragment_running extends Fragment
 
     public void onButtonStart()
     {
+        checkpoints.clear();
+        mMap.clear();
         Toast.makeText(getContext(), "운동 시작!", Toast.LENGTH_SHORT).show();
         walkState = true;
     }
