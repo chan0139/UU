@@ -4,7 +4,25 @@ public class userObject {
     private String userId;
     private String defaultPwd;
     private String userProfileUrl;
+    private String userGender;
+    private String userName;
     private String idToken;
+
+    public String getUserGender() {
+        return userGender;
+    }
+
+    public void setUserGender(String userGender) {
+        this.userGender = userGender;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public String getIdToken() {
         return idToken;

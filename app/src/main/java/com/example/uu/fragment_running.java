@@ -66,6 +66,7 @@ public class fragment_running extends Fragment
     private static final int UPDATE_INTERVAL_MS = 1000;  // 1초
     private static final int FASTEST_UPDATE_INTERVAL_MS = 500; // 0.5초
 
+
     private LocationManager locationManager;
     private boolean walkState = false;                    //걸음 상태
     private int runningTime=0;
@@ -257,9 +258,11 @@ public class fragment_running extends Fragment
                 currentPosition
                         = new LatLng(location.getLatitude(), location.getLongitude());
 
+              
                 // Add location to drawing buffer if walkState is true(button clicked)
                 if(walkState)
                     checkpoints.add(currentPosition);
+
 
                 String markerSnippet = "위도:" + String.valueOf(location.getLatitude())
                         + " 경도:" + String.valueOf(location.getLongitude());
@@ -271,8 +274,6 @@ public class fragment_running extends Fragment
             }
         }
     };
-
-
 
     private void startLocationUpdates() {
 
