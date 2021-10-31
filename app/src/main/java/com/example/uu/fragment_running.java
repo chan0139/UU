@@ -225,19 +225,7 @@ public class fragment_running extends Fragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(walkState) {
-            AlertDialog.Builder dlg = new AlertDialog.Builder(getActivity());
-
-            dlg.setTitle("운동이 진행중입니다!"); //제목
-            dlg.setMessage("종료할까요?"); // 메시지
-
-            dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    //Toast.makeText(getActivity(), "운동 종료!", Toast.LENGTH_SHORT).show();
-                }
-            });
-            dlg.show();
-        }
+        ((MainActivity)getActivity()).setRunningState(false);
     }
 
     /*
@@ -464,6 +452,7 @@ public class fragment_running extends Fragment
         mMap.clear();
         Toast.makeText(getContext(), "운동 시작!", Toast.LENGTH_SHORT).show();
         walkState = true;
+        ((MainActivity)getActivity()).setRunningState(true);
     }
 
     public void onButtonPause()
@@ -473,6 +462,9 @@ public class fragment_running extends Fragment
 
     public void onButtonEnd()
     {
+        walkState = false;
+        ((MainActivity)getActivity()).setRunningState(false);
+
         AlertDialog.Builder dlg = new AlertDialog.Builder(getActivity());
         String msg="";
 
@@ -511,12 +503,16 @@ public class fragment_running extends Fragment
             }
         });
         dlg.show();
-        walkState = false;
     }
 
     private void drawPath(){        //polyline을 그려주는 메소드
         PolylineOptions options = new PolylineOptions().width(15).color(Color.BLACK).geodesic(true);
         Polyline polyline=mMap.addPolyline(options);
         polyline.setPoints(checkpoints);
+    }
+
+    public boolean getWalkstate()
+    {
+        return walkState;
     }
 }
