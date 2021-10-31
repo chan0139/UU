@@ -70,6 +70,7 @@ public class fragment_running extends Fragment
     private boolean walkState = false;                    //걸음 상태
     private int runningTime=0;
     private List<LatLng> checkpoints=new ArrayList<>();
+    private int distance=0;
 
     // onRequestPermissionsResult에서 수신된 결과에서 ActivityCompat.requestPermissions를 사용한 퍼미션 요청을 구별하기 위해 사용
     private static final int PERMISSIONS_REQUEST_CODE = 100;
@@ -453,14 +454,33 @@ public class fragment_running extends Fragment
     {
         AlertDialog.Builder dlg = new AlertDialog.Builder(getActivity());
         String msg="";
+
+        //running time
         String min=Integer.toString((runningTime/100)/60);
         String sec=Integer.toString((runningTime/100)%60);
 
+        //running distance
+        float[] results=new float[3];
+        for(int i=0;i<checkpoints.size()-1;i++)
+        {
+            Location.distanceBetween(checkpoints.get(i).latitude,
+                    checkpoints.get(i).longitude,
+                    checkpoints.get(i+1).latitude,
+                    checkpoints.get(i+1).longitude,results);
+            distance+=(int)results[0];
+        }
+
+        // Kcal calc
+        double userWeight=70.0;
+        double Met=7.0;
+        double time=(runningTime/100)/3600.0;
+        double Kcal=userWeight*Met*time;
+
         dlg.setTitle("오늘의 운동!"); //제목
 
-        msg="얼마나 뛰었을까? "+min+"분 "+sec+"초\n";
-        msg+="얼만큼 뛰었을까? "+"0m\n";
-        msg+="얼만큼 빠졌을까? "+"0Kcal\n";
+        msg="얼마나 달렸을까? "+min+"분 "+sec+"초\n";
+        msg+="얼만큼 뛰었을까? "+Integer.toString(distance)+"m\n";
+        msg+="뛴만큼 빠졌을까? "+Double.toString(Math.round(Kcal*10)/10.0)+"Kcal";       //소숫점 첫째 자리까지 표현
         dlg.setMessage(msg); // 메시지
 
         dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
