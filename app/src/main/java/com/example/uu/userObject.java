@@ -7,6 +7,15 @@ public class userObject {
     private String userGender;
     private String userName;
     private String idToken;
+    private String currentCrew;
+
+    public String getCurrentCrew() {
+        return currentCrew;
+    }
+
+    public void setCurrentCrew(String currentCrew) {
+        this.currentCrew = currentCrew;
+    }
 
     public String getUserGender() {
         return userGender;
