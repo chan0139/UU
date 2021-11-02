@@ -54,6 +54,16 @@ public class fragment_login extends Fragment{
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
 
+    private  OnLogInCompleteListener logInCompleteListener;
+    interface OnLogInCompleteListener{
+        void loginComplete();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        logInCompleteListener=(OnLogInCompleteListener) context;
+    }
 
     public static fragment_login newInstance() {
         return new fragment_login();
@@ -115,11 +125,11 @@ public class fragment_login extends Fragment{
 
                                     //setValue -> db에 insert
                                     mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(user);
-                                    Toast.makeText(rootview.getContext(), "Success to save in DB", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(rootview.getContext(), "Success to save in DB", Toast.LENGTH_SHORT).show();
 
                                 }
                                 else{
-                                    Toast.makeText(rootview.getContext(), "Fail to save in DB", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(rootview.getContext(), "Fail to save in DB", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -128,9 +138,10 @@ public class fragment_login extends Fragment{
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
-                                    Toast.makeText(rootview.getContext(), "Success to login", Toast.LENGTH_SHORT).show();
-                                    fragment_recruitment fragment_recruitment = new fragment_recruitment(R.id.show_recruitment);
-                                    ((MainActivity)getActivity()).replaceFragment(fragment_recruitment);
+
+                                    //Toast.makeText(rootview.getContext(), "Success to login", Toast.LENGTH_SHORT).show();
+                                    logInCompleteListener.loginComplete();
+
                                 }
                             }
                         });

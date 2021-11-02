@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -151,7 +152,7 @@ public class customDialog extends Dialog {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dismiss();
+                onBackPressed();
             }
 
         });
@@ -168,6 +169,10 @@ public class customDialog extends Dialog {
                 selectedYear = year;
                 selectedMonth = month+1;
                 selectedDay = dayOfMonth;
+                if(selectedMonth*selectedDay!=0){
+                    TextView setDate=findViewById(R.id.setdate);
+                    setDate.setText(selectedMonth+" 월 "+selectedDay+" 일   ");
+                }
 
             }
         },currentY, currentM, currentD);
@@ -180,7 +185,10 @@ public class customDialog extends Dialog {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 selectedHour = hourOfDay;
                 selectedMin = minute;
-            }
+                if(selectedHour*selectedMin!=0){
+                    TextView setDate=findViewById(R.id.settime);
+                    setDate.setText(selectedHour+" 시 "+selectedMin+" 분   ");
+                }            }
         }, 14, 00, true);
         timePickerDialog.show();
     }
@@ -204,7 +212,7 @@ public class customDialog extends Dialog {
         recruit.setRecruitId(randomStr);
         recruit.setHostId(firebaseUser.getUid());
         mDatabaseRef.child(randomStr).setValue(recruit);
-        Toast.makeText(getContext(), "Success to save in DB", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "Success to save in DB", Toast.LENGTH_SHORT).show();
     }
 
     String RandomGenerator(){               //recruitId 생성기
@@ -228,6 +236,13 @@ public class customDialog extends Dialog {
             }
         }
     return new String(temp);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        scheduleCreatedListener.OnSecheduleCreated();
+        dismiss();
     }
 }
 

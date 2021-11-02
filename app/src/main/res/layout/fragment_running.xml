@@ -21,15 +21,13 @@
             android:layout_height="match_parent"
             tools:context=".MapsActivity" />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="bottom|center"
-            android:layout_marginTop="470dp"
-            android:layout_marginBottom="12dp"
-            android:background="#F6F5F5"
-            android:drawableTop="@drawable/ic_running_btn" />
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerView"
+            android:name="com.example.uu.RunningTimerFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/fragment_running_timer" />
+
     </FrameLayout>
 
 

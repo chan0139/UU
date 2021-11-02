@@ -36,7 +36,10 @@ import java.security.NoSuchAlgorithmException;
 
 
 
-public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,crewAddDialog.OnCrewAddedListener {
+
+
+public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener {
+
     Toolbar toolbar;
     TextView title;
     Fragment selectedFragment=null;
@@ -142,30 +145,25 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
     @Override
     public void OnSecheduleCreated() {
-        selectedFragment=new fragment_recruitment(R.id.show_recruitment);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+       showRecruitmentFragment();
+       hideNavigationBar();
     }
 
+    @Override
+    public void loginComplete() {
+        title.setText("Recruitment");
+        showRecruitmentFragment();
+    }
+    public void showRecruitmentFragment(){
+        selectedFragment=new fragment_recruitment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+    }
+  
     @Override
     public void OnCrewAdded(){
 
         selectedFragment= new fragment_recruitment(R.id.show_crew);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
     }
-    /*
-    @Override
-    public void success(String data) {
-        String crew = data;
-        Bundle bundle = new Bundle();
-        bundle.putString("crew", crew);
-        fragment_recruitment fragment_recruitment = new fragment_recruitment();
-        fragment_recruitment.setArguments(bundle);
-    }
 
-    @Override
-    public void fail(String errorMessage) {
-
-    }
-
-     */
 }

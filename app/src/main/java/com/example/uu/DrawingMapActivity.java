@@ -114,7 +114,6 @@ public class DrawingMapActivity extends AppCompatActivity  implements OnMapReady
             public void onClick(View view) {
                 getImageOfMap();
                 checkpoint.clear();
-                route_shape.setPoints(checkpoint);
                 finish();
             }
         });

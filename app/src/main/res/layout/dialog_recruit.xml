@@ -3,7 +3,7 @@
     android:id="@+id/linear_dialog"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="260dp"
-    android:layout_height="300dp"
+    android:layout_height="380dp"
     android:orientation="vertical">
     <Button
         android:id="@+id/setMap"
@@ -11,31 +11,27 @@
         android:layout_height="wrap_content"
         android:text="set Map"
         android:layout_gravity="center"
-        android:layout_margin="10dp"/>
+        android:layout_margin="20dp"/>
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="map"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="30dp"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="주관" />
+            android:text="주관 :  " />
 
         <EditText
             android:id="@+id/editTextLeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="크루명 혹은 본인 이름을 입력하세요."
-            android:layout_marginLeft="5dp"
-            android:textSize="14dp"
+            android:textSize="12dp"
             />
     </LinearLayout>
 
@@ -43,12 +39,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="5dp"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="모집인원" />
+            android:text="모집인원 :  " />
 
         <EditText
             android:id="@+id/editTextUserNum"
@@ -56,7 +53,6 @@
             android:layout_height="wrap_content"
             android:hint="숫자만 입력 가능합니다."
             android:digits="0123456789"
-            android:layout_marginLeft="5dp"
             android:textSize="14dp"
             />
     </LinearLayout>
@@ -64,27 +60,52 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="39dp"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal">
-
-
+        android:paddingStart="30dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="날짜 : "/>
         <Button
             android:id="@+id/dateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
             android:text="날짜 선택" />
 
+        <TextView
+            android:id="@+id/setdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:paddingStart="30dp"
+        android:layout_height="39dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="시간 : "/>
         <Button
             android:id="@+id/timeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
             android:text="시간 선택" />
+
+        <TextView
+            android:id="@+id/settime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingStart="19dp"
         android:orientation="horizontal"
         android:layout_marginTop="10dp">
 
@@ -96,8 +117,7 @@
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp" />
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <LinearLayout
@@ -105,7 +125,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="15dp">
 
                 <Button
                     android:id="@+id/noBtn"
