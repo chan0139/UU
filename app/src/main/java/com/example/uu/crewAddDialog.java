@@ -158,6 +158,7 @@ public class crewAddDialog extends DialogFragment {
 
                 saveCrewInfo();
 
+
                 crewAddedListener.OnCrewAdded();
 
                 dismiss();

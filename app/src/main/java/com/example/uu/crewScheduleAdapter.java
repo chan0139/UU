@@ -1,7 +1,6 @@
 package com.example.uu;
 
 import android.content.Context;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +9,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -23,38 +19,36 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomViewHolder> {
+public class crewScheduleAdapter extends RecyclerView.Adapter<crewScheduleAdapter.CustomViewHolder> {
+    private ArrayList<recruit_object> arrayList;
     private DatabaseReference mDatabaseRef;
     private FirebaseDatabase database;
     private FirebaseAuth mFirebaseAuth;
-
-    private ArrayList<recruit_object> arrayList;
     private Context context;
 
-    public recruitAdapter(ArrayList<recruit_object> arrayList, Context context) {
+    public crewScheduleAdapter(ArrayList<recruit_object> arrayList, Context context) {
         this.arrayList = arrayList;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_recruitment, parent, false);
-        CustomViewHolder holder = new CustomViewHolder(view);
+    public crewScheduleAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_crew_schedule, parent, false);
+        crewScheduleAdapter.CustomViewHolder holder = new crewScheduleAdapter.CustomViewHolder(view);
 
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {  //각 item 매칭
+    public void onBindViewHolder(@NonNull crewScheduleAdapter.CustomViewHolder holder, int position) {  //각 item 매칭
         Glide.with(holder.itemView)
                 .load(arrayList.get(position).getMapUrl())
-                .into(holder.testImage);
+                .into(holder.crewImg);
         holder.date.setText(arrayList.get(position).getDate());
         holder.leader.setText(arrayList.get(position).getLeader());
         holder.currentUserNum.setText(String.valueOf(arrayList.get(position).getCurrentUserNum()));
@@ -111,7 +105,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
     }
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
-        ImageView testImage;
+        ImageView crewImg;
         TextView date;
         TextView leader;
         TextView currentUserNum;
@@ -119,12 +113,12 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
         Button joinButton;
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.testImage = itemView.findViewById(R.id.testImage);
-            this.date = itemView.findViewById(R.id.date);
-            this.leader = itemView.findViewById(R.id.leader);
-            this.currentUserNum = itemView.findViewById(R.id.currentUserNum);
-            this.totalUserNum = itemView.findViewById(R.id.totalUserNum);
-            this.joinButton = itemView.findViewById(R.id.joinButton);
+            this.crewImg = itemView.findViewById(R.id.crewYesScheduleImg);
+            this.date = itemView.findViewById(R.id.crewYesScheduleDate);
+            this.leader = itemView.findViewById(R.id.crewYesScheduleLeader);
+            this.currentUserNum = itemView.findViewById(R.id.crewYesScheduleUserNum);
+            this.totalUserNum = itemView.findViewById(R.id.crewYesScheduleTotalNum);
+            this.joinButton = itemView.findViewById(R.id.crewYesScheduleDateButton);
 
         }
     }

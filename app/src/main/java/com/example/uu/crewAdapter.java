@@ -71,6 +71,9 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
         FirebaseStorage storage = FirebaseStorage.getInstance("gs://doubleu-2df72.appspot.com");
         StorageReference storageReference = storage.getReference();
         StorageReference crewImg = storageReference.child("crew/" + arrayList.get(position).getCrewName() + ".png");
+        while(crewImg==null){
+            crewImg=storageReference.child("crew/"+arrayList.get(position).getCrewName()+".png");
+        }
         crewImg.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {

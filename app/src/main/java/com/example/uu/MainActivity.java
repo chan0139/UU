@@ -147,8 +147,25 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     }
 
     @Override
-    public void OnCrewAdded() {
+    public void OnCrewAdded(){
+
         selectedFragment= new fragment_recruitment(R.id.show_crew);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
     }
+    /*
+    @Override
+    public void success(String data) {
+        String crew = data;
+        Bundle bundle = new Bundle();
+        bundle.putString("crew", crew);
+        fragment_recruitment fragment_recruitment = new fragment_recruitment();
+        fragment_recruitment.setArguments(bundle);
+    }
+
+    @Override
+    public void fail(String errorMessage) {
+
+    }
+
+     */
 }

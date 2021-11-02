@@ -12,12 +12,18 @@
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/dialog_crew_add.xml" value="0.2994791666666667" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/dialog_detail_recruit.xml" value="0.26458333333333334" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/dialog_recruit.xml" value="0.33" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_crew_schedule_adapter.xml" value="0.23125" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_login.xml" value="0.27708333333333335" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_ranking.xml" value="0.27708333333333335" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_recruitment.xml" value="0.33" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_recruitment_crew.xml" value="0.23125" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_recruitment_crew_schedule.xml" value="0.23125" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_running.xml" value="0.2864583333333333" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/list_crew.xml" value="0.2140625" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/list_crew_shedule.xml" value="0.29739583333333336" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/list_crew_user.xml" value="0.23125" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/list_recruitment.xml" value="0.1" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/pager_crew_content.xml" value="0.21770833333333334" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/test.xml" value="0.2994791666666667" />
         <entry key="..\:/Users/chan4/Documents/GitHub/UU/app/src/main/res/drawable/ic_crew.xml" value="0.1" />
         <entry key="..\:/Users/chan4/Documents/GitHub/UU/app/src/main/res/drawable/ic_user_circle.xml" value="0.12291666666666666" />
