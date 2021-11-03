@@ -38,7 +38,7 @@ import java.security.NoSuchAlgorithmException;
 
 
 
-public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener {
+public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener, crewAdapter.OnCrewAddedListener {
 
     Toolbar toolbar;
     TextView title;
@@ -161,7 +161,6 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
   
     @Override
     public void OnCrewAdded(){
-
         selectedFragment= new fragment_recruitment(R.id.show_crew);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
     }

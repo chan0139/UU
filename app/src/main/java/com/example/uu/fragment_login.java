@@ -108,6 +108,7 @@ public class fragment_login extends Fragment{
                         String urlLink = result.getKakaoAccount().getProfile().getProfileImageUrl();
                         String email = result.getKakaoAccount().getEmail();
                         String crew = "none";
+
                         String defaultPwd = "wh21dasfgr124!@";      //firebaseauth 이용 위해서는 필수, 그러나 우리는 카카오 아이디로 하기때문에 그냥 임시값으로 저장..
                         mFirebaseAuth.createUserWithEmailAndPassword(email, defaultPwd).addOnCompleteListener((Activity) getContext(), new OnCompleteListener<AuthResult>() {
                             @Override
