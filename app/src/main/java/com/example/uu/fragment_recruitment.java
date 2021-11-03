@@ -119,6 +119,11 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
     fragment_recruitment(int id_layout){
         which_layout=id_layout;
     }
+
+    public fragment_recruitment() {
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -131,13 +136,12 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
 
         databaseReference = database.getReference("UU");
 
-
         databaseReference.child("UserAccount").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userObject info = snapshot.getValue(userObject.class);
                 currentCrew = info.getCurrentCrew();
-
+                layoutConverter(which_layout);
             }
 
             @Override
@@ -152,8 +156,6 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
         linear_crew_yes = (LinearLayout) rootview.findViewById(R.id.linear_crew_yes);
         show_recruitment = (ImageButton) rootview.findViewById(R.id.show_recruitment);
         show_crew = (ImageButton) rootview.findViewById(R.id.show_crew);
-
-        layoutConverter(which_layout);
 
         show_recruitment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -453,7 +455,6 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
             linear_crew_yes.setVisibility(View.INVISIBLE);
         }
         else if(which_layout==R.id.show_crew){
-
             if(currentCrew.equals("none")){
                 show_crew.setBackgroundResource(R.drawable.ic_crew_selected);
                 linear_recruitment.setVisibility(View.INVISIBLE);

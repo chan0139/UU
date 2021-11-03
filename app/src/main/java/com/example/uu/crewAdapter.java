@@ -1,5 +1,6 @@
 package com.example.uu;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import android.net.Uri;
@@ -48,10 +49,14 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
     private FirebaseAuth mFirebaseAuth;
     private String userInCrew;
 
+    public OnCrewAddedListener crewAddedListener;
+    interface OnCrewAddedListener{
+        void  OnCrewAdded();
+    }
 
     public crewAdapter(ArrayList<crewObject> arrayList, Context context) {
         this.arrayList = arrayList;
-        this.context = context;
+        crewAddedListener = (OnCrewAddedListener) context;
     }
 
     @NonNull
@@ -64,7 +69,7 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull crewAdapter.CustomViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull crewAdapter.CustomViewHolder holder, @SuppressLint("RecyclerView") int position) {
         mFirebaseAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
@@ -103,7 +108,7 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
                 mDatabaseRef.child(arrayList.get(position).getCrewName()).child("userList").updateChildren(addUser); // DB에 현재인원 추가
                 mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("currentCrew").setValue(arrayList.get(position).getCrewName()); //유저 소속크루 설정
 
-
+                crewAddedListener.OnCrewAdded();
             }
         });
     }
