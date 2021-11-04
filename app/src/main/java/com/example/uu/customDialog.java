@@ -199,7 +199,7 @@ public class customDialog extends Dialog {
         String randomStr = RandomGenerator();
 
         time = Integer.toString(selectedHour) + ':' + Integer.toString(selectedMin);
-        date = Integer.toString(selectedMonth) + '/' + Integer.toString(selectedDay);
+        date = Integer.toString(selectedMonth) +'.' + Integer.toString(selectedDay);
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
         recruit_object recruit = new recruit_object();
         recruit.setMapUrl("https://firebasestorage.googleapis.com/v0/b/doubleu-2df72.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C.png?alt=media&token=d3eeb566-1e8b-48f3-9c25-d27191bf43ad");

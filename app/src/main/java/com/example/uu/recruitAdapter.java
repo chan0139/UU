@@ -99,7 +99,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
         holder.joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), "tlqfk", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(view.getContext(), "tlqfk", Toast.LENGTH_SHORT).show();
 
                 mDatabaseRef = database.getReference("Recruit");
                 int index = arrayList.get(position).getDate().indexOf("/");                 //date 인덱싱
@@ -110,7 +110,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
                 //Log.e("test", String.valueOf(userRecruitList.size()));
                 for(int i = 0; i < userRecruitList.size(); i ++){
                     if(userRecruitList.get(i).equals(arrayList.get(position).getRecruitId())){
-
+                        return; //유저가 이미 신청한 recruit의 경우 처리
                     }
                 }
 

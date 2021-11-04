@@ -2,6 +2,7 @@
 <resources>
 
     <string-array name="seoul_gu">
+        <item>지역선택</item>
         <item>강남구</item>
         <item>강동구</item>
         <item>강북구</item>
