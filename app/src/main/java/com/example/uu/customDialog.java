@@ -168,6 +168,7 @@ public class customDialog extends Dialog {
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                 selectedYear = year;
                 selectedMonth = month+1;
+
                 selectedDay = dayOfMonth;
                 if(selectedMonth*selectedDay!=0){
                     TextView setDate=findViewById(R.id.setdate);
@@ -197,9 +198,13 @@ public class customDialog extends Dialog {
         String date;
         String time;
         String randomStr = RandomGenerator();
-
+        String castDay;
+        if(0< selectedDay && selectedDay <10){
+            castDay = '0' + Integer.toString(selectedDay);
+        }
+        else castDay = Integer.toString(selectedDay);
         time = Integer.toString(selectedHour) + ':' + Integer.toString(selectedMin);
-        date = Integer.toString(selectedMonth) +'.' + Integer.toString(selectedDay);
+        date = Integer.toString(selectedMonth) +'.' + castDay;
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
         recruit_object recruit = new recruit_object();
         recruit.setMapUrl("https://firebasestorage.googleapis.com/v0/b/doubleu-2df72.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C.png?alt=media&token=d3eeb566-1e8b-48f3-9c25-d27191bf43ad");

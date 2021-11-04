@@ -246,27 +246,7 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Crew");
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // DB data를 받아오는곳
-                crewArrayList.clear(); // 기존 배열리스트 초기화
-                for (DataSnapshot Snapshot : dataSnapshot.getChildren()) {
-                    crewObject crew = Snapshot.getValue(crewObject.class);
-                    crewArrayList.add(crew);
-                }
-                crewAdapter.notifyDataSetChanged(); //리스트 저장 및 새로고침
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                //DB 받아오던 중 에러 발생하는 경우
-                Log.e("Error", String.valueOf(error.toException()));
-            }
-        });
-
-        crewAdapter = new crewAdapter(crewArrayList, getContext());
-        crewRecyclerView.setAdapter(crewAdapter); //리사이클러뷰에 어댑터 연결
 
         guSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -304,7 +284,8 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
-
+        crewAdapter = new crewAdapter(crewArrayList, getContext());
+        crewRecyclerView.setAdapter(crewAdapter); //리사이클러뷰에 어댑터 연결
 
 
         //
@@ -381,9 +362,7 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
        secessionBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Log.e("test", currentCrew);
-                databaseReferenceCrew.child(currentCrew).child("totalUserNum").addValueEventListener(new ValueEventListener() {
+                databaseReferenceCrew.child(currentCrew).child("totalUserNum").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -458,17 +437,7 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
         show_map.setImageBitmap(bm);
     }
 
-    public void searchFilter(String searchText) {
 
-
-        for (int i = 0; i < crewArrayList.size(); i++) {
-            if (crewArrayList.get(i).getLocation().equals(selectedGu)) {
-                filteredList.add(crewArrayList.get(i));
-            }
-        }
-
-        //crewAdapter.filterList(filteredList);
-    }
 
     public void layoutConverter(int which_layout){
         if(which_layout==R.id.show_recruitment){

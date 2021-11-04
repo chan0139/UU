@@ -101,8 +101,10 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
                 mDatabaseRef = database.getReference("Crew");
                 mDatabaseRefUser = database.getReference("UU");
 
-                holder.crewUserNum.setText(String.valueOf(arrayList.get(position).getTotalUserNum() + 1));         // 화면에 보이는 현재인원 + 1
+                holder.crewUserNum.setText(String.valueOf(arrayList.get(position).getTotalUserNum() + 1));// 화면에 보이는 현재인원 + 1
+
                 mDatabaseRef.child(arrayList.get(position).getCrewName()).child("totalUserNum").setValue(arrayList.get(position).getTotalUserNum() + 1); // DB에 현재인원 추가
+
                 Map<String, Object> addUser = new HashMap<String, Object>();
                 addUser.put(firebaseUser.getUid(), "id");
                 mDatabaseRef.child(arrayList.get(position).getCrewName()).child("userList").updateChildren(addUser); // DB에 현재인원 추가
