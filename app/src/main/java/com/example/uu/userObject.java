@@ -1,5 +1,8 @@
 package com.example.uu;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class userObject {
     private String userId;
     private String defaultPwd;
@@ -7,6 +10,24 @@ public class userObject {
     private String userGender;
     private String userName;
     private String idToken;
+    private String currentCrew;
+    private Map<String, Object> recruitList = new HashMap<String, Object>();
+
+    public Map<String, Object> getRecruitList() {
+        return recruitList;
+    }
+
+    public void setRecruitList(Map<String, Object> recruitList) {
+        this.recruitList = recruitList;
+    }
+
+    public String getCurrentCrew() {
+        return currentCrew;
+    }
+
+    public void setCurrentCrew(String currentCrew) {
+        this.currentCrew = currentCrew;
+    }
 
     public String getUserGender() {
         return userGender;
