@@ -225,19 +225,7 @@ public class fragment_running extends Fragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(walkState) {
-            AlertDialog.Builder dlg = new AlertDialog.Builder(getActivity());
-
-            dlg.setTitle("운동이 진행중입니다!"); //제목
-            dlg.setMessage("종료할까요?"); // 메시지
-
-            dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    //Toast.makeText(getActivity(), "운동 종료!", Toast.LENGTH_SHORT).show();
-                }
-            });
-            dlg.show();
-        }
+        ((MainActivity)getActivity()).setRunningState(false);
     }
 
     /*
@@ -464,6 +452,7 @@ public class fragment_running extends Fragment
         mMap.clear();
         Toast.makeText(getContext(), "운동 시작!", Toast.LENGTH_SHORT).show();
         walkState = true;
+        ((MainActivity)getActivity()).setRunningState(true);
     }
 
     public void onButtonPause()
@@ -473,6 +462,10 @@ public class fragment_running extends Fragment
 
     public void onButtonEnd()
     {
+        walkState = false;
+        // 액티비티에도 종료 사실 알려주기, 운동이 종료되지 않았는데 화면 전환 시도시 경고 문구 표시
+        ((MainActivity)getActivity()).setRunningState(false);
+
         AlertDialog.Builder dlg = new AlertDialog.Builder(getActivity());
         String msg="";
 
@@ -493,8 +486,24 @@ public class fragment_running extends Fragment
 
         // Kcal calc
         double userWeight=70.0;
-        double Met=7.0;
+        double Met=0.0;
         double time=(runningTime/100)/3600.0;
+        double velocity=(distance/1000.0)/time;
+
+        // Differentiate running intensity to make calories calculation more accurate
+        if(velocity>=13)
+            Met=8.0;
+        else if(velocity>=10)
+            Met=7.0;
+        else if(velocity>=5.5)
+            Met=3.6;
+        else if(velocity>=4.8)
+            Met=3.3;
+        else if(velocity>=4)
+            Met=2.9;
+        else if(velocity>0)
+            Met=2.0;
+
         double Kcal=userWeight*Met*time;
 
         dlg.setTitle("오늘의 운동!"); //제목
@@ -511,12 +520,16 @@ public class fragment_running extends Fragment
             }
         });
         dlg.show();
-        walkState = false;
     }
 
     private void drawPath(){        //polyline을 그려주는 메소드
         PolylineOptions options = new PolylineOptions().width(15).color(Color.BLACK).geodesic(true);
         Polyline polyline=mMap.addPolyline(options);
         polyline.setPoints(checkpoints);
+    }
+
+    public boolean getWalkstate()
+    {
+        return walkState;
     }
 }
