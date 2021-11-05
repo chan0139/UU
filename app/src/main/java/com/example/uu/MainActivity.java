@@ -2,32 +2,60 @@ package com.example.uu;
 
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.kakao.auth.ISessionCallback;
+import com.kakao.auth.Session;
+import com.kakao.network.ErrorResult;
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.MeV2ResponseCallback;
+import com.kakao.usermgmt.response.MeV2Response;
+import com.kakao.util.exception.KakaoException;
 
-public class MainActivity extends AppCompatActivity {
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+
+
+
+
+public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener, crewAdapter.OnCrewAddedListener {
+
     Toolbar toolbar;
     TextView title;
     Fragment selectedFragment=null;
+    BottomNavigationView bottomNavigationView;
+    private boolean isRunning=false;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent intent=new Intent(this,LoadingActivity.class);
         startActivity(intent);
-
-
 
 
         //toolbar를 찾아 인프레이션하고 actionbar로 변경(actionbar가 기능이 많음)
@@ -38,10 +66,11 @@ public class MainActivity extends AppCompatActivity {
 
         //appbar 이름 view
         title=(TextView) findViewById(R.id.title);
+        title.setText("Login");
+        fragment_login fragment_login = new fragment_login();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_login).commit();
 
-        title.setText("Recruitment");
-        selectedFragment=new fragment_recruitment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+
 
         ImageButton profile=(ImageButton)findViewById(R.id.profile);
         profile.setOnClickListener(new View.OnClickListener() {
@@ -64,11 +93,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        BottomNavigationView bottomNavigationView=findViewById(R.id.bottomNavBar);
+        bottomNavigationView=findViewById(R.id.bottomNavBar);
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
 
         hideNavigationBar();
+
     }
+
+
     private void hideNavigationBar() {
         int uiOptions = getWindow().getDecorView().getSystemUiVisibility();
         int newUiOptions = uiOptions;
@@ -84,10 +116,11 @@ public class MainActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
                     switch (item.getItemId()){
                         case R.id.recruitment:
                             title.setText("Recruitment");
-                            selectedFragment=new fragment_recruitment();
+                            selectedFragment=new fragment_recruitment(R.id.show_recruitment);
                             break;
                         case R.id.running:
                             title.setText("Running");
@@ -102,9 +135,69 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment=new fragment_ranking();
                             break;
                     }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+                    
+                    // 운동 중 화면 전환 발생시 대화상자를 통해 알림
+                    if(isRunning&&(item.getItemId()==R.id.running))
+                        return true;
+                    else if(isRunning) {
+                        AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
+                        dlg.setTitle("열심히 달리는 중인데요!");
+                        dlg.setMessage("운동을 종료하고 다른 화면으로 이동할까요?");
+
+                        dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(MainActivity.this,"운동 종료!",Toast.LENGTH_SHORT).show();
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+                            }
+                        });
+                        dlg.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                bottomNavigationView.getMenu().findItem(R.id.running).setChecked(true);     // 화면전환 취소되면 메뉴 바를 다시 러닝 화면으로 교체
+                            }
+                        });
+                        dlg.show();
+                    }
+                    else        //운동 중이 아닐때는 바로 화면 전환
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
 
                     return true;
                 }
             };
+
+    public void replaceFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment).commit();      // Fragment로 사용할 MainActivity내의 layout공간을 선택합니다.
+    }
+
+
+    @Override
+    public void OnSecheduleCreated() {
+       showRecruitmentFragment();
+       hideNavigationBar();
+    }
+
+    @Override
+    public void loginComplete() {
+        title.setText("Recruitment");
+        showRecruitmentFragment();
+    }
+    public void showRecruitmentFragment(){
+        selectedFragment=new fragment_recruitment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+    }
+
+  
+    @Override
+    public void OnCrewAdded(){
+        selectedFragment= new fragment_recruitment(R.id.show_crew);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+    }
+
+     public void setRunningState(boolean state){
+        isRunning=state;
+    }
+
+
 }
