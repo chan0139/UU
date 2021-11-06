@@ -10,12 +10,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
@@ -35,9 +41,8 @@ import com.kakao.util.exception.KakaoException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener, crewAdapter.OnCrewAddedListener {
@@ -48,7 +53,9 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     BottomNavigationView bottomNavigationView;
     private boolean isRunning=false;
 
-
+    // for db
+    DatabaseHelper dbHelper;
+    SQLiteDatabase sqLiteDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +63,8 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         setContentView(R.layout.activity_main);
         Intent intent=new Intent(this,LoadingActivity.class);
         startActivity(intent);
+
+        dbHelper=new DatabaseHelper(this);
 
 
         //toolbar를 찾아 인프레이션하고 actionbar로 변경(actionbar가 기능이 많음)
@@ -200,4 +209,61 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     }
 
 
+    // record to db if running ends
+    public void recordRunningState(String date,int distance,int time,float calories)
+    {
+        //only record actual running data
+        if(distance!=0) {
+            sqLiteDb = dbHelper.getWritableDatabase();
+            // Create a new map of values, where column names are the keys
+            ContentValues values = new ContentValues();
+            values.put(DatabaseHelper.PRIMARY_KEY, date);
+            values.put(DatabaseHelper.RUNNING_DISTANCE, distance);
+            values.put(DatabaseHelper.RUNNING_TIME, time);
+            values.put(DatabaseHelper.CONSUMED_CALORIES, calories);
+
+            // Insert the new row, returning the primary key value of the new row
+            long newRowId = sqLiteDb.insert(DatabaseHelper.TABLE_NAME, null, values);
+            if(newRowId==-1)
+                Log.e("DB Error","data insertion error");
+            else
+                Log.d("DB Record","db 저장 완료"+date);
+        }
+    }
+
+    // for Debug, show db list
+    public void showRecord()
+    {
+        sqLiteDb=dbHelper.getReadableDatabase();
+        List<String> ids=new ArrayList<String>();
+        List<Integer> distances=new ArrayList<Integer>();
+        String msg="id\t\t\t\tdistance\n";
+
+        Cursor cursor;
+        cursor = sqLiteDb.rawQuery("SELECT * FROM "+DatabaseHelper.TABLE_NAME+";",null);
+
+
+
+        while (cursor.moveToNext()){
+            msg+=cursor.getString(0)+"   "+cursor.getString(1)+"\n";
+        }
+
+        cursor.close();
+        sqLiteDb.close();
+
+        AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
+        dlg.setTitle("running record");
+        dlg.setMessage(msg);
+
+        dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int which) {
+                return;
+            }
+        });
+
+        dlg.show();
+
+    }
 }
+
+

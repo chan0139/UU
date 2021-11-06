@@ -34,7 +34,6 @@ import android.location.LocationManager;
 import android.os.Looper;
 import android.util.Log;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -45,6 +44,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +60,7 @@ public class fragment_running extends Fragment
 
 
     private GoogleMap mMap;
+    String formatedNow;
 
     //show current location
     private static final String TAG = "UU";
@@ -452,6 +454,11 @@ public class fragment_running extends Fragment
         mMap.clear();
         Toast.makeText(getContext(), "운동 시작!", Toast.LENGTH_SHORT).show();
         walkState = true;
+
+        //시작 시간 계산, db에 저장할때 기본키로 사용
+        LocalDateTime now=LocalDateTime.now();
+        formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy:MM:dd-HH:mm:ss"));
+
         ((MainActivity)getActivity()).setRunningState(true);
     }
 
@@ -505,12 +512,15 @@ public class fragment_running extends Fragment
             Met=2.0;
 
         double Kcal=userWeight*Met*time;
+        float calories=(float) Math.round((Kcal*10)/10.0);
 
+
+        // Dialog for running info
         dlg.setTitle("오늘의 운동!"); //제목
 
         msg="얼마나 달렸을까? "+min+"분 "+sec+"초\n";
         msg+="얼만큼 뛰었을까? "+Integer.toString(distance)+"m\n";
-        msg+="뛴만큼 빠졌을까? "+Double.toString(Math.round(Kcal*10)/10.0)+"Kcal";       //소숫점 첫째 자리까지 표현
+        msg+="뛴만큼 빠졌을까? "+Float.toString(calories)+"Kcal";       //소숫점 첫째 자리까지 표현
         dlg.setMessage(msg); // 메시지
 
         dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
@@ -520,6 +530,10 @@ public class fragment_running extends Fragment
             }
         });
         dlg.show();
+
+        //write on db
+        ((MainActivity)getActivity()).recordRunningState(formatedNow,distance,(runningTime/100)/60,calories);
+        formatedNow="";
     }
 
     private void drawPath(){        //polyline을 그려주는 메소드
