@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -44,6 +45,12 @@ public class achievementAdapter extends BaseAdapter {
 
         TextView title=view.findViewById(R.id.achievementTitle);
         title.setText(item.getObjName());
+
+        if(item.getFlag())
+        {
+            ImageView imageView=view.findViewById(R.id.achievement);
+            imageView.setImageResource(R.drawable.ic_achievement);
+        }
 
         return view;
     }

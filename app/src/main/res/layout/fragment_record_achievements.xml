@@ -36,7 +36,7 @@
     <GridView
         android:id="@+id/achievementContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="10dp"
         android:layout_marginStart="10dp"
         android:horizontalSpacing="10dp"
@@ -45,6 +45,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profile">
 
-    </GridView>
 
+    </GridView>
 </androidx.constraintlayout.widget.ConstraintLayout>

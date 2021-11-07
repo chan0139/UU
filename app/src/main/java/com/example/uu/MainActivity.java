@@ -230,40 +230,6 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
                 Log.d("DB Record","db 저장 완료"+date);
         }
     }
-
-    // for Debug, show db list
-    public void showRecord()
-    {
-        sqLiteDb=dbHelper.getReadableDatabase();
-        List<String> ids=new ArrayList<String>();
-        List<Integer> distances=new ArrayList<Integer>();
-        String msg="id\t\t\t\tdistance\n";
-
-        Cursor cursor;
-        cursor = sqLiteDb.rawQuery("SELECT * FROM "+DatabaseHelper.TABLE_NAME+";",null);
-
-
-
-        while (cursor.moveToNext()){
-            msg+=cursor.getString(0)+"   "+cursor.getString(1)+"\n";
-        }
-
-        cursor.close();
-        sqLiteDb.close();
-
-        AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
-        dlg.setTitle("running record");
-        dlg.setMessage(msg);
-
-        dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int which) {
-                return;
-            }
-        });
-
-        dlg.show();
-
-    }
 }
 
 
