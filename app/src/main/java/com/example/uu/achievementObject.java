@@ -13,7 +13,7 @@ public class achievementObject {
     public achievementObject(String objName, String description, boolean flag) {
         this.objName = objName;
         this.description = description;
-        this.flag=flag;
+        this.flag=flag;     //달성 목표 확인용 변수
         this.achievement=0.0f;
         this.clearDate=null;
     }
