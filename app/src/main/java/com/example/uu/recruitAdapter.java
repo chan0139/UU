@@ -3,6 +3,7 @@ package com.example.uu;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,14 +47,17 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
     private ArrayList<recruit_object> arrayList;
     ArrayList<String> userRecruitList;
 
+    private static final int RecruitRunningMateList=0;
+    private static final int LoungeList=1;
 
     private Context context;
 
+    int which_detailPage;
 
-
-    public recruitAdapter(ArrayList<recruit_object> arrayList, Context context) {
+    public recruitAdapter(ArrayList<recruit_object> arrayList, Context context, int which_detailPage) {
         this.arrayList = arrayList;
         this.context = context;
+        this.which_detailPage=which_detailPage;
     }
 
     @NonNull
@@ -99,31 +103,35 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
         holder.joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Toast.makeText(view.getContext(), "tlqfk", Toast.LENGTH_SHORT).show();
+                switch (which_detailPage){
+                    case RecruitRunningMateList:
+                        //Toast.makeText(view.getContext(), "tlqfk", Toast.LENGTH_SHORT).show();
 
-                mDatabaseRef = database.getReference("Recruit");
-                int index = arrayList.get(position).getDate().indexOf("/");                 //date 인덱싱
-                String day = arrayList.get(position).getDate().substring(index+1);
+                        mDatabaseRef = database.getReference("Recruit");
+                        int index = arrayList.get(position).getDate().indexOf("/");                 //date 인덱싱
+                        String day = arrayList.get(position).getDate().substring(index+1);
 
+                        //Log.e("test", String.valueOf(userRecruitList.size()));
+                        for(int i = 0; i < userRecruitList.size(); i ++){
+                            if(userRecruitList.get(i).equals(arrayList.get(position).getRecruitId())){
+                                return; //유저가 이미 신청한 recruit의 경우 처리
+                            }
+                        }
 
-
-                //Log.e("test", String.valueOf(userRecruitList.size()));
-                for(int i = 0; i < userRecruitList.size(); i ++){
-                    if(userRecruitList.get(i).equals(arrayList.get(position).getRecruitId())){
-                        return; //유저가 이미 신청한 recruit의 경우 처리
-                    }
+                        holder.currentUserNum.setText(String.valueOf(arrayList.get(position).getCurrentUserNum() + 1));         // 화면에 보이는 현재인원 + 1
+                        mDatabaseRef.child(arrayList.get(position).getRecruitId()).child("currentUserNum").setValue(arrayList.get(position).getCurrentUserNum() + 1); // DB에 현재인원 추가
+                        Map<String, Object> addUser = new HashMap<String, Object>();
+                        Map<String, Object> addUserRecruit = new HashMap<String, Object>();
+                        addUser.put(firebaseUser.getUid(), "add");
+                        addUserRecruit.put(arrayList.get(position).getRecruitId(), "join");
+                        mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("recruitList").updateChildren(addUserRecruit);
+                        mDatabaseRef.child(arrayList.get(position).getRecruitId()).child("users").updateChildren(addUser); // DB에 현재인원 추가
+                        break;
+                    case LoungeList:
+                        Intent intent = new Intent(context.getApplicationContext(),LoungeActivity.class);
+                        intent.putExtra("RecruitID",arrayList.get(position).getRecruitId());
+                        context.startActivity(intent);
                 }
-
-                holder.currentUserNum.setText(String.valueOf(arrayList.get(position).getCurrentUserNum() + 1));         // 화면에 보이는 현재인원 + 1
-                mDatabaseRef.child(arrayList.get(position).getRecruitId()).child("currentUserNum").setValue(arrayList.get(position).getCurrentUserNum() + 1); // DB에 현재인원 추가
-                Map<String, Object> addUser = new HashMap<String, Object>();
-                Map<String, Object> addUserRecruit = new HashMap<String, Object>();
-                addUser.put(firebaseUser.getUid(), "add");
-                addUserRecruit.put(arrayList.get(position).getRecruitId(), "join");
-                mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("recruitList").updateChildren(addUserRecruit);
-                mDatabaseRef.child(arrayList.get(position).getRecruitId()).child("users").updateChildren(addUser); // DB에 현재인원 추가
-
-
             }
         });
 
