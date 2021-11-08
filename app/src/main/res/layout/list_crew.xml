@@ -13,7 +13,8 @@
             android:layout_width="100dp"
             android:layout_height="80dp"
             android:layout_margin="5dp"
-            android:src="@drawable/ic_launcher_background"/>
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_launcher_background" />
 
         <LinearLayout
             android:layout_width="200dp"
@@ -24,8 +25,8 @@
                 android:id="@+id/crewName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="크루명"
-                android:layout_margin="5dp"/>
+                android:layout_margin="5dp"
+                android:text="크루명" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -35,14 +36,15 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="18dp"
-                    android:background="@drawable/location"
-                    android:layout_margin="5dp"/>
+                    android:layout_margin="5dp"
+                    android:background="@drawable/location" />
+
                 <TextView
                     android:id="@+id/crewLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="활동 지역"
-                    android:layout_margin="5dp"/>
+                    android:layout_margin="5dp"
+                    android:text="활동 지역" />
             </LinearLayout>
 
             <LinearLayout
@@ -53,17 +55,16 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="18dp"
-                    android:background="@drawable/ic_crew"
-                    android:layout_margin="5dp"/>
+                    android:layout_margin="5dp"
+                    android:background="@drawable/ic_crew" />
+
                 <TextView
                     android:id="@+id/crewUserNum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="유저수"
-                    android:layout_margin="5dp"/>
+                    android:layout_margin="5dp"
+                    android:text="유저수" />
             </LinearLayout>
-
-
 
 
         </LinearLayout>
@@ -73,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="join"/>
+            android:text="join" />
 
     </LinearLayout>
 

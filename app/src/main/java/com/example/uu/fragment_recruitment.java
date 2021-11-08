@@ -1,27 +1,16 @@
 package com.example.uu;
 
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.V;
-
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.Intent;
-import android.content.res.Resources;
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,22 +20,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -55,24 +37,20 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.concurrent.Semaphore;
+import java.util.HashMap;
 
 public class fragment_recruitment extends Fragment implements DrawingMapActivity.OnBitmapCreated{
     private View linear_recruitment;
     private View linear_crew_no;
     private View linear_crew_yes;
-    private View crewUserPagerLayout;
-    private View crewSchedulePagerLayout;
     private ImageButton show_recruitment;
     private ImageButton show_crew;
-    private LinearLayout linear_dialog;
+
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
@@ -80,7 +58,9 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
     private ArrayList<recruit_object> arrayList;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
+    private DatabaseReference databaseReferenceRecruit;
     private DatabaseReference databaseReferenceCrew;
+    private DatabaseReference databaseReferenceUser;
     private FirebaseStorage storage;
     private ViewGroup rootview;
 
@@ -97,8 +77,18 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
     private String getCrewImg;
     private String getCrewUserNum;
     private String getCrewLoc;
+    public int crewNum;
 
+    public OnCrewAddedListener crewAddedListener;
+    interface OnCrewAddedListener{
+        void  OnCrewAdded();
+    }
 
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        crewAddedListener=(OnCrewAddedListener) context;
+    }
 
     ImageView show_map;
     private FirebaseAuth mFirebaseAuth;
@@ -183,9 +173,9 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
 
 
         if (firebaseUser != null) {
-            databaseReference = database.getReference("Recruit");
+            databaseReferenceRecruit = database.getReference("Recruit");
 
-            databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            databaseReferenceRecruit.orderByChild("date").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     // DB data를 받아오는곳
@@ -196,6 +186,7 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
                     }
                     adapter.notifyDataSetChanged(); //리스트 저장 및 새로고침
                 }
+
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
@@ -255,53 +246,27 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Crew");
 
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // DB data를 받아오는곳
-                crewArrayList.clear(); // 기존 배열리스트 초기화
-                for (DataSnapshot Snapshot : dataSnapshot.getChildren()) {
-                    crewObject recruit = Snapshot.getValue(crewObject.class);
-                    crewArrayList.add(recruit);
-                }
-                crewAdapter.notifyDataSetChanged(); //리스트 저장 및 새로고침
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                //DB 받아오던 중 에러 발생하는 경우
-                Log.e("Error", String.valueOf(error.toException()));
-            }
-        });
 
         guSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 selectedGu = (String) adapterView.getSelectedItem();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-
-        crewAdapter = new crewAdapter(crewArrayList, getContext());
-        crewRecyclerView.setAdapter(crewAdapter); //리사이클러뷰에 어댑터 연결
-
-        Button crewSearchBtn = rootview.findViewById(R.id.searchCrewBtn);
-        crewSearchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         // DB data를 받아오는곳
                         crewArrayList.clear(); // 기존 배열리스트 초기화
                         for (DataSnapshot Snapshot : dataSnapshot.getChildren()) {
-                            crewObject recruit = Snapshot.getValue(crewObject.class);
-                            if (recruit.getLocation().equals(selectedGu)) {
-                                crewArrayList.add(recruit);
+                            crewObject crew = Snapshot.getValue(crewObject.class);
+                            if(selectedGu.equals("지역선택")){
+                                crewArrayList.add(crew);
+                                continue;
                             }
+                            if (crew.getLocation().equals(selectedGu)) {
+                                crewArrayList.add(crew);
+                            }
+
 
                         }
                         crewAdapter.notifyDataSetChanged(); //리스트 저장 및 새로고침
@@ -313,9 +278,15 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
                         Log.e("Error", String.valueOf(error.toException()));
                     }
                 });
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
+        crewAdapter = new crewAdapter(crewArrayList, getContext());
+        crewRecyclerView.setAdapter(crewAdapter); //리사이클러뷰에 어댑터 연결
+
 
         //
 
@@ -326,6 +297,8 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
         TextView crewUserNum = rootview.findViewById(R.id.crewYesCrewUserNum);
         TextView crewLoc = rootview.findViewById(R.id.crewYesCrewLoc);
         TextView crewExp = rootview.findViewById(R.id.crewYesCrewExp);
+        Button secessionBtn = rootview.findViewById(R.id.secessionBtn);
+        databaseReferenceUser = database.getReference("UU");
         databaseReferenceCrew = database.getReference("Crew");
         FirebaseStorage storage = FirebaseStorage.getInstance("gs://doubleu-2df72.appspot.com");
         StorageReference storageReference = storage.getReference();
@@ -384,6 +357,35 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
             }
         });
 
+        //크루 탈퇴 버튼
+
+       secessionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                databaseReferenceCrew.child(currentCrew).child("totalUserNum").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                        crewNum = snapshot.getValue(Integer.class);
+                        databaseReferenceCrew.child(currentCrew).child("totalUserNum").setValue(crewNum-1);                       //크루 인원 한명 제거
+                        Log.e("test", currentCrew);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                //HashMap<String, Object> updates = new HashMap<>();
+                //updates.put(firebaseUser.getUid(), FieldValue.delete());
+                databaseReferenceCrew.child(currentCrew).child("userList").child(firebaseUser.getUid()).removeValue();              //유저 정보 크루에서 제거
+
+                databaseReferenceUser.child("UserAccount").child(firebaseUser.getUid()).child("currentCrew").setValue("none");      //크루 none 상태로 변경
+
+                crewAddedListener.OnCrewAdded();
+            }
+        });
+
 
         //크루원, 크루일정 viewpager 코딩
 
@@ -435,17 +437,7 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
         show_map.setImageBitmap(bm);
     }
 
-    public void searchFilter(String searchText) {
 
-
-        for (int i = 0; i < crewArrayList.size(); i++) {
-            if (crewArrayList.get(i).getLocation().equals(selectedGu)) {
-                filteredList.add(crewArrayList.get(i));
-            }
-        }
-
-        //crewAdapter.filterList(filteredList);
-    }
 
     public void layoutConverter(int which_layout){
         if(which_layout==R.id.show_recruitment){
