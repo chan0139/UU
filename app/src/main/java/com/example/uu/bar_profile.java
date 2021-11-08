@@ -29,6 +29,7 @@ public class bar_profile extends Fragment {
     private DatabaseReference mDatabaseRef;
     private String userId, userProfileUrl;
     private String userName, userGender;
+    private String currentCrew;
 
 
     @Nullable
@@ -47,7 +48,7 @@ public class bar_profile extends Fragment {
             String uid = user != null ? user.getUid() : null;
 
 
-            mDatabaseRef.child("UserAccount").child(uid).addValueEventListener(new ValueEventListener() {
+            mDatabaseRef.child("UserAccount").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     userObject info = snapshot.getValue(userObject.class);
@@ -55,10 +56,13 @@ public class bar_profile extends Fragment {
                     userName = info.getUserName();
                     userGender = info.getUserGender();
                     userProfileUrl = info.getUserProfileUrl();
+                    currentCrew = info.getCurrentCrew();
                     email.setText(userId);
                     name.setText(userName);
                     gender.setText("/  " + userGender);
                     Glide.with(getContext()).load(userProfileUrl).into(profile);
+
+
 
                 }
 
