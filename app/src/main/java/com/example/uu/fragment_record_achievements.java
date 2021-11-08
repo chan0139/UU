@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 public class fragment_record_achievements extends Fragment {
 
@@ -40,6 +42,8 @@ public class fragment_record_achievements extends Fragment {
     private boolean flag_totalTime_300=false;
     private boolean flag_totalTime_500=false;
     private boolean flag_totalTime_1000=false;
+    private ProgressBar levelBar;
+    private TextView levelPercentText;
     //endregion
 
     @Override
@@ -51,6 +55,9 @@ public class fragment_record_achievements extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView=(ViewGroup) inflater.inflate(R.layout.fragment_record_achievements, container, false);
+
+        levelBar = (ProgressBar) rootView.findViewById(R.id.levelProgressBar);
+        levelPercentText = rootView.findViewById(R.id.levelPercentText);
 
         getRecordData();    // DB에서 필요한 정보들 먼저 받아와서
         setFlags();         // 트로피 표시여부 플래그 설정
@@ -131,40 +138,75 @@ public class fragment_record_achievements extends Fragment {
 
     private void setFlags()
     {
-        if(max_distance>3)
-            flag_maxDistance_3=true;
+        if(max_distance>3) {
+            flag_maxDistance_3 = true;
+            levelBar.incrementProgressBy(10);
+            checkLevelBar();
+        }
 
-        if(max_distance>5)
-            flag_maxDistance_5=true;
+        if(max_distance>5) {
+            flag_maxDistance_5 = true;
+            levelBar.incrementProgressBy(10);
+            checkLevelBar();
+        }
+        if(max_distance>10) {
+            flag_maxDistance_10 = true;
+            levelBar.incrementProgressBy(10);
+            checkLevelBar();
+        }
 
-        if(max_distance>10)
-            flag_maxDistance_10=true;
+        if(total_distance>10) {
+            flag_totalDistance_10 = true;
+            levelBar.incrementProgressBy(10);
+        }
 
-        if(total_distance>10)
-            flag_totalDistance_10=true;
+        if(total_distance>50) {
+            flag_totalDistance_50 = true;
+            levelBar.incrementProgressBy(10);
+        }
 
-        if(total_distance>50)
-            flag_totalDistance_50=true;
+        if(total_distance>100) {
+            flag_totalDistance_100 = true;
+            levelBar.incrementProgressBy(10);
+        }
 
-        if(total_distance>100)
-            flag_totalDistance_100=true;
+        if(max_time>20) {
+            flag_maxTime_20 = true;
+            levelBar.incrementProgressBy(10);
+        }
 
-        if(max_time>20)
-            flag_maxTime_20=true;
+        if(max_time>40) {
+            flag_maxTime_40 = true;
+            levelBar.incrementProgressBy(10);
+        }
 
-        if(max_time>40)
-            flag_maxTime_40=true;
+        if(max_time>60) {
+            flag_maxTime_60 = true;
+            levelBar.incrementProgressBy(10);
+        }
 
-        if(max_time>60)
-            flag_maxTime_60=true;
+        if(total_time>300) {
+            flag_totalTime_300 = true;
+            levelBar.incrementProgressBy(10);
+        }
 
-        if(total_time>300)
-            flag_totalTime_300=true;
+        if(total_time>500) {
+            flag_totalTime_300 = true;
+            levelBar.incrementProgressBy(10);
+        }
 
-        if(total_time>500)
-            flag_totalTime_300=true;
+        if(total_time>1000) {
+            flag_totalTime_300 = true;
+            levelBar.incrementProgressBy(10);
+        }
 
-        if(total_time>1000)
-            flag_totalTime_300=true;
+        levelPercentText.setText(levelBar.getProgress() + "%");
+    }
+    private void checkLevelBar(){
+        int progress = levelBar.getProgress();
+        if(progress == 100){
+            levelBar.setProgress(0);
+            //이미지 변경
+        }
     }
 }
