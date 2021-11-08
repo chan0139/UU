@@ -2,6 +2,7 @@ package com.example.uu;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,8 +49,13 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
     private View linear_recruitment;
     private View linear_crew_no;
     private View linear_crew_yes;
+    private View linear_lounge;
+
     private ImageButton show_recruitment;
     private ImageButton show_crew;
+    private ImageButton show_lounge;
+
+    private TextView detail_name;
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -71,6 +77,11 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
     private RecyclerView.LayoutManager crewLayoutManager;
     private ArrayList<crewObject> crewArrayList;
     private ArrayList<crewObject> filteredList;
+    ArrayList<String> userRecruitList;
+    private ArrayList<recruit_object> loungeArrayList;
+    private RecyclerView loungeRecruitRecyclerView;
+    private RecyclerView.LayoutManager loungeLayoutManager;
+    private RecyclerView.Adapter loungeAdapter;
     public String currentCrew;
     private String getCrewName;
     private String getCrewExp;
@@ -140,12 +151,16 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
             }
         });
 
+        detail_name=(TextView)rootview.findViewById(R.id.detail_name);
 
         linear_recruitment = (LinearLayout) rootview.findViewById(R.id.linear_Recruitment);
         linear_crew_no = (LinearLayout) rootview.findViewById(R.id.linear_crew_no);
         linear_crew_yes = (LinearLayout) rootview.findViewById(R.id.linear_crew_yes);
+        linear_lounge=(LinearLayout)rootview.findViewById(R.id.linear_lounge);
+
         show_recruitment = (ImageButton) rootview.findViewById(R.id.show_recruitment);
         show_crew = (ImageButton) rootview.findViewById(R.id.show_crew);
+        show_lounge=(ImageButton) rootview.findViewById(R.id.show_lounge);
 
         show_recruitment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,6 +173,13 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
             @Override
             public void onClick(View view) {
                 layoutConverter(R.id.show_crew);
+            }
+        });
+
+        show_lounge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layoutConverter(R.id.show_lounge);
             }
         });
 
@@ -195,7 +217,7 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
                 }
             });
 
-            adapter = new recruitAdapter(arrayList, getContext());
+            adapter = new recruitAdapter(arrayList, getContext(),0);
             recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
 
             Button recruit = (Button) rootview.findViewById(R.id.recruit);
@@ -447,7 +469,57 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
             }
         });
 
+        //******* linear_lounge 부분 코딩
+        userRecruitList = new ArrayList<>();
+        loungeArrayList = new ArrayList<>();
+        loungeRecruitRecyclerView = rootview.findViewById(R.id.joinedRunning);
+        loungeRecruitRecyclerView.setHasFixedSize(true);
+        loungeLayoutManager = new LinearLayoutManager(getContext());
+        loungeRecruitRecyclerView.setLayoutManager(loungeLayoutManager);
+        databaseReferenceUser.child("UserAccount").child(firebaseUser.getUid()).child("recruitList").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userRecruitList.clear();
+                for (DataSnapshot snapshotNode: snapshot.getChildren()) {
+                    String getUserRecruit = (String) snapshotNode.getKey();
+                    userRecruitList.add(getUserRecruit);
+                }
 
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        databaseReferenceRecruit.orderByChild("date").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // DB data를 받아오는곳
+                loungeArrayList.clear(); // 기존 배열리스트 초기화
+                for (DataSnapshot Snapshot : dataSnapshot.getChildren()) {
+                    recruit_object recruit = Snapshot.getValue(recruit_object.class);
+                    for(int i = 0; i < userRecruitList.size(); i++){
+                        if(userRecruitList.get(i).equals(recruit.getRecruitId())){
+                            loungeArrayList.add(recruit);
+                        }
+                    }
+
+                }
+                loungeAdapter.notifyDataSetChanged(); //리스트 저장 및 새로고침
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                //DB 받아오던 중 에러 발생하는 경우
+                Log.e("Error", String.valueOf(error.toException()));
+            }
+        });
+
+        loungeAdapter = new recruitAdapter(loungeArrayList, getContext(),1);
+
+        loungeRecruitRecyclerView.setAdapter(loungeAdapter); //리사이클러뷰에 어댑터 연결
 
         return rootview;
     }
@@ -472,24 +544,42 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
 
     public void layoutConverter(int which_layout){
         if(which_layout==R.id.show_recruitment){
+            detail_name.setText("Recruit Running mate list");
             show_crew.setBackgroundResource(R.drawable.ic_crew);
+            show_lounge.setBackgroundResource(R.drawable.ic_lounge);
             linear_recruitment.setVisibility(View.VISIBLE);
             linear_crew_no.setVisibility(View.INVISIBLE);
             linear_crew_yes.setVisibility(View.INVISIBLE);
+            linear_lounge.setVisibility(View.INVISIBLE);
         }
         else if(which_layout==R.id.show_crew){
             if(currentCrew.equals("none")){
+                detail_name.setText("Crew list");
                 show_crew.setBackgroundResource(R.drawable.ic_crew_selected);
+                show_lounge.setBackgroundResource(R.drawable.ic_lounge);
                 linear_recruitment.setVisibility(View.INVISIBLE);
                 linear_crew_no.setVisibility(View.VISIBLE);
                 linear_crew_yes.setVisibility(View.INVISIBLE);
+                linear_lounge.setVisibility(View.INVISIBLE);
             }
             else {
+                detail_name.setText(currentCrew+" Home");
                 show_crew.setBackgroundResource(R.drawable.ic_crew_selected);
+                show_lounge.setBackgroundResource(R.drawable.ic_lounge);
                 linear_recruitment.setVisibility(View.INVISIBLE);
                 linear_crew_no.setVisibility(View.INVISIBLE);
                 linear_crew_yes.setVisibility(View.VISIBLE);
+                linear_lounge.setVisibility(View.INVISIBLE);
             }
+        }
+        else if(which_layout==R.id.show_lounge){
+            detail_name.setText("Lounge list");
+            show_crew.setBackgroundResource(R.drawable.ic_crew);
+            show_lounge.setBackgroundResource(R.drawable.ic_lounge_selected);
+            linear_recruitment.setVisibility(View.INVISIBLE);
+            linear_crew_no.setVisibility(View.INVISIBLE);
+            linear_crew_yes.setVisibility(View.INVISIBLE);
+            linear_lounge.setVisibility(View.VISIBLE);
         }
 
     }
