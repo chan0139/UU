@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -44,6 +45,14 @@ public class achievementAdapter extends BaseAdapter {
 
         TextView title=view.findViewById(R.id.achievementTitle);
         title.setText(item.getObjName());
+
+
+        // 아이템별 달성 목표 여부를 확인해서 달성했으면 달성 아이콘 표시
+        if(item.getFlag())
+        {
+            ImageView imageView=view.findViewById(R.id.achievement);
+            imageView.setImageResource(R.drawable.ic_achievement);
+        }
 
         return view;
     }

@@ -8,10 +8,12 @@ public class achievementObject {
     private String description;
     private float achievement;
     private Date clearDate;
+    private boolean flag;
 
-    public achievementObject(String objName, String description) {
+    public achievementObject(String objName, String description, boolean flag) {
         this.objName = objName;
         this.description = description;
+        this.flag=flag;     //달성 목표 확인용 변수
         this.achievement=0.0f;
         this.clearDate=null;
     }
@@ -32,6 +34,8 @@ public class achievementObject {
         return clearDate;
     }
 
+    public boolean getFlag() { return flag; }
+
     public void setObjName(String objName) {
         this.objName = objName;
     }
@@ -48,4 +52,5 @@ public class achievementObject {
         this.clearDate = clearDate;
     }
 
+    public void setFlag(boolean flag) {this.flag = flag; }
 }

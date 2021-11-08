@@ -52,4 +52,6 @@ public class fragment_record extends Fragment {
 
         return rootview;
     }
+
+
 }
