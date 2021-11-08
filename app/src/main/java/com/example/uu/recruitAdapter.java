@@ -74,7 +74,6 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
         holder.leader.setText(arrayList.get(position).getLeader());
         holder.currentUserNum.setText(String.valueOf(arrayList.get(position).getCurrentUserNum()));
         holder.totalUserNum.setText(String.valueOf(arrayList.get(position).getTotalUserNum()));
-
         userRecruitList = new ArrayList<>();
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
@@ -95,6 +94,9 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
 
             }
         });
+
+
+        //holder.joinButton.setVisibility(View.INVISIBLE);
 
         holder.joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,6 +159,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
         return (arrayList != null ? arrayList.size() : 0);
     }
 
+
     public class CustomViewHolder extends RecyclerView.ViewHolder {
         ImageView testImage;
         TextView date;
@@ -164,6 +167,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
         TextView currentUserNum;
         TextView totalUserNum;
         Button joinButton;
+
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             this.testImage = itemView.findViewById(R.id.testImage);
@@ -174,6 +178,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
             this.joinButton = itemView.findViewById(R.id.joinButton);
 
         }
+
     }
 
 

@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/bottom_border.xml" value="0.22135416666666666" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/button.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/ic_crew.xml" value="0.30520833333333336" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/ic_crew_selected.xml" value="0.30520833333333336" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/activity_after_login_main.xml" value="0.28442028985507245" />
@@ -35,7 +37,6 @@
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_club.xml" value="0.38229166666666664" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_route.xml" value="0.27708333333333335" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/activity_loading.xml" value="0.36614583333333334" />
-
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/dialog_recruit.xml" value="0.33" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/draw_map.xml" value="0.19" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fragment_club.xml" value="0.2609375" />
