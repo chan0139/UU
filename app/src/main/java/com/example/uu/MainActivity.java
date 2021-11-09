@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener, crewAdapter.OnCrewAddedListener {
+public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener, crewAdapter.OnCrewAddedListener, fragment_recruitment.OnCrewAddedListener {
 
     Toolbar toolbar;
     TextView title;
@@ -183,8 +183,8 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
     @Override
     public void OnSecheduleCreated() {
-       showRecruitmentFragment();
-       hideNavigationBar();
+        showRecruitmentFragment();
+        hideNavigationBar();
     }
 
     @Override

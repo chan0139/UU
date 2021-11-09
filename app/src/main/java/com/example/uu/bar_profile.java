@@ -48,7 +48,7 @@ public class bar_profile extends Fragment {
             String uid = user != null ? user.getUid() : null;
 
 
-            mDatabaseRef.child("UserAccount").child(uid).addValueEventListener(new ValueEventListener() {
+            mDatabaseRef.child("UserAccount").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     userObject info = snapshot.getValue(userObject.class);
