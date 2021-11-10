@@ -12,35 +12,38 @@
             android:orientation="vertical">
 
                 ** for detail --> https://github.com/owl-93/Determinate-Progress-View
+
                 <com.owl93.dpb.CircularProgressView
                     android:id="@+id/personalAchievement"
-                    android:layout_width="match_parent"
-                    android:layout_height="400dp"
-                    app:drawTrack="true"
-                    app:trackWidth="30dp"
-                    app:trackColor="#000000"
-                    app:trackAlpha="25"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="24dp"
                     android:padding="10dp"
-                    app:progress="80.55"
-                    app:strokeWidth="20dp"
-                    app:textEnabled="true"
-                    app:textSize="32sp"
-                    app:textColor="@color/blue"
-                    app:textFormat="pcnt_decimal"
-                    app:gradientStartColor="@color/blue"
+                    app:animationInterpolator="anticipate_overshoot"
+                    app:drawTrack="true"
                     app:gradientCenterColor="@color/purple"
                     app:gradientEndColor="@color/teal"
-                    app:strokeGradientStyle="candy_cane"
+                    app:gradientStartColor="@color/blue"
+                    app:progress="80.55"
                     app:strokeGradientSize="stroke_only"
-                    app:animationInterpolator="anticipate_overshoot"/>
+                    app:strokeGradientStyle="candy_cane"
+                    app:strokeWidth="20dp"
+                    app:textColor="@color/blue"
+                    app:textEnabled="true"
+                    app:textFormat="pcnt_decimal"
+                    app:textSize="32sp"
+                    app:trackAlpha="25"
+                    app:trackColor="#000000"
+                    app:trackWidth="30dp" />
 
                 **요일별 운동량
+
                 <com.github.mikephil.charting.charts.HorizontalBarChart
                     android:id="@+id/id_horizontal_barchart"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
-                    android:layout_marginBottom="20dp">
-                </com.github.mikephil.charting.charts.HorizontalBarChart>
+                    android:layout_marginBottom="20dp"></com.github.mikephil.charting.charts.HorizontalBarChart>
 
                 ** completed running list
                 <ListView
