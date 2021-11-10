@@ -1,14 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment_record_results">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment_record_results"
+    tools:ignore="ExtraText">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1220dp"
+            android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+                ** for detail --> https://github.com/owl-93/Determinate-Progress-View
+                <com.owl93.dpb.CircularProgressView
+                    android:id="@+id/personalAchievement"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    app:drawTrack="true"
+                    app:trackWidth="30dp"
+                    app:trackColor="#000000"
+                    app:trackAlpha="25"
+                    android:padding="10dp"
+                    app:progress="80.55"
+                    app:strokeWidth="20dp"
+                    app:textEnabled="true"
+                    app:textSize="32sp"
+                    app:textColor="@color/blue"
+                    app:textFormat="pcnt_decimal"
+                    app:gradientStartColor="@color/blue"
+                    app:gradientCenterColor="@color/purple"
+                    app:gradientEndColor="@color/teal"
+                    app:strokeGradientStyle="candy_cane"
+                    app:strokeGradientSize="stroke_only"
+                    app:animationInterpolator="anticipate_overshoot"/>
 
-</FrameLayout>
+                **요일별 운동량
+                <com.github.mikephil.charting.charts.HorizontalBarChart
+                    android:id="@+id/id_horizontal_barchart"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_marginBottom="20dp">
+                </com.github.mikephil.charting.charts.HorizontalBarChart>
+
+                ** completed running list
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"/>
+        </LinearLayout>
+</ScrollView>
