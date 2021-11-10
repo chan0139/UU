@@ -44,7 +44,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class fragment_recruitment extends Fragment implements DrawingMapActivity.OnBitmapCreated{
+public class fragment_recruitment extends Fragment{
     private View linear_recruitment;
     private View linear_crew_no;
     private View linear_crew_yes;
@@ -90,7 +90,7 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
         crewAddedListener=(OnCrewAddedListener) context;
     }
 
-    ImageView show_map;
+    private Bitmap bitmapOfMap;
     private FirebaseAuth mFirebaseAuth;
     String selectedGu;
 
@@ -430,13 +430,6 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
 
         return rootview;
     }
-
-    @Override
-    public void saveBitmap(Bitmap bm) {
-        //show_map=(ImageView)rootview.findViewById(R.id.testMap);
-        show_map.setImageBitmap(bm);
-    }
-
 
 
     public void layoutConverter(int which_layout){

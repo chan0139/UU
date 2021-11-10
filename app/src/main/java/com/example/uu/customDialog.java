@@ -8,7 +8,11 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -33,18 +37,28 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 import java.util.Random;
 
 
 public class customDialog extends Dialog {
+    Activity MainActivity=new MainActivity();
     int selectedYear=0, selectedMonth=0, selectedDay=0, selectedHour=0, selectedMin=0, getUserNum;
     String getLeader;
+    private String randomStr;
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
     String selectedSpeed;
+    Uri mapUri;
     String[] runningType = {"평보","경보","달리기"};
+
+    private recruit_object recruit;
+
     private Activity activity;
     Context context;
 
@@ -54,8 +68,10 @@ public class customDialog extends Dialog {
     }
 
     public OnScheduleCreatedListener scheduleCreatedListener;
+
     interface OnScheduleCreatedListener{
-        void OnSecheduleCreated();
+        void OnScheduleCreated(String scheduleToken,recruit_object recruit);
+        void OnDrawingAcitivyPressed(String recruitToken);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +85,8 @@ public class customDialog extends Dialog {
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_recruit);
         setCancelable(true);
+
+        randomStr = RandomGenerator();
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, runningType);
@@ -106,8 +124,7 @@ public class customDialog extends Dialog {
         setMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(context,DrawingMapActivity.class);
-                context.startActivity(intent);
+                scheduleCreatedListener.OnDrawingAcitivyPressed(randomStr);
             }
         });
 
@@ -140,7 +157,7 @@ public class customDialog extends Dialog {
                 //tr.detach(recruitment);
 
 
-                scheduleCreatedListener.OnSecheduleCreated();
+                scheduleCreatedListener.OnScheduleCreated(randomStr,recruit);
 
                 dismiss();
 
@@ -156,6 +173,7 @@ public class customDialog extends Dialog {
             }
 
         });
+
     }
 
     void showDate() {
@@ -197,7 +215,6 @@ public class customDialog extends Dialog {
     void saveRecruitInfo(){
         String date;
         String time;
-        String randomStr = RandomGenerator();
         String castDay;
         if(0< selectedDay && selectedDay <10){
             castDay = '0' + Integer.toString(selectedDay);
@@ -206,8 +223,7 @@ public class customDialog extends Dialog {
         time = Integer.toString(selectedHour) + ':' + Integer.toString(selectedMin);
         date = Integer.toString(selectedMonth) +'.' + castDay;
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-        recruit_object recruit = new recruit_object();
-        recruit.setMapUrl("https://firebasestorage.googleapis.com/v0/b/doubleu-2df72.appspot.com/o/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C.png?alt=media&token=d3eeb566-1e8b-48f3-9c25-d27191bf43ad");
+        recruit = new recruit_object();
         recruit.setDate(date);
         recruit.setTime(time);
         recruit.setLeader(getLeader);
@@ -216,7 +232,7 @@ public class customDialog extends Dialog {
         recruit.setRunningSpeed(selectedSpeed);
         recruit.setRecruitId(randomStr);
         recruit.setHostId(firebaseUser.getUid());
-        mDatabaseRef.child(randomStr).setValue(recruit);
+        //mDatabaseRef.child(randomStr).setValue(recruit);
         //Toast.makeText(getContext(), "Success to save in DB", Toast.LENGTH_SHORT).show();
     }
 
@@ -246,9 +262,10 @@ public class customDialog extends Dialog {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        scheduleCreatedListener.OnSecheduleCreated();
         dismiss();
     }
+
+
 }
 
 

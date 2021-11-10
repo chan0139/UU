@@ -9,10 +9,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -22,7 +24,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
@@ -43,8 +53,8 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     Toolbar toolbar;
     TextView title;
     Fragment selectedFragment=null;
-
-
+    private Uri mapUri;
+    private String recruitToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,13 +152,6 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         fragmentTransaction.replace(R.id.fragment_container, fragment).commit();      // Fragment로 사용할 MainActivity내의 layout공간을 선택합니다.
     }
 
-
-    @Override
-    public void OnSecheduleCreated() {
-       showRecruitmentFragment();
-       hideNavigationBar();
-    }
-
     @Override
     public void loginComplete() {
         title.setText("Recruitment");
@@ -165,4 +168,37 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
     }
 
+    @Override
+    public void OnScheduleCreated(String scheduleToken,recruit_object recruitObject) {
+
+        FirebaseStorage storage = FirebaseStorage.getInstance("gs://doubleu-2df72.appspot.com");
+        StorageReference getstorageReference = storage.getReference();
+        StorageReference recruitImg =getstorageReference.child("recruitment/" + scheduleToken + ".png");
+
+        recruitObject.setMapUrl("https://firebasestorage.googleapis.com/v0/b/doubleu-2df72.appspot.com/o/recruitment%2F"+recruitImg.getName()+"?alt=media");
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Recruit");
+        databaseReference.child(scheduleToken).setValue(recruitObject);
+        showRecruitmentFragment();
+        hideNavigationBar();
+    }
+
+    @Override
+    public void OnDrawingAcitivyPressed(String recruitToken) {
+        this.recruitToken=recruitToken;
+        Intent intent = new Intent(this,DrawingMapActivity.class);
+        startActivityForResult(intent,999);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==999 && resultCode== Activity.RESULT_OK){
+            mapUri = data.getParcelableExtra("mapUri");
+            StorageReference setstorageReference= FirebaseStorage.getInstance().getReference();
+            StorageReference riverRef = setstorageReference.child("recruitment/"+recruitToken+".png");
+            UploadTask uploadTask= riverRef.putFile(mapUri);
+
+        }
+    }
 }
