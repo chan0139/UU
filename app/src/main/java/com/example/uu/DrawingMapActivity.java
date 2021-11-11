@@ -9,6 +9,7 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -19,10 +20,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,6 +40,7 @@ import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -48,12 +53,7 @@ import java.util.List;
 
 public class DrawingMapActivity extends AppCompatActivity  implements OnMapReadyCallback,
         GoogleMap.OnPolylineClickListener{
-
-    private OnBitmapCreated mListener;
-    interface OnBitmapCreated{
-        void saveBitmap(Bitmap bm);
-    }
-
+    private Uri mapUri;
     public static String TAG="draw_map";
     static boolean isDrawing=false;
     private GoogleMap mMap;
@@ -63,16 +63,16 @@ public class DrawingMapActivity extends AppCompatActivity  implements OnMapReady
     private static final PatternItem GAP = new Gap(PATTERN_GAP_LENGTH_PX);
     private static final List<LatLng> checkpoint=new ArrayList<>();
     private static final List<PatternItem> PATTERN_POLYLINE_DOTTED = Arrays.asList(GAP, DOT);
-    private Bitmap bitmap;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawing_map);
-        checkPermission();
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.make_route);
         mapFragment.getMapAsync(this);
+
+        //mBitmapCreatedListener=(OnBitmapCreatedListener) this;
 
         ImageButton undo=(ImageButton)findViewById(R.id.undo);
         undo.setOnClickListener(new View.OnClickListener() {
@@ -112,9 +112,7 @@ public class DrawingMapActivity extends AppCompatActivity  implements OnMapReady
         savemap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getImageOfMap();
-                checkpoint.clear();
-                finish();
+                getURLOfMap();
             }
         });
 
@@ -123,17 +121,12 @@ public class DrawingMapActivity extends AppCompatActivity  implements OnMapReady
             @Override
             public void onClick(View view) {
                 checkpoint.clear();
-                route_shape.setPoints(checkpoint);
+                setResult(Activity.RESULT_OK,new Intent().putExtra("mapUri",mapUri));
                 finish();
             }
         });
-    }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void checkPermission() {
-        if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-        }
+
     }
 
     @Override
@@ -176,25 +169,27 @@ public class DrawingMapActivity extends AppCompatActivity  implements OnMapReady
             }
         });
     }
-    public void getImageOfMap() {
+    public void getURLOfMap() {
         GoogleMap.SnapshotReadyCallback callback = new GoogleMap.SnapshotReadyCallback() {
             @RequiresApi(api = Build.VERSION_CODES.S)
             @Override
             public void onSnapshotReady(Bitmap snapshot) {
                 try{
-                    FileOutputStream out = new FileOutputStream(
-                            Environment.getExternalStorageDirectory()
-                                    + "/MapScreenShot"
-                                    +System.currentTimeMillis()+ ".png");
-                    snapshot.compress(Bitmap.CompressFormat.PNG, 90,out);
+                   saveImage(snapshot);
 
                 } catch (Exception e) {
                     Log.d("snap","snapfail");
                     e.printStackTrace();
                 }
             }
-        };
 
+        };
         mMap.snapshot(callback);
+    }
+    private void saveImage(Bitmap bmp){
+        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, bao); // bmp is bitmap from user image file
+        String path=MediaStore.Images.Media.insertImage(this.getContentResolver(),bmp,"Title",null);
+        mapUri = Uri.parse(path);
     }
 }

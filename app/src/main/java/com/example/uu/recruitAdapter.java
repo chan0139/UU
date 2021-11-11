@@ -170,6 +170,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
                         Intent intent = new Intent(context.getApplicationContext(),LoungeActivity.class);
                         intent.putExtra("RecruitID",arrayList.get(position).getRecruitId());
                         context.startActivity(intent);
+                        break;
                     case UserPageList:
                         mDatabaseRef.child(arrayList.get(position).getRecruitId()).child("currentUserNum").setValue(arrayList.get(position).getCurrentUserNum() - 1);
                         mDatabaseRef.child(arrayList.get(position).getRecruitId()).child("users").child(firebaseUser.getUid()).removeValue();
@@ -180,8 +181,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
                         bar_profile bar_profile = new bar_profile();
                         tr.replace(R.id.fragment_container, bar_profile);
                         tr.commit();
-
-
+                        break;
 
                 }
             }
@@ -201,7 +201,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
                 bundle.putString("date", arrayList.get(position).getDate());
                 bundle.putString("time", arrayList.get(position).getTime());
                 bundle.putString("speed", arrayList.get(position).getRunningSpeed());
-                bundle.putString("map", arrayList.get(position).getMapUrl());
+                bundle.putString("mapUrl", arrayList.get(position).getMapUrl());
                 bundle.putString("curuser", curUserNum);
                 bundle.putString("totuser", totalUserNum);
                 dialog.setArguments(bundle);
