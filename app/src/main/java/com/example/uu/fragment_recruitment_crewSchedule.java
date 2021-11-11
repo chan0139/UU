@@ -94,7 +94,7 @@ public class fragment_recruitment_crewSchedule extends Fragment {
 
 
 
-            adapter = new recruitAdapter(arrayList, getContext());
+            adapter = new recruitAdapter(arrayList, getContext(),0);
             recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
         }
         return rootview;

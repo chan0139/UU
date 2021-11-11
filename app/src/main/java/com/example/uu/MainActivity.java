@@ -3,17 +3,25 @@ package com.example.uu;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
@@ -33,9 +41,8 @@ import com.kakao.util.exception.KakaoException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener, crewAdapter.OnCrewAddedListener, fragment_recruitment.OnCrewAddedListener {
@@ -43,8 +50,12 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     Toolbar toolbar;
     TextView title;
     Fragment selectedFragment=null;
+    BottomNavigationView bottomNavigationView;
+    private boolean isRunning=false;
 
-
+    // for db
+    DatabaseHelper dbHelper;
+    SQLiteDatabase sqLiteDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +63,8 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         setContentView(R.layout.activity_main);
         Intent intent=new Intent(this,LoadingActivity.class);
         startActivity(intent);
+
+        dbHelper=new DatabaseHelper(this);
 
 
         //toolbar를 찾아 인프레이션하고 actionbar로 변경(actionbar가 기능이 많음)
@@ -89,7 +102,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         });
 
 
-        BottomNavigationView bottomNavigationView=findViewById(R.id.bottomNavBar);
+        bottomNavigationView=findViewById(R.id.bottomNavBar);
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
 
         hideNavigationBar();
@@ -112,6 +125,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
                     switch (item.getItemId()){
                         case R.id.recruitment:
                             title.setText("Recruitment");
@@ -130,7 +144,31 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
                             selectedFragment=new fragment_ranking();
                             break;
                     }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+                    
+                    // 운동 중 화면 전환 발생시 대화상자를 통해 알림
+                    if(isRunning&&(item.getItemId()==R.id.running))
+                        return true;
+                    else if(isRunning) {
+                        AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
+                        dlg.setTitle("열심히 달리는 중인데요!");
+                        dlg.setMessage("운동을 종료하고 다른 화면으로 이동할까요?");
+
+                        dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(MainActivity.this,"운동 종료!",Toast.LENGTH_SHORT).show();
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+                            }
+                        });
+                        dlg.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                bottomNavigationView.getMenu().findItem(R.id.running).setChecked(true);     // 화면전환 취소되면 메뉴 바를 다시 러닝 화면으로 교체
+                            }
+                        });
+                        dlg.show();
+                    }
+                    else        //운동 중이 아닐때는 바로 화면 전환
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
 
                     return true;
                 }
@@ -145,8 +183,8 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
     @Override
     public void OnSecheduleCreated() {
-       showRecruitmentFragment();
-       hideNavigationBar();
+        showRecruitmentFragment();
+        hideNavigationBar();
     }
 
     @Override
@@ -158,6 +196,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         selectedFragment=new fragment_recruitment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
     }
+
   
     @Override
     public void OnCrewAdded(){
@@ -165,4 +204,32 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
     }
 
+     public void setRunningState(boolean state){
+        isRunning=state;
+    }
+
+
+    // record to db if running ends
+    public void recordRunningState(String date,int distance,int time,float calories)
+    {
+        //only record actual running data
+        if(distance!=0) {
+            sqLiteDb = dbHelper.getWritableDatabase();
+            // Create a new map of values, where column names are the keys
+            ContentValues values = new ContentValues();
+            values.put(DatabaseHelper.PRIMARY_KEY, date);
+            values.put(DatabaseHelper.RUNNING_DISTANCE, distance);
+            values.put(DatabaseHelper.RUNNING_TIME, time);
+            values.put(DatabaseHelper.CONSUMED_CALORIES, calories);
+
+            // Insert the new row, returning the primary key value of the new row
+            long newRowId = sqLiteDb.insert(DatabaseHelper.TABLE_NAME, null, values);
+            if(newRowId==-1)
+                Log.e("DB Error","data insertion error");
+            else
+                Log.d("DB Record","db 저장 완료"+date);
+        }
+    }
 }
+
+

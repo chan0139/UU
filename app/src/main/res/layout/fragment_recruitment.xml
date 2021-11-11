@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
@@ -24,9 +24,25 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/ic_crew" />
 
+        <ImageButton
+            android:id="@+id/show_lounge"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/ic_lounge"/>
+        <TextView
+            android:id="@+id/detail_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:textAlignment="center"/>
+
     </LinearLayout>
 
     <FrameLayout
+        android:id="@+id/contextFrame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -259,7 +275,15 @@
 
         </LinearLayout>
 
-
+        <LinearLayout
+            android:id="@+id/linear_lounge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/joinedRunning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
 
     </FrameLayout>
 
