@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/bottom_border.xml" value="0.22135416666666666" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/button.xml" value="0.22135416666666666" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/ic_crew.xml" value="0.30520833333333336" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/ic_crew_selected.xml" value="0.30520833333333336" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/activity_after_login_main.xml" value="0.28442028985507245" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/activity_main.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/activity_temp.xml" value="0.3151041666666667" />
