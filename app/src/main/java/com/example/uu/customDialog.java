@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -31,10 +32,15 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 
@@ -42,7 +48,10 @@ public class customDialog extends Dialog {
     int selectedYear=0, selectedMonth=0, selectedDay=0, selectedHour=0, selectedMin=0, getUserNum;
     String getLeader;
     private FirebaseAuth mFirebaseAuth;
+    private FirebaseDatabase database;
     private DatabaseReference mDatabaseRef;
+    private DatabaseReference mDatabaseRefUser;
+    private int getuserRecruitJoinNumber;
     String selectedSpeed;
     String[] runningType = {"평보","경보","달리기"};
     private Activity activity;
@@ -64,6 +73,21 @@ public class customDialog extends Dialog {
         scheduleCreatedListener=(OnScheduleCreatedListener)context;
 
         mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+        database = FirebaseDatabase.getInstance();
+        mDatabaseRefUser = database.getReference("UU");
+        mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("userRecruitJoinNumber").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                getuserRecruitJoinNumber = snapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("Recruit");
 
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
@@ -217,7 +241,13 @@ public class customDialog extends Dialog {
         recruit.setRecruitId(randomStr);
         recruit.setHostId(firebaseUser.getUid());
         mDatabaseRef.child(randomStr).setValue(recruit);
+
+        Map<String, Object> addUserRecruit = new HashMap<String, Object>();
+        addUserRecruit.put(randomStr, "join");
+        mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("recruitList").updateChildren(addUserRecruit);
+        mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("userRecruitJoinNumber").setValue(getuserRecruitJoinNumber+1);
         //Toast.makeText(getContext(), "Success to save in DB", Toast.LENGTH_SHORT).show();
+
     }
 
     String RandomGenerator(){               //recruitId 생성기

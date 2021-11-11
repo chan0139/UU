@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/level1.xml" value="0.2921875" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/level2.xml" value="0.2921875" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/level3.xml" value="0.2921875" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/level4.xml" value="0.2921875" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/level5.xml" value="0.2921875" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/activity_after_login_main.xml" value="0.28442028985507245" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/activity_main.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/activity_temp.xml" value="0.3151041666666667" />
@@ -69,11 +74,6 @@
         <entry key="..\:/Users/simon/GitHub/UU/app/src/main/res/drawable/ic_trophy_selected.xml" value="0.1712962962962963" />
         <entry key="..\:/Users/simon/GitHub/UU/app/src/main/res/drawable/ic_undo.xml" value="0.1712962962962963" />
         <entry key="..\:/Users/simon/GitHub/UU/app/src/main/res/drawable/ic_user_circle.xml" value="0.1712962962962963" />
-        <entry key="..\:/Users/simon/GitHub/UU/app/src/main/res/drawable/level1.xml" value="0.23541666666666666" />
-        <entry key="..\:/Users/simon/GitHub/UU/app/src/main/res/drawable/level2.xml" value="0.23541666666666666" />
-        <entry key="..\:/Users/simon/GitHub/UU/app/src/main/res/drawable/level3.xml" value="0.23541666666666666" />
-        <entry key="..\:/Users/simon/GitHub/UU/app/src/main/res/drawable/level4.xml" value="0.24791666666666667" />
-        <entry key="..\:/Users/simon/GitHub/UU/app/src/main/res/drawable/level5.xml" value="0.23541666666666666" />
         <entry key="..\:/Users/simon/GitHub/UU/app/src/main/res/drawable/timer.xml" value="0.1712962962962963" />
         <entry key="..\:/Users/simon/GitHub/UU/app/src/main/res/drawable/top_border.xml" value="0.1712962962962963" />
         <entry key="..\:/Users/simon/GitHub/UU/app/src/main/res/layout/activity_main.xml" value="0.18802083333333333" />

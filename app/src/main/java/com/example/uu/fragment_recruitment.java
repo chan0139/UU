@@ -359,15 +359,18 @@ public class fragment_recruitment extends Fragment implements DrawingMapActivity
                     while (crewYesImg == null) {
                         crewYesImg = storageReference.child("crew/" + currentCrew + ".png");
                     }
+
                     crewYesImg.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            Glide.with(getContext())
-                                    .load(uri)
-                                    .into(crewImg);
+                                Glide.with(fragment_recruitment.this)
+                                        .load(uri)
+                                        .into(crewImg);
+
                         }
 
                     });
+
                 }
 
 
