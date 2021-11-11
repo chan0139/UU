@@ -1,6 +1,7 @@
 package com.example.uu;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,12 +47,16 @@ public class achievementAdapter extends BaseAdapter {
         TextView title=view.findViewById(R.id.achievementTitle);
         title.setText(item.getObjName());
 
+        //Log.e("test", item.getObjName() +" " + item.getFlag());
+        // 아이템별 달성 목표 여부를 확인해서 달성했으면 달성 아이콘 표시/
 
-        // 아이템별 달성 목표 여부를 확인해서 달성했으면 달성 아이콘 표시
-        if(item.getFlag())
-        {
+        if(item.getFlag() == true) {
             ImageView imageView=view.findViewById(R.id.achievement);
             imageView.setImageResource(R.drawable.ic_achievement);
+        }
+        else{
+            ImageView imageView=view.findViewById(R.id.achievement);
+            imageView.setImageResource(R.drawable.ic_achievement_incomplete);
         }
 
         return view;

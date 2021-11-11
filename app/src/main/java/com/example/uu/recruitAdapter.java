@@ -102,6 +102,17 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
 
             }
         });
+        mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("userRecruitJoinNumber").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                getUserRecruitJoinNumber = snapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("userRecruitJoinNumber").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -136,8 +147,12 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
                         //Log.e("test", String.valueOf(userRecruitList.size()));
                         for(int i = 0; i < userRecruitList.size(); i ++){
                             if(userRecruitList.get(i).equals(arrayList.get(position).getRecruitId())){
-                                return; //유저가 이미 신청한 recruit의 경우 처리
+                                return; //유저가 이미 신청한 recruit의 경우 조인 불가능 처리
                             }
+                        }
+
+                        if(arrayList.get(position).getHostId().equals(firebaseUser.getUid())){
+                            return;  //자신이 만든 recruit 조인 불가능 처리
                         }
 
                         holder.currentUserNum.setText(String.valueOf(arrayList.get(position).getCurrentUserNum() + 1));         // 화면에 보이는 현재인원 + 1
@@ -147,6 +162,8 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
                         addUser.put(firebaseUser.getUid(), "add");
                         addUserRecruit.put(arrayList.get(position).getRecruitId(), "join");
                         mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("recruitList").updateChildren(addUserRecruit);
+                        Log.e("getNUm",Integer.toString(getUserRecruitJoinNumber));
+                        mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("userRecruitJoinNumber").setValue(getUserRecruitJoinNumber+1);
                         mDatabaseRef.child(arrayList.get(position).getRecruitId()).child("users").updateChildren(addUser); // DB에 현재인원 추가
                         break;
                     case LoungeList:

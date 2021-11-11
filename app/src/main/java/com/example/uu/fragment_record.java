@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ public class fragment_record extends Fragment {
         fragment_achievements=new fragment_record_achievements();
         fragment_results=new fragment_record_results();
 
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.recordContainer,fragment_results).commit();
         show_record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

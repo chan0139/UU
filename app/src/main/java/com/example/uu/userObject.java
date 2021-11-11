@@ -11,6 +11,8 @@ public class userObject {
     private String userName;
     private String idToken;
     private String currentCrew;
+    private int userLevel;
+    private int userRecruitJoinNumber;
     private Map<String, Object> recruitList = new HashMap<String, Object>();
 
     public Map<String, Object> getRecruitList() {
@@ -27,6 +29,22 @@ public class userObject {
 
     public void setCurrentCrew(String currentCrew) {
         this.currentCrew = currentCrew;
+    }
+
+    public int getUserLevel() {
+        return userLevel;
+    }
+
+    public void setUserLevel(int userLevel) {
+        this.userLevel = userLevel;
+    }
+
+    public int getUserRecruitJoinNumber() {
+        return userRecruitJoinNumber;
+    }
+
+    public void setUserRecruitJoinNumber(int userRecruitJoinNumber) {
+        this.userRecruitJoinNumber = userRecruitJoinNumber;
     }
 
     public String getUserGender() {

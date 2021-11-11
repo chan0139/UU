@@ -1,14 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment_record_results">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment_record_results"
+    tools:ignore="ExtraText">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1220dp"
+            android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+                ** for detail --> https://github.com/owl-93/Determinate-Progress-View
 
-</FrameLayout>
+                <com.owl93.dpb.CircularProgressView
+                    android:id="@+id/personalAchievement"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="24dp"
+                    android:padding="10dp"
+                    app:animationInterpolator="anticipate_overshoot"
+                    app:drawTrack="true"
+                    app:gradientCenterColor="@color/purple"
+                    app:gradientEndColor="@color/teal"
+                    app:gradientStartColor="@color/blue"
+                    app:progress="80.55"
+                    app:strokeGradientSize="stroke_only"
+                    app:strokeGradientStyle="candy_cane"
+                    app:strokeWidth="20dp"
+                    app:textColor="@color/blue"
+                    app:textEnabled="true"
+                    app:textFormat="pcnt_decimal"
+                    app:textSize="32sp"
+                    app:trackAlpha="25"
+                    app:trackColor="#000000"
+                    app:trackWidth="30dp" />
+
+                **요일별 운동량
+
+                <com.github.mikephil.charting.charts.HorizontalBarChart
+                    android:id="@+id/id_horizontal_barchart"
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"
+                    android:layout_marginBottom="20dp"></com.github.mikephil.charting.charts.HorizontalBarChart>
+
+                ** completed running list
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="400dp"/>
+        </LinearLayout>
+</ScrollView>

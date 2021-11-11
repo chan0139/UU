@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.uu"
-        minSdk 21
+        minSdk 22
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -52,6 +52,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-cast-framework:20.0.0'
     implementation 'com.google.firebase:firebase-storage'
     implementation 'com.google.firebase:firebase-firestore:24.0.0'
+
+    implementation 'com.github.owl-93:DeterminateProgressView:v1.4.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

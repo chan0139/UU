@@ -123,6 +123,8 @@ public class fragment_login extends Fragment{
                                     user.setIdToken(firebaseUser.getUid());
                                     user.setUserProfileUrl(urlLink);
                                     user.setCurrentCrew(crew);
+                                    user.setUserLevel(1);
+                                    user.setUserRecruitJoinNumber(0);
 
                                     //setValue -> db에 insert
                                     mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(user);
