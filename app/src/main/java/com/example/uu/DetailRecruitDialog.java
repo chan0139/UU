@@ -48,7 +48,7 @@ public class DetailRecruitDialog extends DialogFragment {
         String getLeader = bundle.getString("leader", "leader");
         String getTime = bundle.getString("time", "time");
         String getDate = bundle.getString("date", "date");
-        String getMap = bundle.getString("map", "map");
+        String getMap = bundle.getString("mapUrl", "mapUrl");
         String getSpeed = bundle.getString("speed", "speed");
         String getCur = bundle.getString("curuser", "cur");
         String getTot = bundle.getString("totuser", "tot");
