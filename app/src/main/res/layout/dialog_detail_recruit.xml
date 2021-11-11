@@ -2,14 +2,14 @@
 <LinearLayout
     android:id="@+id/detailRecruit"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="400dp"
-    android:layout_height="wrap_content"
+    android:layout_width="300dp"
+    android:layout_height="350dp"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/map"
-        android:layout_width="350dp"
-        android:layout_height="450dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
     <LinearLayout
