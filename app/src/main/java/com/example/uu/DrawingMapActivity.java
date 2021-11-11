@@ -143,12 +143,6 @@ public class DrawingMapActivity extends AppCompatActivity  implements OnMapReady
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap=googleMap;
-        /*
-        * checkpoint.add(new LatLng(37.57424933720234,126.97445344179867));
-        checkpoint.add(new LatLng(37.57457352430965,126.98055144399403));
-        checkpoint.add(new LatLng(37.583215247691314,126.9832158833742));
-        checkpoint.add(new LatLng(37.584640691578386,126.9708565995097));
-        * */
         PolylineOptions route_info=new PolylineOptions().clickable(true);
         route_shape=mMap.addPolyline(route_info);
         LatLng Gyeongbokgung = new LatLng(37.5779805, 126.977364);
