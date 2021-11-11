@@ -28,6 +28,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
@@ -88,6 +90,8 @@ public class fragment_recruitment extends Fragment{
     private String getCrewImg;
     private String getCrewUserNum;
     private String getCrewLoc;
+    private StorageReference crewYesImg;
+    private ImageView crewImg;
     public int crewNum;
 
     public OnCrewAddedListener crewAddedListener;
@@ -315,7 +319,7 @@ public class fragment_recruitment extends Fragment{
         //크루 있는 유저
 
         TextView crewName = rootview.findViewById(R.id.crewYesCrewName);
-        ImageView crewImg = rootview.findViewById(R.id.crewYesCrewImage);
+        crewImg = rootview.findViewById(R.id.crewYesCrewImage);
         TextView crewUserNum = rootview.findViewById(R.id.crewYesCrewUserNum);
         TextView crewLoc = rootview.findViewById(R.id.crewYesCrewLoc);
         TextView crewExp = rootview.findViewById(R.id.crewYesCrewExp);
@@ -354,28 +358,24 @@ public class fragment_recruitment extends Fragment{
 
                         }
                     });
-
-                    StorageReference crewYesImg = storageReference.child("crew/" + currentCrew + ".png");
-                    while (crewYesImg == null) {
-                        crewYesImg = storageReference.child("crew/" + currentCrew + ".png");
-                    }
-
+                    crewYesImg = storageReference.child("crew/" + currentCrew + ".png");
+                    crewYesImg.getDownloadUrl().addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            recallCrewImgFromStorage(crewYesImg);
+                        }
+                    });
                     crewYesImg.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                                Glide.with(fragment_recruitment.this)
-                                        .load(uri)
-                                        .into(crewImg);
-
+                            Glide.with(rootview)
+                                    .load(uri)
+                                    .into(crewImg);
                         }
-
                     });
 
                 }
-
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 //mCallback.fail(error.getMessage());
@@ -547,6 +547,23 @@ public class fragment_recruitment extends Fragment{
             linear_lounge.setVisibility(View.VISIBLE);
         }
 
+    }
+
+    public void recallCrewImgFromStorage(StorageReference crewYesImg){
+        crewYesImg.getDownloadUrl().addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                recallCrewImgFromStorage(crewYesImg);
+            }
+        });
+        crewYesImg.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(rootview)
+                        .load(uri)
+                        .into(crewImg);
+            }
+        });
     }
 
 
