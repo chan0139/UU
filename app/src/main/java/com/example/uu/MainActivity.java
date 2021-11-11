@@ -204,6 +204,8 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
     }
 
+
+
      public void setRunningState(boolean state){
         isRunning=state;
     }

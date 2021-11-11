@@ -136,7 +136,7 @@ public class bar_profile extends Fragment {
                 }
             });
 
-            adapter = new recruitAdapter(arrayList, getContext());
+            adapter = new recruitAdapter(arrayList, getContext(), 2);
 
             recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
 
