@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerTitleStrip;
 
@@ -50,6 +51,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
     private int getUserRecruitJoinNumber;
     private static final int RecruitRunningMateList=0;
     private static final int LoungeList=1;
+    private static final int UserPageList=2;
 
     private Context context;
 
@@ -60,6 +62,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
         this.context = context;
         this.which_detailPage=which_detailPage;
     }
+
 
     @NonNull
     @Override
@@ -79,7 +82,6 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
         holder.leader.setText(arrayList.get(position).getLeader());
         holder.currentUserNum.setText(String.valueOf(arrayList.get(position).getCurrentUserNum()));
         holder.totalUserNum.setText(String.valueOf(arrayList.get(position).getTotalUserNum()));
-
         userRecruitList = new ArrayList<>();
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
@@ -112,14 +114,33 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
             }
         });
 
+        mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("userRecruitJoinNumber").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                getUserRecruitJoinNumber = snapshot.getValue(Integer.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        if(which_detailPage == 2){
+            holder.joinButton.setText("cancel");
+        }
+
+
+        //holder.joinButton.setVisibility(View.INVISIBLE);
+
         holder.joinButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mDatabaseRef = database.getReference("Recruit");
                 switch (which_detailPage){
                     case RecruitRunningMateList:
                         //Toast.makeText(view.getContext(), "tlqfk", Toast.LENGTH_SHORT).show();
 
-                        mDatabaseRef = database.getReference("Recruit");
+
                         int index = arrayList.get(position).getDate().indexOf("/");                 //date 인덱싱
                         String day = arrayList.get(position).getDate().substring(index+1);
 
@@ -149,6 +170,19 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
                         Intent intent = new Intent(context.getApplicationContext(),LoungeActivity.class);
                         intent.putExtra("RecruitID",arrayList.get(position).getRecruitId());
                         context.startActivity(intent);
+                    case UserPageList:
+                        mDatabaseRef.child(arrayList.get(position).getRecruitId()).child("currentUserNum").setValue(arrayList.get(position).getCurrentUserNum() - 1);
+                        mDatabaseRef.child(arrayList.get(position).getRecruitId()).child("users").child(firebaseUser.getUid()).removeValue();
+                        mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("recruitList").child(arrayList.get(position).getRecruitId()).removeValue();
+                        mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("userRecruitJoinNumber").setValue(getUserRecruitJoinNumber - 1);
+
+                        FragmentTransaction tr = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
+                        bar_profile bar_profile = new bar_profile();
+                        tr.replace(R.id.fragment_container, bar_profile);
+                        tr.commit();
+
+
+
                 }
             }
         });
@@ -183,6 +217,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
         return (arrayList != null ? arrayList.size() : 0);
     }
 
+
     public class CustomViewHolder extends RecyclerView.ViewHolder {
         ImageView testImage;
         TextView date;
@@ -190,6 +225,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
         TextView currentUserNum;
         TextView totalUserNum;
         Button joinButton;
+
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             this.testImage = itemView.findViewById(R.id.testImage);
@@ -200,6 +236,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
             this.joinButton = itemView.findViewById(R.id.joinButton);
 
         }
+
     }
 
 
