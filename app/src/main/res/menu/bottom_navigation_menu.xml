@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/crew"
+        android:title="크루"
+        android:enabled="true"
+        android:checked="false"
+        android:icon="@drawable/ic_crew"/>
+    <item
         android:id="@+id/recruitment"
         android:title="모집"
         android:enabled="true"
@@ -18,10 +24,4 @@
         android:enabled="true"
         android:checked="true"
         android:icon="@drawable/ic_record"/>
-    <item
-        android:id="@+id/ranking"
-        android:title="랭킹"
-        android:enabled="true"
-        android:checked="false"
-        android:icon="@drawable/ic_ranking"/>
 </menu>

@@ -10,20 +10,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.BaseColumns;
-import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,30 +23,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.kakao.auth.ISessionCallback;
-import com.kakao.auth.Session;
-import com.kakao.network.ErrorResult;
-import com.kakao.usermgmt.UserManagement;
-import com.kakao.usermgmt.callback.MeV2ResponseCallback;
-import com.kakao.usermgmt.response.MeV2Response;
-import com.kakao.util.exception.KakaoException;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener, crewAdapter.OnCrewAddedListener, fragment_recruitment.OnCrewAddedListener {
+public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener, crewAdapter.OnCrewAddedListener, fragment_crew.OnCrewAddedListener{
 
     Toolbar toolbar;
     TextView title;
@@ -141,6 +118,10 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                     switch (item.getItemId()){
+                        case R.id.crew:
+                            title.setText("Crew");
+                            selectedFragment=new fragment_crew(R.id.show_crew);
+                            break;
                         case R.id.recruitment:
                             title.setText("Recruitment");
                             selectedFragment=new fragment_recruitment(R.id.show_recruitment);
@@ -152,10 +133,6 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
                         case R.id.record:
                             title.setText("Record");
                             selectedFragment=new fragment_record();
-                            break;
-                        case R.id.ranking:
-                            title.setText("Ranking");
-                            selectedFragment=new fragment_ranking();
                             break;
                     }
                     
@@ -198,18 +175,23 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
     @Override
     public void loginComplete() {
-        title.setText("Recruitment");
-        showRecruitmentFragment();
+        title.setText("Crew");
+        showCrewFragment();
+    }
+    public void showCrewFragment(){
+        selectedFragment=new fragment_crew(R.id.show_crew);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
     }
     public void showRecruitmentFragment(){
         selectedFragment=new fragment_recruitment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
     }
 
-  
+
+
     @Override
     public void OnCrewAdded(){
-        selectedFragment= new fragment_recruitment(R.id.show_crew);
+        selectedFragment= new fragment_crew(R.id.show_crew);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
     }
 
