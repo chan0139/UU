@@ -1,5 +1,10 @@
 package com.example.uu;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.util.Base64;
+
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,11 +22,14 @@ public class recruit_object {
 
     private Map<String, Object> users = new HashMap<String, Object>();
 
-
-
+    public recruit_object() { }
 
     public String getRecruitId() {
         return recruitId;
+    }
+
+    public void setRecruitId(String recruitId) {
+        this.recruitId = recruitId;
     }
 
     public String getHostId() {
@@ -30,10 +38,6 @@ public class recruit_object {
 
     public void setHostId(String hostId) {
         this.hostId = hostId;
-    }
-
-    public void setRecruitId(String recruitId) {
-        this.recruitId = recruitId;
     }
 
     public int getCurrentUserNum() {
@@ -52,15 +56,11 @@ public class recruit_object {
         this.totalUserNum = totalUserNum;
     }
 
-    public recruit_object() { }
-
     public String getMapUrl() {
         return mapUrl;
     }
 
-    public void setMapUrl(String mapUrl) {
-        this.mapUrl = mapUrl;
-    }
+    public void setMapUrl(String mapUrl) { this.mapUrl=mapUrl;}
 
     public String getLeader() {
         return leader;
@@ -69,7 +69,6 @@ public class recruit_object {
     public void setLeader(String leader) {
         this.leader = leader;
     }
-
 
     public String getDate() {
         return date;
@@ -102,5 +101,6 @@ public class recruit_object {
     public void setRunningSpeed(String runningSpeed) {
         this.runningSpeed = runningSpeed;
     }
+
 }
 

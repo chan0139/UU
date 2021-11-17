@@ -120,6 +120,7 @@ public class fragment_record_achievements extends Fragment {
                 total_recruit_time = getNum;
 
                 getRecordData();
+                setFlags();
                 setGrid();
             }
             @Override
@@ -159,7 +160,6 @@ public class fragment_record_achievements extends Fragment {
         adapter.addItem(new achievementObject("이제 나도 인싸?","러닝메이트 모집 5회",flag_recruitJoinTime_5));
         adapter.addItem(new achievementObject("러닝메이트 부자","러닝메이트 모집 10회",flag_recruitJoinTime_10));
         gridView.setAdapter(adapter);
-        //adpter.notifyDataSetChanged();
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -215,8 +215,6 @@ public class fragment_record_achievements extends Fragment {
 
         cursor.close();
         sqLiteDb.close();
-
-        setFlags();
     }
 
     private void setFlags()
