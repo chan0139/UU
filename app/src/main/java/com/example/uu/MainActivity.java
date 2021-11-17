@@ -31,7 +31,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 
-public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener, crewAdapter.OnCrewAddedListener, fragment_crew.OnCrewAddedListener{
+public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener, crewAdapter.OnCrewListener, fragment_crew.OnCrewAddedListener{
 
     Toolbar toolbar;
     TextView title;
@@ -195,9 +195,15 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
     }
 
+    @Override
+    public void OnFitTestPressed(FitTestData fitTestData) {
+        Intent intent =new Intent(this,FitTestActivity.class);
+        intent.putExtra("targetCrew", fitTestData);
+        startActivity(intent);
+    }
 
 
-     public void setRunningState(boolean state){
+    public void setRunningState(boolean state){
         isRunning=state;
     }
 

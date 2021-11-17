@@ -6,6 +6,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
@@ -17,8 +20,9 @@
             android:src="@drawable/ic_launcher_background" />
 
         <LinearLayout
-            android:layout_width="200dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -69,12 +73,23 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/joinCrewButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:text="join" />
+       <LinearLayout
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:orientation="vertical">
+           <Button
+               android:id="@+id/fittestButton"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/fittest_Btn"
+               android:layout_gravity="center_horizontal"/>
+           <Button
+               android:id="@+id/joinCrewButton"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_horizontal"
+               android:text="join" />
+       </LinearLayout>
 
     </LinearLayout>
 

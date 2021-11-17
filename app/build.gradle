@@ -53,6 +53,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage'
     implementation 'com.google.firebase:firebase-firestore:24.0.0'
 
+    implementation 'com.layer-net:step-indicator:1.1.0'
+
+
     implementation 'com.github.owl-93:DeterminateProgressView:v1.4.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
