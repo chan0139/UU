@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/achievement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:srcCompat="@drawable/ic_achievement_incomplete" />
+
+    <TextView
+        android:id="@+id/achievementTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/achievement"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="12dp"
+        android:text="TITLE" />
+
+</RelativeLayout>

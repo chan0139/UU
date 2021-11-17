@@ -9,20 +9,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
+import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.net.Uri;
 import android.os.Bundle;
-import android.provider.BaseColumns;
-import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,31 +24,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.kakao.auth.ISessionCallback;
-import com.kakao.auth.Session;
-import com.kakao.network.ErrorResult;
-import com.kakao.usermgmt.UserManagement;
-import com.kakao.usermgmt.callback.MeV2ResponseCallback;
-import com.kakao.usermgmt.response.MeV2Response;
-import com.kakao.util.exception.KakaoException;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 
-public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener, crewAdapter.OnCrewAddedListener {
+public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener, crewAdapter.OnCrewAddedListener, fragment_crew.OnCrewAddedListener{
 
     Toolbar toolbar;
     TextView title;
     Fragment selectedFragment=null;
+
     BottomNavigationView bottomNavigationView;
     private boolean isRunning=false;
 
     // for db
     DatabaseHelper dbHelper;
     SQLiteDatabase sqLiteDb;
+
+    private Uri mapUri;
+    private String recruitToken;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +118,10 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                     switch (item.getItemId()){
+                        case R.id.crew:
+                            title.setText("Crew");
+                            selectedFragment=new fragment_crew(R.id.show_crew);
+                            break;
                         case R.id.recruitment:
                             title.setText("Recruitment");
                             selectedFragment=new fragment_recruitment(R.id.show_recruitment);
@@ -138,10 +133,6 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
                         case R.id.record:
                             title.setText("Record");
                             selectedFragment=new fragment_record();
-                            break;
-                        case R.id.ranking:
-                            title.setText("Ranking");
-                            selectedFragment=new fragment_ranking();
                             break;
                     }
                     
@@ -181,28 +172,30 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     }
 
 
-    @Override
-    public void OnSecheduleCreated() {
-       showRecruitmentFragment();
-       hideNavigationBar();
-    }
 
     @Override
     public void loginComplete() {
-        title.setText("Recruitment");
-        showRecruitmentFragment();
+        title.setText("Crew");
+        showCrewFragment();
+    }
+    public void showCrewFragment(){
+        selectedFragment=new fragment_crew(R.id.show_crew);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
     }
     public void showRecruitmentFragment(){
         selectedFragment=new fragment_recruitment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
     }
 
-  
+
+
     @Override
     public void OnCrewAdded(){
-        selectedFragment= new fragment_recruitment(R.id.show_crew);
+        selectedFragment= new fragment_crew(R.id.show_crew);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
     }
+
+
 
      public void setRunningState(boolean state){
         isRunning=state;
@@ -231,39 +224,41 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         }
     }
 
-    // for Debug, show db list
-    public void showRecord()
-    {
-        sqLiteDb=dbHelper.getReadableDatabase();
-        List<String> ids=new ArrayList<String>();
-        List<Integer> distances=new ArrayList<Integer>();
-        String msg="id\t\t\t\tdistance\n";
-
-        Cursor cursor;
-        cursor = sqLiteDb.rawQuery("SELECT * FROM "+DatabaseHelper.TABLE_NAME+";",null);
 
 
 
-        while (cursor.moveToNext()){
-            msg+=cursor.getString(0)+"   "+cursor.getString(1)+"\n";
+
+    public void OnScheduleCreated(String scheduleToken,recruit_object recruitObject) {
+
+        FirebaseStorage storage = FirebaseStorage.getInstance("gs://doubleu-2df72.appspot.com");
+        StorageReference getstorageReference = storage.getReference();
+        StorageReference recruitImg =getstorageReference.child("recruitment/" + scheduleToken + ".png");
+
+        recruitObject.setMapUrl("https://firebasestorage.googleapis.com/v0/b/doubleu-2df72.appspot.com/o/recruitment%2F"+recruitImg.getName()+"?alt=media");
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Recruit");
+        databaseReference.child(scheduleToken).setValue(recruitObject);
+        showRecruitmentFragment();
+        hideNavigationBar();
+    }
+
+    @Override
+    public void OnDrawingAcitivyPressed(String recruitToken) {
+        this.recruitToken=recruitToken;
+        Intent intent = new Intent(this,DrawingMapActivity.class);
+        startActivityForResult(intent,999);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==999 && resultCode== Activity.RESULT_OK){
+            mapUri = data.getParcelableExtra("mapUri");
+            StorageReference setstorageReference= FirebaseStorage.getInstance().getReference();
+            StorageReference riverRef = setstorageReference.child("recruitment/"+recruitToken+".png");
+            UploadTask uploadTask= riverRef.putFile(mapUri);
+
         }
-
-        cursor.close();
-        sqLiteDb.close();
-
-        AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
-        dlg.setTitle("running record");
-        dlg.setMessage(msg);
-
-        dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int which) {
-                return;
-            }
-        });
-
-        dlg.show();
-
     }
 }
-
 

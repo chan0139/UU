@@ -16,6 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String CONSUMED_CALORIES="calories";
 
     //for internal DB
+    // 운동 날짜(PK) , 운동 거리, 운동 시간, 소비 칼로리
     private static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     PRIMARY_KEY + " CHAR(20) PRIMARY KEY," +
