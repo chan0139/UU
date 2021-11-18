@@ -188,8 +188,6 @@ public class fragment_crew extends Fragment{
         createCrewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
                 crewAddDialog crewDialog = new crewAddDialog();
                 //crewDialog.show(getActivity().getFragmentManager(), "test");
                 crewDialog.show(getChildFragmentManager(), "crew");

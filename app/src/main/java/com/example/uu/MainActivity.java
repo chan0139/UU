@@ -6,10 +6,16 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.app.AlarmManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.app.Activity;
 import android.content.Intent;
@@ -24,21 +30,33 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
-public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener, crewAdapter.OnCrewAddedListener, fragment_crew.OnCrewAddedListener{
+
+public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener, crewAdapter.OnCrewAddedListener, fragment_crew.OnCrewAddedListener {
 
     Toolbar toolbar;
     TextView title;
-    Fragment selectedFragment=null;
+    Fragment selectedFragment = null;
 
     BottomNavigationView bottomNavigationView;
-    private boolean isRunning=false;
+    private boolean isRunning = false;
 
     // for db
     DatabaseHelper dbHelper;
@@ -47,56 +65,80 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     private Uri mapUri;
     private String recruitToken;
 
+    //for notification
+    private AlarmManager alarmManager;
+    private GregorianCalendar mCalender;
+    private NotificationManager notificationManager;
+    NotificationCompat.Builder builder;
+
+    //for access firebase
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseDatabase database;
+    private DatabaseReference mDatabaseRef;
+    private DatabaseReference mDatabaseRefRecruit;
+    ArrayList<String> userRecruitList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent intent=new Intent(this,LoadingActivity.class);
+        Intent intent = new Intent(this, LoadingActivity.class);
         startActivity(intent);
 
-        dbHelper=new DatabaseHelper(this);
+        dbHelper = new DatabaseHelper(this);
+
+        //for notification
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        mCalender = new GregorianCalendar();
+        //Log.e("test", mCalender.getTime().toString());
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
 
         //toolbar를 찾아 인프레이션하고 actionbar로 변경(actionbar가 기능이 많음)
-        toolbar =findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //의문점 actionbar로 바꿈으로써 actionbar의 기능을 사용하는가?
         //그렇지 않다면 굳이 actionbar로 바꾸지말고 그냥 toolbar의 view들을 따로 인플레이션해서 사용하는건 어떤가
 
         //appbar 이름 view
-        title=(TextView) findViewById(R.id.title);
+        title = (TextView) findViewById(R.id.title);
         title.setText("Login");
         fragment_login fragment_login = new fragment_login();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_login).commit();
 
 
-
-        ImageButton profile=(ImageButton)findViewById(R.id.profile);
+        ImageButton profile = (ImageButton) findViewById(R.id.profile);
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 title.setText("Profile");
-                selectedFragment=new bar_profile();
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+                selectedFragment = new bar_profile();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
             }
         });
 
-        ImageButton settings=(ImageButton)findViewById(R.id.settings);
+        ImageButton settings = (ImageButton) findViewById(R.id.settings);
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 title.setText("Settings");
-                selectedFragment=new bar_settings();
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+                selectedFragment = new bar_settings();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
             }
         });
 
 
-        bottomNavigationView=findViewById(R.id.bottomNavBar);
+        bottomNavigationView = findViewById(R.id.bottomNavBar);
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
 
         hideNavigationBar();
+        if(user.getUid() != null) {
+            DeleteFinishedRecruit();
+            setAlarm();
+        }
 
     }
 
@@ -112,42 +154,43 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         newUiOptions ^= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         getWindow().getDecorView().setSystemUiVisibility(newUiOptions);
     }
-    private  BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener=
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                    switch (item.getItemId()){
+                    switch (item.getItemId()) {
                         case R.id.crew:
                             title.setText("Crew");
-                            selectedFragment=new fragment_crew(R.id.show_crew);
+                            selectedFragment = new fragment_crew(R.id.show_crew);
                             break;
                         case R.id.recruitment:
                             title.setText("Recruitment");
-                            selectedFragment=new fragment_recruitment(R.id.show_recruitment);
+                            selectedFragment = new fragment_recruitment(R.id.show_recruitment);
                             break;
                         case R.id.running:
                             title.setText("Running");
-                            selectedFragment=new fragment_running();
+                            selectedFragment = new fragment_running();
                             break;
                         case R.id.record:
                             title.setText("Record");
-                            selectedFragment=new fragment_record();
+                            selectedFragment = new fragment_record();
                             break;
                     }
-                    
+
                     // 운동 중 화면 전환 발생시 대화상자를 통해 알림
-                    if(isRunning&&(item.getItemId()==R.id.running))
+                    if (isRunning && (item.getItemId() == R.id.running))
                         return true;
-                    else if(isRunning) {
+                    else if (isRunning) {
                         AlertDialog.Builder dlg = new AlertDialog.Builder(MainActivity.this);
                         dlg.setTitle("열심히 달리는 중인데요!");
                         dlg.setMessage("운동을 종료하고 다른 화면으로 이동할까요?");
 
-                        dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
+                        dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(MainActivity.this,"운동 종료!",Toast.LENGTH_SHORT).show();
-                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+                                Toast.makeText(MainActivity.this, "운동 종료!", Toast.LENGTH_SHORT).show();
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
                             }
                         });
                         dlg.setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -157,9 +200,8 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
                             }
                         });
                         dlg.show();
-                    }
-                    else        //운동 중이 아닐때는 바로 화면 전환
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+                    } else        //운동 중이 아닐때는 바로 화면 전환
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
 
                     return true;
                 }
@@ -172,41 +214,39 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     }
 
 
-
     @Override
     public void loginComplete() {
         title.setText("Crew");
         showCrewFragment();
     }
-    public void showCrewFragment(){
-        selectedFragment=new fragment_crew(R.id.show_crew);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
-    }
-    public void showRecruitmentFragment(){
-        selectedFragment=new fragment_recruitment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+
+    public void showCrewFragment() {
+        selectedFragment = new fragment_crew(R.id.show_crew);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
     }
 
+    public void showRecruitmentFragment() {
+        selectedFragment = new fragment_recruitment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+    }
 
 
     @Override
-    public void OnCrewAdded(){
-        selectedFragment= new fragment_crew(R.id.show_crew);
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+    public void OnCrewAdded() {
+        selectedFragment = new fragment_crew(R.id.show_crew);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
     }
 
 
-
-     public void setRunningState(boolean state){
-        isRunning=state;
+    public void setRunningState(boolean state) {
+        isRunning = state;
     }
 
 
     // record to db if running ends
-    public void recordRunningState(String date,int distance,int time,float calories)
-    {
+    public void recordRunningState(String date, int distance, int time, float calories) {
         //only record actual running data
-        if(distance!=0) {
+        if (distance != 0) {
             sqLiteDb = dbHelper.getWritableDatabase();
             // Create a new map of values, where column names are the keys
             ContentValues values = new ContentValues();
@@ -217,24 +257,21 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
             // Insert the new row, returning the primary key value of the new row
             long newRowId = sqLiteDb.insert(DatabaseHelper.TABLE_NAME, null, values);
-            if(newRowId==-1)
-                Log.e("DB Error","data insertion error");
+            if (newRowId == -1)
+                Log.e("DB Error", "data insertion error");
             else
-                Log.d("DB Record","db 저장 완료"+date);
+                Log.d("DB Record", "db 저장 완료" + date);
         }
     }
 
 
-
-
-
-    public void OnScheduleCreated(String scheduleToken,recruit_object recruitObject) {
+    public void OnScheduleCreated(String scheduleToken, recruit_object recruitObject) {
 
         FirebaseStorage storage = FirebaseStorage.getInstance("gs://doubleu-2df72.appspot.com");
         StorageReference getstorageReference = storage.getReference();
-        StorageReference recruitImg =getstorageReference.child("recruitment/" + scheduleToken + ".png");
+        StorageReference recruitImg = getstorageReference.child("recruitment/" + scheduleToken + ".png");
 
-        recruitObject.setMapUrl("https://firebasestorage.googleapis.com/v0/b/doubleu-2df72.appspot.com/o/recruitment%2F"+recruitImg.getName()+"?alt=media");
+        recruitObject.setMapUrl("https://firebasestorage.googleapis.com/v0/b/doubleu-2df72.appspot.com/o/recruitment%2F" + recruitImg.getName() + "?alt=media");
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Recruit");
         databaseReference.child(scheduleToken).setValue(recruitObject);
@@ -244,21 +281,164 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
     @Override
     public void OnDrawingAcitivyPressed(String recruitToken) {
-        this.recruitToken=recruitToken;
-        Intent intent = new Intent(this,DrawingMapActivity.class);
-        startActivityForResult(intent,999);
+        this.recruitToken = recruitToken;
+        Intent intent = new Intent(this, DrawingMapActivity.class);
+        startActivityForResult(intent, 999);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==999 && resultCode== Activity.RESULT_OK){
+        if (requestCode == 999 && resultCode == Activity.RESULT_OK) {
             mapUri = data.getParcelableExtra("mapUri");
-            StorageReference setstorageReference= FirebaseStorage.getInstance().getReference();
-            StorageReference riverRef = setstorageReference.child("recruitment/"+recruitToken+".png");
-            UploadTask uploadTask= riverRef.putFile(mapUri);
+            StorageReference setstorageReference = FirebaseStorage.getInstance().getReference();
+            StorageReference riverRef = setstorageReference.child("recruitment/" + recruitToken + ".png");
+            UploadTask uploadTask = riverRef.putFile(mapUri);
 
         }
+    }
+
+    private void setAlarm() {
+
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM.dd HH:mm");
+        String getTime = sdf.format(date);
+        //Log.e("date", getTime);
+
+        //AlarmReceiver에 값 전달
+        database = FirebaseDatabase.getInstance();
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("UU");
+        mDatabaseRefRecruit = FirebaseDatabase.getInstance().getReference("Recruit");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        userRecruitList = new ArrayList<>();
+
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("recruitList").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userRecruitList.clear();
+                for (DataSnapshot snapshotNode: snapshot.getChildren()) {
+                    String getUserRecruit = (String) snapshotNode.getKey();
+                    userRecruitList.add(getUserRecruit);
+                }
+                mDatabaseRefRecruit.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot Snapshot : snapshot.getChildren()) {
+                            recruit_object recruit = Snapshot.getValue(recruit_object.class);
+                            recruit.getDate();
+
+                            Intent receiverIntent = new Intent(MainActivity.this, AlarmReceiver.class);
+                            PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, receiverIntent, 0);
+
+
+                            String from = "2021-" + recruit.getDate() + " " + recruit.getTime();
+                            Log.e("fromdate", from);
+                            Log.e("getdate", getTime);
+                            if(from.compareTo(getTime) < 0){
+
+                                return;
+                            }
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM.dd HH:mm");
+                            Date datetime = null;
+                            try {
+                                datetime = dateFormat.parse(from);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(datetime);
+
+                            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);//임의로 날짜와 시간을 지정
+
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+        /*
+
+        Intent receiverIntent = new Intent(MainActivity.this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, receiverIntent, 0);
+
+        String from = "2021-11-16 06:50:20"; //임의로 날짜와 시간을 지정
+
+        //날짜 포맷을 바꿔주는 소스코드
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM.dd HH:mm");
+        Date datetime = null;
+        try {
+            datetime = dateFormat.parse(from);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(datetime);
+
+        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+         */
+    }
+
+    private void DeleteFinishedRecruit(){
+        long now = System.currentTimeMillis();
+        Date date = new Date(now);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM.dd");
+        String getTime = sdf.format(date);
+        //Log.e("date", getTime);
+
+        database = FirebaseDatabase.getInstance();
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("UU");
+        mDatabaseRefRecruit = FirebaseDatabase.getInstance().getReference("Recruit");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        userRecruitList = new ArrayList<>();
+
+        //Delete recruitList
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("recruitList").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userRecruitList.clear();
+                for (DataSnapshot snapshotNode: snapshot.getChildren()) {
+                    String getUserRecruit = (String) snapshotNode.getKey();
+                    userRecruitList.add(getUserRecruit);
+                }
+                mDatabaseRefRecruit.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot Snapshot : snapshot.getChildren()) {
+                            recruit_object recruit = Snapshot.getValue(recruit_object.class);
+                            for(int i = 0; i < userRecruitList.size(); i++){
+                                if(userRecruitList.get(i).equals(recruit.getRecruitId())){
+                                    if(recruit.getDate().compareTo(getTime) < 0){
+                                        mDatabaseRef.child("UserAccount").child(user.getUid()).child("recruitList").setValue(null);
+                                    }
+                                }
+                            }
+                            if(recruit.getDate().compareTo(getTime) < 0){
+                                mDatabaseRefRecruit.child(recruit.getRecruitId()).setValue(null);
+                            }
+
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                });
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 }
 

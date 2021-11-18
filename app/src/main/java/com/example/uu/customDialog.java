@@ -227,11 +227,10 @@ public class customDialog extends Dialog {
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 selectedHour = hourOfDay;
                 selectedMin = minute;
-                if(selectedHour*selectedMin!=0){
-                    TextView setDate=findViewById(R.id.settime);
-                    setDate.setText(selectedHour+" 시 "+selectedMin+" 분   ");
-                }            }
-        }, 14, 00, true);
+                TextView setDate=findViewById(R.id.settime);
+                setDate.setText(selectedHour+" 시 "+selectedMin+" 분   ");
+                           }
+            }, 14, 00, true);
         timePickerDialog.show();
     }
 
@@ -239,11 +238,14 @@ public class customDialog extends Dialog {
         String date;
         String time;
         String castDay;
+        String castHour;
         if(0< selectedDay && selectedDay <10){
             castDay = '0' + Integer.toString(selectedDay);
-        }
-        else castDay = Integer.toString(selectedDay);
-        time = Integer.toString(selectedHour) + ':' + Integer.toString(selectedMin);
+        } else castDay = Integer.toString(selectedDay);
+        if(0< selectedHour && selectedHour < 10){
+            castHour = '0' + Integer.toString(selectedHour);
+        } else castHour = Integer.toString(selectedHour);
+        time = castHour + ':' + Integer.toString(selectedMin);
         date = Integer.toString(selectedMonth) +'.' + castDay;
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
         recruit = new recruit_object();
