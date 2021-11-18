@@ -91,8 +91,6 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         //for notification
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        mCalender = new GregorianCalendar();
-        //Log.e("test", mCalender.getTime().toString());
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -105,9 +103,12 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
         //appbar 이름 view
         title = (TextView) findViewById(R.id.title);
+
         title.setText("Login");
         fragment_login fragment_login = new fragment_login();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_login).commit();
+
+
 
 
         ImageButton profile = (ImageButton) findViewById(R.id.profile);
@@ -332,7 +333,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
                             PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, receiverIntent, 0);
 
 
-                            String from = "2021-" + recruit.getDate() + " " + recruit.getTime();
+                            String from = "2021-" + recruit.getDate() + " " + recruit.getAlarmTime();
                             Log.e("fromdate", from);
                             Log.e("getdate", getTime);
                             if(from.compareTo(getTime) < 0){
@@ -340,6 +341,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
                                 return;
                             }
                             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM.dd HH:mm");
+
                             Date datetime = null;
                             try {
                                 datetime = dateFormat.parse(from);
@@ -365,28 +367,6 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
             }
         });
 
-        /*
-
-        Intent receiverIntent = new Intent(MainActivity.this, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, receiverIntent, 0);
-
-        String from = "2021-11-16 06:50:20"; //임의로 날짜와 시간을 지정
-
-        //날짜 포맷을 바꿔주는 소스코드
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM.dd HH:mm");
-        Date datetime = null;
-        try {
-            datetime = dateFormat.parse(from);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(datetime);
-
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-
-         */
     }
 
     private void DeleteFinishedRecruit(){

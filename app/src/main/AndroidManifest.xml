@@ -21,10 +21,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.UU"
         android:usesCleartextTraffic="true">
-        <service
-            android:name=".NotificationService"
-            android:enabled="true"
-            android:exported="true"></service>
 
         <receiver
             android:name=".AlarmReceiver"

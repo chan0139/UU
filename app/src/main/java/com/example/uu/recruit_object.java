@@ -16,9 +16,18 @@ public class recruit_object {
     private int totalUserNum;
     private String date;
     private String time;
+    private String alarmTime;
     private String userInfo;
     private String hostId;
     private String runningSpeed;
+
+    public String getAlarmTime() {
+        return alarmTime;
+    }
+
+    public void setAlarmTime(String alarmTime) {
+        this.alarmTime = alarmTime;
+    }
 
     private Map<String, Object> users = new HashMap<String, Object>();
 

@@ -237,20 +237,29 @@ public class customDialog extends Dialog {
     void saveRecruitInfo(){
         String date;
         String time;
+        String alarmTime;
         String castDay;
         String castHour;
+        String castAlarmHour;
         if(0< selectedDay && selectedDay <10){
             castDay = '0' + Integer.toString(selectedDay);
         } else castDay = Integer.toString(selectedDay);
         if(0< selectedHour && selectedHour < 10){
             castHour = '0' + Integer.toString(selectedHour);
-        } else castHour = Integer.toString(selectedHour);
+            castAlarmHour = '0' + Integer.toString(selectedHour-1);
+        } else {
+            castHour = Integer.toString(selectedHour);
+            castAlarmHour = Integer.toString(selectedHour-1);
+        }
         time = castHour + ':' + Integer.toString(selectedMin);
+        alarmTime = castAlarmHour + ':' + Integer.toString(selectedMin);
         date = Integer.toString(selectedMonth) +'.' + castDay;
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
         recruit = new recruit_object();
+
         recruit.setDate(date);
         recruit.setTime(time);
+        recruit.setAlarmTime(alarmTime);
         recruit.setLeader(getLeader);
         recruit.setTotalUserNum(getUserNum);
         recruit.setCurrentUserNum(1);
