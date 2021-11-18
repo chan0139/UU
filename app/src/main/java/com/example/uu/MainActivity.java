@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -174,6 +175,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
 
 
+
     @Override
     public void loginComplete() {
         title.setText("Crew");
@@ -204,7 +206,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
 
     // record to db if running ends
-    public void recordRunningState(String date, int distance, int time, float calories, int startTime, String runningDay, Address startAddress, Address endAddress)
+    public void recordRunningState(String date, int distance, int time, float calories, int startTime, String runningDay, Location startAddress, Location endAddress)
     {
         // on local DB
         //only record actual running data
@@ -237,7 +239,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         //위경도를 알고싶으면
         startAddress.getLatitude(); startAddress.getLongitude();
         //위치를 알고싶으면( ~동 기준)
-        startAddress.getThoroughfare();
+        //startAddress.getThoroughfare();
     }
 
 
