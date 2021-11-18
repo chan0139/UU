@@ -18,7 +18,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="top|start"
                 android:text="Check the items\nyou think are important for Running with"
-                android:textSize="40sp" />
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/targetCrewName"
@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/Description"
                 android:layout_marginBottom="20dp"
-                android:textSize="45sp" />
+                android:textSize="35sp" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/priorityChipGroup"
@@ -35,6 +35,7 @@
                 android:layout_below="@+id/targetCrewName">
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip0"
                     style="@style/Widget.MaterialComponents.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -42,6 +43,7 @@
                     android:textSize="20sp" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip1"
                     style="@style/Widget.MaterialComponents.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -49,6 +51,7 @@
                     android:textSize="20sp" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip2"
                     style="@style/Widget.MaterialComponents.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -56,6 +59,7 @@
                     android:textSize="20sp" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip3"
                     style="@style/Widget.MaterialComponents.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -63,6 +67,7 @@
                     android:textSize="20sp" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip4"
                     style="@style/Widget.MaterialComponents.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -70,12 +75,32 @@
                     android:textSize="20sp" />
 
                 <com.google.android.material.chip.Chip
+                    android:id="@+id/chip5"
                     style="@style/Widget.MaterialComponents.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Where do you usually run"
                     android:textSize="20sp" />
             </com.google.android.material.chip.ChipGroup>
+
+            <Button
+                android:id="@+id/fittestClose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/priorityChipGroup"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="20dp"
+                android:text="close" />
+            <Button
+                android:id="@+id/fittestGotoSecond"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Next"
+                android:layout_below="@id/priorityChipGroup"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="30dp"/>
         </RelativeLayout>
     </ScrollView>
 

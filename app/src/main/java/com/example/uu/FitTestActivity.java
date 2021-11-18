@@ -21,12 +21,15 @@ import android.widget.TextView;
 
 import com.layer_net.stepindicator.StepIndicator;
 
+import java.util.List;
 
-public class FitTestActivity extends AppCompatActivity {
+
+public class FitTestActivity extends AppCompatActivity implements SectionsPagerAdapter.OnPageListener{
 
     private final Context mContext=this;
 
     private FitTestData targetCrew;
+    private NoSwipeViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,7 @@ public class FitTestActivity extends AppCompatActivity {
         // primary sections of the activity.
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(mContext,targetCrew);
         // Set up the ViewPager with the sections adapter.
-        NoSwipeViewPager mViewPager = (NoSwipeViewPager) findViewById(R.id.stepViewPager);
+        mViewPager = (NoSwipeViewPager) findViewById(R.id.stepViewPager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         StepIndicator stepIndicator = (StepIndicator) findViewById(R.id.step_indicator);
@@ -53,4 +56,23 @@ public class FitTestActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void OnFitTestClose() {
+        finish();
+    }
+
+    @Override
+    public void OnNextClicked(List<Integer> checkChips) {
+        mViewPager.setCurrentItem(1);
+    }
+
+    @Override
+    public void OnGobackToFirstClicked() {
+        mViewPager.setCurrentItem(0);
+    }
+
+    @Override
+    public void OnCalculateFitnessClicked() {
+        mViewPager.setCurrentItem(2);
+    }
 }
