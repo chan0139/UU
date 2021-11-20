@@ -42,6 +42,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.DirectionsApiRequest;
+import com.google.maps.GeoApiContext;
+import com.google.maps.PendingResult;
+import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.TravelMode;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -56,6 +61,8 @@ import java.util.List;
 
 public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleMap.OnPolylineClickListener {
+    private static final String API_KEY="AIzaSyCtR1gj33Jv0oDKpb7PyHVYlXXJsFRp_KQ";
+    private GeoApiContext mGeoApiContext=null;
     private Uri mapUri;
     public static String TAG = "draw_map";
     static boolean isDrawing = false;
@@ -66,7 +73,8 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
     private static final PatternItem GAP = new Gap(PATTERN_GAP_LENGTH_PX);
     private static final List<LatLng> checkpoint = new ArrayList<>();
     private static final List<PatternItem> PATTERN_POLYLINE_DOTTED = Arrays.asList(GAP, DOT);
-    private String sendAddress;
+    private String startAddress;
+    private String endAddress;
     private int counter = 0;
     private Object Context;
 
@@ -75,7 +83,13 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawing_map);
+        Intent sendData=new Intent();
         checkpoint.clear();
+        startAddress=null;
+        endAddress=null;
+        if(mGeoApiContext==null){
+            mGeoApiContext=new GeoApiContext.Builder().apiKey(API_KEY).build();
+        }
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.make_route);
         mapFragment.getMapAsync(this);
 
@@ -126,7 +140,33 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setResult(Activity.RESULT_OK, new Intent().putExtra("mapUri", mapUri).putParcelableArrayListExtra("checkpoint", (ArrayList<? extends Parcelable>) checkpoint));
+                DirectionsApiRequest converter = new DirectionsApiRequest(mGeoApiContext);
+                converter.language("ko");
+                converter.mode(TravelMode.TRANSIT);
+                converter.alternatives(false);
+                converter.origin(
+                        new com.google.maps.model.LatLng(checkpoint.get(0).latitude,checkpoint.get(0).longitude)
+                );
+                converter.destination(
+                        new com.google.maps.model.LatLng(checkpoint.get(checkpoint.size()-1).latitude,checkpoint.get(checkpoint.size()-1).longitude)
+                )
+                        .setCallback(new PendingResult.Callback<DirectionsResult>() {
+                            @Override
+                            public void onResult(DirectionsResult result) {
+                                startAddress=result.routes[0].legs[0].startAddress;
+                                endAddress=result.routes[0].legs[0].endAddress;
+                                sendData.putExtra("startAddress",startAddress);
+                                sendData.putExtra("endAddress",endAddress);
+                                sendData.putExtra("mapUri",mapUri);
+                                sendData.putParcelableArrayListExtra("checkpoint", (ArrayList<? extends Parcelable>) checkpoint);
+                                setResult(Activity.RESULT_OK, sendData);
+                            }
+
+                            @Override
+                            public void onFailure(Throwable e) {
+                                Log.d("Tlqkf","direction fail");
+                            }
+                        });
                 finish();
             }
         });

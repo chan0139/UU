@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class recruit_object {
@@ -23,13 +24,13 @@ public class recruit_object {
     private String origin;
     private String destination;
 
-    private ArrayList<LatLng> checkpoint= new ArrayList<>();
+    private List<LatLng> checkpoint= new ArrayList<>();
 
-    public ArrayList<LatLng> getCheckpoint() {
+    public List<LatLng> getCheckpoint() {
         return checkpoint;
     }
 
-    public void setCheckpoint(ArrayList<LatLng> checkpoint) {
+    public void setCheckpoint(List<LatLng> checkpoint) {
         this.checkpoint = checkpoint;
     }
 

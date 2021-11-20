@@ -47,6 +47,7 @@ import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
 import com.google.maps.PendingResult;
 import com.google.maps.model.DirectionsResult;
+import com.google.maps.model.TravelMode;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -73,7 +74,9 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     SQLiteDatabase sqLiteDb;
 
     private Uri mapUri;
-    private ArrayList<com.example.uu.LatLng> checkpoint=new ArrayList<>();
+    private String startAddress;
+    private String endAddress;
+    private List<com.example.uu.LatLng> checkpoint=new ArrayList<>();
 
     private String recruitToken;
 
@@ -293,28 +296,8 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         recruitObject.setMapUrl("https://firebasestorage.googleapis.com/v0/b/doubleu-2df72.appspot.com/o/recruitment%2F" + recruitImg.getName() + "?alt=media");
 
         recruitObject.setCheckpoint(this.checkpoint);
-        /*
-        DirectionsApiRequest converter = new DirectionsApiRequest(mGeoApiContext);
-        converter.language("ko");
-        converter.origin(String.valueOf(new LatLng(checkpoint.get(0).getLatitude(),checkpoint.get(0).getLongitude())));
-        converter.destination(String.valueOf(new LatLng(checkpoint.get(checkpoint.size()-1).getLatitude(),checkpoint.get(checkpoint.size()-1).getLongitude())))
-                .setCallback(new PendingResult.Callback<DirectionsResult>() {
-                    @Override
-                    public void onResult(DirectionsResult result) {
-                        recruitObject.setOrigin(result.routes[0].legs[0].startAddress);
-                        recruitObject.setDestination(result.routes[0].legs[0].endAddress);
-                    }
-
-                    @Override
-                    public void onFailure(Throwable e) {
-
-                    }
-                });
-
-        Log.d("버스장인",recruitObject.getOrigin());
-
-         */
-
+        recruitObject.setOrigin(startAddress);
+        recruitObject.setDestination(endAddress);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Recruit");
         databaseReference.child(scheduleToken).setValue(recruitObject);
@@ -339,6 +322,11 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
             UploadTask uploadTask = riverRef.putFile(mapUri);
 
             checkpoint = data.<com.example.uu.LatLng>getParcelableArrayListExtra("checkpoint");
+
+            startAddress=data.getStringExtra("startAddress");
+            Log.d("Tlqkf",startAddress+"");
+            endAddress=data.getExtras().getString("endAddress");
+            Log.d("Tlqkf",endAddress+"");
         }
     }
 
