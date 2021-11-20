@@ -22,6 +22,8 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +31,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,6 +43,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.maps.DirectionsApiRequest;
+import com.google.maps.GeoApiContext;
+import com.google.maps.PendingResult;
+import com.google.maps.model.DirectionsResult;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,9 +54,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener, crewAdapter.OnCrewAddedListener, fragment_crew.OnCrewAddedListener {
+public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener ,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener, crewAdapter.OnCrewAddedListener, fragment_crew.OnCrewAddedListener {
+    private static final String API_KEY="AIzaSyCtR1gj33Jv0oDKpb7PyHVYlXXJsFRp_KQ";
+    private GeoApiContext mGeoApiContext=null;
 
     Toolbar toolbar;
     TextView title;
@@ -63,6 +73,8 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     SQLiteDatabase sqLiteDb;
 
     private Uri mapUri;
+    private ArrayList<com.example.uu.LatLng> checkpoint=new ArrayList<>();
+
     private String recruitToken;
 
     //for notification
@@ -79,12 +91,18 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     ArrayList<String> userRecruitList;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent intent = new Intent(this, LoadingActivity.class);
         startActivity(intent);
+
+        if(mGeoApiContext==null){
+            mGeoApiContext=new GeoApiContext.Builder().apiKey(API_KEY).build();
+        }
 
         dbHelper = new DatabaseHelper(this);
 
@@ -274,6 +292,30 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
         recruitObject.setMapUrl("https://firebasestorage.googleapis.com/v0/b/doubleu-2df72.appspot.com/o/recruitment%2F" + recruitImg.getName() + "?alt=media");
 
+        recruitObject.setCheckpoint(this.checkpoint);
+        /*
+        DirectionsApiRequest converter = new DirectionsApiRequest(mGeoApiContext);
+        converter.language("ko");
+        converter.origin(String.valueOf(new LatLng(checkpoint.get(0).getLatitude(),checkpoint.get(0).getLongitude())));
+        converter.destination(String.valueOf(new LatLng(checkpoint.get(checkpoint.size()-1).getLatitude(),checkpoint.get(checkpoint.size()-1).getLongitude())))
+                .setCallback(new PendingResult.Callback<DirectionsResult>() {
+                    @Override
+                    public void onResult(DirectionsResult result) {
+                        recruitObject.setOrigin(result.routes[0].legs[0].startAddress);
+                        recruitObject.setDestination(result.routes[0].legs[0].endAddress);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable e) {
+
+                    }
+                });
+
+        Log.d("버스장인",recruitObject.getOrigin());
+
+         */
+
+
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Recruit");
         databaseReference.child(scheduleToken).setValue(recruitObject);
         showRecruitmentFragment();
@@ -296,6 +338,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
             StorageReference riverRef = setstorageReference.child("recruitment/" + recruitToken + ".png");
             UploadTask uploadTask = riverRef.putFile(mapUri);
 
+            checkpoint = data.<com.example.uu.LatLng>getParcelableArrayListExtra("checkpoint");
         }
     }
 
@@ -327,6 +370,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot Snapshot : snapshot.getChildren()) {
                             recruit_object recruit = Snapshot.getValue(recruit_object.class);
+
                             recruit.getDate();
 
                             Intent receiverIntent = new Intent(MainActivity.this, AlarmReceiver.class);
@@ -334,8 +378,8 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
 
                             String from = "2021-" + recruit.getDate() + " " + recruit.getAlarmTime();
-                            Log.e("fromdate", from);
-                            Log.e("getdate", getTime);
+                            //Log.e("fromdate", from);
+                            //Log.e("getdate", getTime);
                             if(from.compareTo(getTime) < 0){
 
                                 return;
@@ -374,6 +418,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         Date date = new Date(now);
         SimpleDateFormat sdf = new SimpleDateFormat("MM.dd");
         String getTime = sdf.format(date);
+
         //Log.e("date", getTime);
 
         database = FirebaseDatabase.getInstance();
