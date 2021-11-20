@@ -1,10 +1,13 @@
 package com.example.uu;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,60 +23,38 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.owl93.dpb.CircularProgressView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link fragment_record_results#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class fragment_record_results extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    // db init
+    DatabaseHelper dbHelper;
+    SQLiteDatabase sqLiteDb;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    //data list
+    ArrayList<BarEntry> barEntries=new ArrayList<>();
+    ArrayList<String> xAxisName= new ArrayList<>();
 
-    public fragment_record_results() {
-        // Required empty public constructor
-    }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment fragment_record_results.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static fragment_record_results newInstance(String param1, String param2) {
-        fragment_record_results fragment = new fragment_record_results();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
     private int show_what;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         ViewGroup rootView=(ViewGroup) inflater.inflate(R.layout.fragment_record_results, container, false);
 
+        //init
+        dbHelper=new DatabaseHelper(getContext());
+        sqLiteDb=dbHelper.getReadableDatabase();
+
+
+        //CircularProgressView
         show_what=1;
         CircularProgressView personalAchievement=(CircularProgressView) rootView.findViewById(R.id.personalAchievement);
         personalAchievement.setText("gi");
@@ -91,31 +72,18 @@ public class fragment_record_results extends Fragment {
             }
         });
 
+
+        //HorizontalBarChart
         //detail --> https://weeklycoding.com/mpandroidchart-documentation/getting-started/
         HorizontalBarChart mBarchart=(HorizontalBarChart)rootView.findViewById(R.id.id_horizontal_barchart);
         //prepare data
-        ArrayList<BarEntry> barEntries=new ArrayList<>();
-        barEntries.add(new BarEntry(1f,30));
-        barEntries.add(new BarEntry(2f,40));
-        barEntries.add(new BarEntry(3f,50));
-        barEntries.add(new BarEntry(4f,40));
-        barEntries.add(new BarEntry(5f,30));
-        barEntries.add(new BarEntry(6f,70));
-        barEntries.add(new BarEntry(7f,50));
-        //to add the values in X-axis
-        ArrayList<String> xAxisName= new ArrayList<>();
-        xAxisName.add("Monday");
-        xAxisName.add("Tuesday");
-        xAxisName.add("Wednesday");
-        xAxisName.add("Thursday");
-        xAxisName.add("Friday");
-        xAxisName.add("Saturday");
-        xAxisName.add("Sunday");
+        getRecordData();
 
         barchart(mBarchart,barEntries,xAxisName);
 
         return rootView;
     }
+
     public static void barchart(BarChart barChart, ArrayList<BarEntry> arrayList, final ArrayList<String> xAxisValues) {
         barChart.setDrawBarShadow(false);
         barChart.setFitBars(true);
@@ -124,7 +92,7 @@ public class fragment_record_results extends Fragment {
         barChart.setPinchZoom(false);
 
         barChart.setDrawGridBackground(true);
-        BarDataSet barDataSet = new BarDataSet(arrayList, "Label");
+        BarDataSet barDataSet = new BarDataSet(arrayList, "M(미터)");
         barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         BarData barData = new BarData(barDataSet);
         barData.setBarWidth(0.9f);
@@ -152,4 +120,70 @@ public class fragment_record_results extends Fragment {
         barChart.invalidate();//refresh
 
     }
+
+    private void getRecordData()
+    {
+        Cursor cursor;
+
+        String day;
+        int distance;
+
+        xAxisName.add("temp");
+
+        // Query
+        for(int i=-6;i<1;i++){
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE , i);
+            String targetDate = new java.text.SimpleDateFormat("yyyy:MM:dd%").format(calendar.getTime());
+            String queryDistanceSum="SELECT SUM("+DatabaseHelper.RUNNING_DISTANCE+") FROM "+DatabaseHelper.TABLE_NAME+" WHERE "+DatabaseHelper.PRIMARY_KEY+" LIKE '"+targetDate+"';";
+
+            cursor = sqLiteDb.rawQuery(queryDistanceSum,null);
+            cursor.moveToFirst();
+            distance=cursor.getInt(0);
+            day=getDateDay(calendar.get(Calendar.DAY_OF_WEEK));
+
+            Log.d("day",targetDate+distance);
+
+            barEntries.add(new BarEntry(i+7,distance+5));
+            xAxisName.add(day);
+        }
+
+
+        sqLiteDb.close();
+    }
+
+    public static String getDateDay(int dayNum)  {
+        String day;
+
+        switch (dayNum) {
+            case 1:
+                day = "Sun";
+                break;
+            case 2:
+                day = "Mon";
+                break;
+            case 3:
+                day = "Tue";
+                break;
+            case 4:
+                day = "Wed";
+                break;
+            case 5:
+                day = "Thu";
+                break;
+            case 6:
+                day = "Fri";
+                break;
+            case 7:
+                day = "Sat";
+                break;
+            default:
+                day=null;
+
+        }
+
+        return day;
+    }
+
+
 }

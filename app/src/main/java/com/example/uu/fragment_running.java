@@ -2,6 +2,7 @@ package com.example.uu;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -448,6 +450,7 @@ public class fragment_running extends Fragment
 
     // For drawing polyline after running finished
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void onButtonStart()
     {
         checkpoints.clear();
