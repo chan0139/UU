@@ -7,20 +7,27 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.dynamicanimation.animation.DynamicAnimation;
+import androidx.dynamicanimation.animation.SpringAnimation;
+import androidx.dynamicanimation.animation.SpringForce;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.github.mikephil.charting.components.Description;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -59,7 +66,6 @@ public class SectionsPagerAdapter extends PagerAdapter {
                 view=inflater.inflate(R.layout.fittest_stepfirst,container,false);
                 TextView targetCrewName=view.findViewById(R.id.targetCrewName);
                 targetCrewName.setText(targetCrew.getCrewName());
-
                 ChipGroup chipGroup = view.findViewById(R.id.priorityChipGroup);
 
                 view.findViewById(R.id.fittestClose).setOnClickListener(new View.OnClickListener() {
@@ -110,6 +116,7 @@ public class SectionsPagerAdapter extends PagerAdapter {
                 view.findViewById(R.id.fittestGotoFirst).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        selectedPriority.clear();
                         onPageListener.OnGobackToFirstClicked();
                     }
                 });
@@ -126,7 +133,26 @@ public class SectionsPagerAdapter extends PagerAdapter {
 
                 break;
             case FINAL_STEP:
-                view=inflater.inflate(R.layout.fittest_stepfirst,container,false);
+                view=inflater.inflate(R.layout.fittest_stepfinal,container,false);
+                Animation animation= AnimationUtils.loadAnimation(mContext,R.anim.fade);
+                TextView score=view.findViewById(R.id.score);
+                TextView description=view.findViewById(R.id.Description);
+                score.startAnimation(animation);
+
+                
+
+                SpringAnimation springAnimation_score=new SpringAnimation(score, DynamicAnimation.TRANSLATION_Y,0);
+                SpringAnimation springAnimation_description=new SpringAnimation(description,DynamicAnimation.Y,0);
+                view.findViewById(R.id.moredetails).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        springAnimation_description.getSpring().setDampingRatio(SpringForce.DAMPING_RATIO_HIGH_BOUNCY);
+                        springAnimation_score.getSpring().setDampingRatio(SpringForce.DAMPING_RATIO_HIGH_BOUNCY);
+                        springAnimation_description.animateToFinalPosition(-200);
+                        springAnimation_score.animateToFinalPosition(-400);
+                    }
+                });
+
                 break;
         }
         container.addView(view);

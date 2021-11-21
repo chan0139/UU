@@ -30,6 +30,7 @@ public class FitTestActivity extends AppCompatActivity implements SectionsPagerA
 
     private FitTestData targetCrew;
     private NoSwipeViewPager mViewPager;
+    private StepIndicator stepIndicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +48,11 @@ public class FitTestActivity extends AppCompatActivity implements SectionsPagerA
         mViewPager = (NoSwipeViewPager) findViewById(R.id.stepViewPager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        StepIndicator stepIndicator = (StepIndicator) findViewById(R.id.step_indicator);
+        stepIndicator = (StepIndicator) findViewById(R.id.step_indicator);
         stepIndicator.setupWithViewPager(mViewPager);
 
         // Enable | Disable click on step number
         stepIndicator.setClickable(false);
-
 
     }
 
@@ -75,4 +75,5 @@ public class FitTestActivity extends AppCompatActivity implements SectionsPagerA
     public void OnCalculateFitnessClicked() {
         mViewPager.setCurrentItem(2);
     }
+
 }

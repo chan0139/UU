@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+       <ImageView
+           android:layout_width="wrap_content"
+           android:layout_height="match_parent"
+           android:background="@drawable/ic_grip_lines_vertical_solid"
+           android:layout_centerHorizontal="true"/>
+       <TextView
+           android:id="@+id/Description"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="The Fitness is"
+           android:textSize="40sp"
+           android:layout_above="@id/score"
+           android:layout_centerHorizontal="true"
+           android:background="@color/white"
+           android:layout_marginBottom="100dp"/>
+       <TextView
+           android:id="@+id/score"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_centerInParent="true"
+           android:text="43%"
+           android:textSize="60sp"
+           android:background="@color/white"/>
+       <Button
+           android:id="@+id/moredetails"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="More Details"
+           android:layout_below="@id/score"
+           android:layout_marginTop="80dp"
+           android:layout_centerHorizontal="true"/>
+
+
+</RelativeLayout>

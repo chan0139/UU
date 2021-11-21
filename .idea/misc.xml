@@ -45,6 +45,7 @@
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_club.xml" value="0.38229166666666664" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_crew.xml" value="0.22864583333333333" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_crew_selected.xml" value="0.22864583333333333" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_grip_lines_vertical_solid.xml" value="0.2833333333333333" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_lounge.xml" value="0.22864583333333333" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_lounge_selected.xml" value="0.22864583333333333" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_route.xml" value="0.27708333333333335" />
@@ -61,6 +62,8 @@
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/dialog_detail_recruit.xml" value="0.23333333333333334" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/dialog_recruit.xml" value="0.33" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/draw_map.xml" value="0.19" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fittest_stepfinal.xml" value="0.2671875" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fittest_stepfirst.xml" value="0.2671875" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fittest_stepsecond.xml" value="0.171875" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fragment_club.xml" value="0.2609375" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fragment_crew.xml" value="0.29270833333333335" />
