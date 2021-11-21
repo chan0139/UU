@@ -204,6 +204,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
                 bundle.putString("mapUrl", arrayList.get(position).getMapUrl());
                 bundle.putString("curuser", curUserNum);
                 bundle.putString("totuser", totalUserNum);
+                bundle.putString("address", arrayList.get(position).getAddress());
                 dialog.setArguments(bundle);
 
 

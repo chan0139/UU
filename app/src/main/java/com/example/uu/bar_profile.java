@@ -1,5 +1,7 @@
 package com.example.uu;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,7 +46,14 @@ public class bar_profile extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     ArrayList<String> userRecruitList;
     private String currentCrew;
+    private FragmentActivity myContext;
+    private TextView title;
 
+    @Override
+    public void onAttach(@NonNull Activity activity) {
+        myContext = (FragmentActivity) activity;
+        super.onAttach(activity);
+    }
 
     @Nullable
     @Override
@@ -54,6 +64,7 @@ public class bar_profile extends Fragment {
         ImageView profile = rootview.findViewById(R.id.profile);
         TextView name = rootview.findViewById(R.id.name);
         TextView gender = rootview.findViewById(R.id.gender);
+        title = getActivity().findViewById(R.id.title);
 
         recyclerView = rootview.findViewById(R.id.profileRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -62,8 +73,27 @@ public class bar_profile extends Fragment {
         userRecruitList = new ArrayList<>();
         recyclerView.setLayoutManager(layoutManager);
         database = FirebaseDatabase.getInstance();
+        mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("UU");
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user == null) {
+
+            profile.setImageResource(R.drawable.no_login_user_image);
+            name.setText("  익 명");
+            gender.setText("/  성 별");
+            email.setText("이 메 일");
+            button.setText("로그인 먼저 진행해주세요.");
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    title.setText("Login");
+                    fragment_login fragment_login = new fragment_login();
+                    myContext.getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment_login).commit();
+                }
+            });
+
+            return rootview;
+        }
 
         mDatabaseRef.child("UserAccount").child(user.getUid()).child("recruitList").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -81,80 +111,64 @@ public class bar_profile extends Fragment {
             }
         });
 
-        if(user != null) {
-            String uid = user != null ? user.getUid() : null;
+
+        String uid = user != null ? user.getUid() : null;
 
 
-            mDatabaseRef.child("UserAccount").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    userObject info = snapshot.getValue(userObject.class);
-                    userId = info.getUserId();
-                    userName = info.getUserName();
-                    userGender = info.getUserGender();
-                    userProfileUrl = info.getUserProfileUrl();
-                    currentCrew = info.getCurrentCrew();
-                    email.setText(userId);
-                    name.setText(userName);
-                    gender.setText("/  " + userGender);
-                    Glide.with(getContext()).load(userProfileUrl).into(profile);
+        mDatabaseRef.child("UserAccount").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                userObject info = snapshot.getValue(userObject.class);
+                userId = info.getUserId();
+                userName = info.getUserName();
+                userGender = info.getUserGender();
+                userProfileUrl = info.getUserProfileUrl();
+                currentCrew = info.getCurrentCrew();
+                email.setText(userId);
+                name.setText(userName);
+                gender.setText("/  " + userGender);
+                Glide.with(getContext()).load(userProfileUrl).into(profile);
 
 
 
-                }
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-                }
-            });
+            }
+        });
 
-            databaseReferenceRecruit = database.getReference("Recruit");
+        databaseReferenceRecruit = database.getReference("Recruit");
 
-            databaseReferenceRecruit.orderByChild("date").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    // DB data를 받아오는곳
-                    arrayList.clear(); // 기존 배열리스트 초기화
-                    for (DataSnapshot Snapshot : dataSnapshot.getChildren()) {
-                        recruit_object recruit = Snapshot.getValue(recruit_object.class);
-                        for(int i = 0; i < userRecruitList.size(); i++){
-                            if(userRecruitList.get(i).equals(recruit.getRecruitId())){
-                                arrayList.add(recruit);
-                            }
+        databaseReferenceRecruit.orderByChild("date").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // DB data를 받아오는곳
+                arrayList.clear(); // 기존 배열리스트 초기화
+                for (DataSnapshot Snapshot : dataSnapshot.getChildren()) {
+                    recruit_object recruit = Snapshot.getValue(recruit_object.class);
+                    for(int i = 0; i < userRecruitList.size(); i++){
+                        if(userRecruitList.get(i).equals(recruit.getRecruitId())){
+                            arrayList.add(recruit);
                         }
-
                     }
-                    adapter.notifyDataSetChanged(); //리스트 저장 및 새로고침
+
                 }
+                adapter.notifyDataSetChanged(); //리스트 저장 및 새로고침
+            }
 
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    //DB 받아오던 중 에러 발생하는 경우
-                    Log.e("Error", String.valueOf(error.toException()));
-                }
-            });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                //DB 받아오던 중 에러 발생하는 경우
+                Log.e("Error", String.valueOf(error.toException()));
+            }
+        });
 
-            adapter = new recruitAdapter(arrayList, getContext(), 2);
+        adapter = new recruitAdapter(arrayList, getContext(), 2);
 
-            recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
-
-
-        }
-        else{
-                profile.setImageResource(R.drawable.no_login_user_image);
-                name.setText("  익 명");
-                gender.setText("/  성 별");
-                email.setText("이 메 일");
-                button.setText("로그인 먼저 진행해주세요.");
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        ((MainActivity)getActivity()).replaceFragment(fragment_login.newInstance());
-                    }
-                });
-        }
+        recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
 
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -167,8 +181,13 @@ public class bar_profile extends Fragment {
                         ((MainActivity)getActivity()).replaceFragment(fragment_login.newInstance());
                     }
                 });
+                title.setText("Login");
             }
         });
+
+
+
+
 
         return rootview;
     }

@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/map"
         android:layout_width="350dp"
-        android:layout_height="450dp"
+        android:layout_height="413dp"
         android:layout_gravity="center" />
 
     <LinearLayout
@@ -19,12 +19,41 @@
         android:layout_gravity="center_horizontal">
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="위치 :" />
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold"
+            android:text="주소입력" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textStyle="bold"
+            android:text="시간 : " />
+
+        <TextView
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
             android:textStyle="bold"
-            android:text="date" />
+            android:text="date :" />
 
         <TextView
             android:id="@+id/time"

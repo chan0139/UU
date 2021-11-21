@@ -23,6 +23,15 @@ public class recruit_object {
     private String runningSpeed;
     private String origin;
     private String destination;
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     private List<LatLng> checkpoint= new ArrayList<>();
 
