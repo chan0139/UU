@@ -219,36 +219,36 @@ public class fragment_record_achievements extends Fragment {
 
     private void setFlags()
     {
-        if(max_distance>3) {
+        if(max_distance>3000) {
             flag_maxDistance_3 = true;
             levelBar.incrementProgressBy(20);
             checkLevelBar();
         }
 
-        if(max_distance>5) {
+        if(max_distance>5000) {
             flag_maxDistance_5 = true;
             levelBar.incrementProgressBy(20);
             checkLevelBar();
         }
-        if(max_distance>10) {
+        if(max_distance>10000) {
             flag_maxDistance_10 = true;
             levelBar.incrementProgressBy(20);
             checkLevelBar();
         }
 
-        if(total_distance>10) {
+        if(total_distance>10000) {
             flag_totalDistance_10 = true;
             levelBar.incrementProgressBy(20);
             checkLevelBar();
         }
 
-        if(total_distance>50) {
+        if(total_distance>50000) {
             flag_totalDistance_50 = true;
             levelBar.incrementProgressBy(20);
             checkLevelBar();
         }
 
-        if(total_distance>100) {
+        if(total_distance>100000) {
             flag_totalDistance_100 = true;
             levelBar.incrementProgressBy(20);
             checkLevelBar();

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class achievementAdapter extends BaseAdapter {
-    public ArrayList<achievementObject> items=new ArrayList<achievementObject>();
+    public static ArrayList<achievementObject> items=new ArrayList<achievementObject>();
 
     public void addItem(achievementObject item){
         items.add(item);

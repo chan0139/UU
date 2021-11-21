@@ -62,7 +62,7 @@ public class fragment_record_results extends Fragment {
             @Override
             public void onClick(View view) {
                 if(show_what==1){
-                    personalAchievement.setText("gi");
+                    personalAchievement.setText("목표 달성 업적을\n 선택해주세요!");
                     show_what=0;
                 }
                 else{
