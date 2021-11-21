@@ -153,13 +153,20 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
                         .setCallback(new PendingResult.Callback<DirectionsResult>() {
                             @Override
                             public void onResult(DirectionsResult result) {
+
                                 startAddress=result.routes[0].legs[0].startAddress;
                                 endAddress=result.routes[0].legs[0].endAddress;
-                                sendData.putExtra("startAddress",startAddress);
-                                sendData.putExtra("endAddress",endAddress);
+                                String[] splitStr = startAddress.split(" ");
+                                String[] splitStr2 = endAddress.split(" ");
+                                //Log.d("Tlqkf",startAddress+"");
+                                //Log.d("Tlqkf",endAddress+"");
+                                sendData.putExtra("address", startAddress);
+                                sendData.putExtra("startAddress",splitStr[2]);
+                                sendData.putExtra("endAddress",splitStr2[2]);
                                 sendData.putExtra("mapUri",mapUri);
                                 sendData.putParcelableArrayListExtra("checkpoint", (ArrayList<? extends Parcelable>) checkpoint);
                                 setResult(Activity.RESULT_OK, sendData);
+                                finish();
                             }
 
                             @Override
@@ -167,7 +174,7 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
                                 Log.d("Tlqkf","direction fail");
                             }
                         });
-                finish();
+
             }
         });
 

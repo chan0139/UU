@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     private Uri mapUri;
     private String startAddress;
     private String endAddress;
+    private String address;
     private List<com.example.uu.LatLng> checkpoint=new ArrayList<>();
 
     private String recruitToken;
@@ -92,7 +94,6 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     private DatabaseReference mDatabaseRef;
     private DatabaseReference mDatabaseRefRecruit;
     ArrayList<String> userRecruitList;
-
 
 
 
@@ -157,7 +158,10 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
 
         hideNavigationBar();
-        if(user.getUid() != null) {
+        if(user == null){
+            return;
+        }
+        else {
             DeleteFinishedRecruit();
             setAlarm();
         }
@@ -298,6 +302,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         recruitObject.setCheckpoint(this.checkpoint);
         recruitObject.setOrigin(startAddress);
         recruitObject.setDestination(endAddress);
+        recruitObject.setAddress(address);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Recruit");
         databaseReference.child(scheduleToken).setValue(recruitObject);
@@ -322,11 +327,11 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
             UploadTask uploadTask = riverRef.putFile(mapUri);
 
             checkpoint = data.<com.example.uu.LatLng>getParcelableArrayListExtra("checkpoint");
-
+            address = data.getStringExtra("address");
             startAddress=data.getStringExtra("startAddress");
-            Log.d("Tlqkf",startAddress+"");
+            //Log.d("Tlqkf",startAddress+"");
             endAddress=data.getExtras().getString("endAddress");
-            Log.d("Tlqkf",endAddress+"");
+            //Log.d("Tlqkf",endAddress+"");
         }
     }
 

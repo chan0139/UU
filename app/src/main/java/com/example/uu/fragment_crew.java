@@ -103,6 +103,7 @@ public class fragment_crew extends Fragment{
     private Bitmap bitmapOfMap;
     private FirebaseAuth mFirebaseAuth;
     String selectedGu;
+    private TextView title;
 
     int which_layout=R.id.show_recruitment;
 
@@ -120,12 +121,19 @@ public class fragment_crew extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         rootview=(ViewGroup) inflater.inflate(R.layout.fragment_crew,container,false);
-
+        title = getActivity().findViewById(R.id.title);
         database = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
 
         databaseReference = database.getReference("UU");
+        if(firebaseUser == null){
+            Toast.makeText(rootview.getContext(), "Need to login", Toast.LENGTH_SHORT).show();
+            title.setText("Login");
+            fragment_login login = new fragment_login();
+            ((MainActivity) getActivity()).replaceFragment(login);
+            return rootview;
+        }
 
         databaseReference.child("UserAccount").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -164,16 +172,6 @@ public class fragment_crew extends Fragment{
         });
 
 
-        if (firebaseUser != null) {
-
-
-        } else {
-
-            Toast.makeText(rootview.getContext(), "Need to login", Toast.LENGTH_SHORT).show();
-
-            fragment_login login = new fragment_login();
-            ((MainActivity) getActivity()).replaceFragment(login);
-        }
         //
 
         //유저가 크루가 없는 경우 초기 화면

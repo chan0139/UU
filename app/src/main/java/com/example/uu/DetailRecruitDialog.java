@@ -43,6 +43,7 @@ public class DetailRecruitDialog extends DialogFragment {
         TextView textSpeed = (TextView) rootview.findViewById(R.id.runningspeed);
         TextView textCur = (TextView) rootview.findViewById(R.id.curUserNum);
         TextView textTot = (TextView) rootview.findViewById(R.id.totalUserNum);
+        TextView textAddress = rootview.findViewById(R.id.address);
 
         Bundle bundle = getArguments();
         String getLeader = bundle.getString("leader", "leader");
@@ -52,6 +53,7 @@ public class DetailRecruitDialog extends DialogFragment {
         String getSpeed = bundle.getString("speed", "speed");
         String getCur = bundle.getString("curuser", "cur");
         String getTot = bundle.getString("totuser", "tot");
+        String getAddress = bundle.getString("address", "address");
 
 
         textLeader.setText(getLeader);
@@ -61,6 +63,7 @@ public class DetailRecruitDialog extends DialogFragment {
         textSpeed.setText(getSpeed);
         textCur.setText(getCur);
         textTot.setText(getTot);
+        textAddress.setText(getAddress);
 
 
         Button cancelButton = rootview.findViewById(R.id.closeButton);

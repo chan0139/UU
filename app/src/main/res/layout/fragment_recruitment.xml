@@ -45,12 +45,43 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/recruit"
-                    android:layout_width="wrap_content"
+                <LinearLayout
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="add"/>
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@drawable/search" />
+
+                    <Spinner
+                        android:id="@+id/recruitSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp">
+                    </Spinner>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/recruit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+
+                        android:text="add"/>
+
+                </LinearLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
