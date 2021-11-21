@@ -157,9 +157,6 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
                                 endAddress=result.routes[0].legs[0].endAddress;
                                 sendData.putExtra("startAddress",startAddress);
                                 sendData.putExtra("endAddress",endAddress);
-                                sendData.putExtra("mapUri",mapUri);
-                                sendData.putParcelableArrayListExtra("checkpoint", (ArrayList<? extends Parcelable>) checkpoint);
-                                setResult(Activity.RESULT_OK, sendData);
                             }
 
                             @Override
@@ -167,6 +164,9 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
                                 Log.d("Tlqkf","direction fail");
                             }
                         });
+                sendData.putExtra("mapUri",mapUri);
+                sendData.putParcelableArrayListExtra("checkpoint", (ArrayList<? extends Parcelable>) checkpoint);
+                setResult(Activity.RESULT_OK, sendData);
                 finish();
             }
         });
