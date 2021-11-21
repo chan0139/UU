@@ -42,6 +42,10 @@ public class fragment_record_results extends Fragment {
     ArrayList<BarEntry> barEntries=new ArrayList<>();
     ArrayList<String> xAxisName= new ArrayList<>();
 
+    //for circular progress bar
+    private float progress;
+    private String achievementName;
+
 
     private int show_what;
     @Override
@@ -61,14 +65,7 @@ public class fragment_record_results extends Fragment {
         personalAchievement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(show_what==1){
-                    personalAchievement.setText("목표 달성 업적을\n 선택해주세요!");
-                    show_what=0;
-                }
-                else{
-                    personalAchievement.setText(personalAchievement.getProgress()+"%");
-                    show_what=1;
-                }
+                setAchievement();
             }
         });
 
@@ -152,7 +149,7 @@ public class fragment_record_results extends Fragment {
         sqLiteDb.close();
     }
 
-    public static String getDateDay(int dayNum)  {
+    private static String getDateDay(int dayNum)  {
         String day;
 
         switch (dayNum) {
@@ -185,5 +182,7 @@ public class fragment_record_results extends Fragment {
         return day;
     }
 
+    private void setAchievement(){
 
+    }
 }
