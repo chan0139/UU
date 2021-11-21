@@ -14,6 +14,7 @@ import android.content.DialogInterface;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Address;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -209,8 +210,9 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
 
     // record to db if running ends
-    public void recordRunningState(String date,int distance,int time,float calories)
+    public void recordRunningState(String date, int distance, int time, float calories, int startTime, String runningDay, Address startAddress, Address endAddress)
     {
+        // on local DB
         //only record actual running data
         if(distance!=0) {
             sqLiteDb = dbHelper.getWritableDatabase();
@@ -228,6 +230,20 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
             else
                 Log.d("DB Record","db 저장 완료"+date);
         }
+
+        //on FireBase
+
+        // date는 시작 시간 yy:mm:dd:hh:mm:ss
+        // distance는 총 운동 거리 (m단위)
+        // time은 총 운동 시간, 분 단위
+        //calories, 소비 칼로리
+        //startTime, 시작 시간. 24시 기준으로 몇 시 인지만 정수로 반환 (ex. 16시 32분 시작 -> startTime==16)
+        // runningDay는 운동한 요일(Mon~Sun), 한글로 바꾸고 싶으면 fragment_running에서 수정
+        // start/endAddress는 시작/끝 위치
+        //위경도를 알고싶으면
+        startAddress.getLatitude(); startAddress.getLongitude();
+        //위치를 알고싶으면( ~동 기준)
+        startAddress.getThoroughfare();
     }
 
 
