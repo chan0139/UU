@@ -13,30 +13,51 @@
 
                 ** for detail --> https://github.com/owl-93/Determinate-Progress-View
 
-                <com.owl93.dpb.CircularProgressView
-                    android:id="@+id/personalAchievement"
-                    android:layout_width="230dp"
-                    android:layout_height="230dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="24dp"
-                    android:padding="10dp"
-                    app:animationInterpolator="anticipate_overshoot"
-                    app:drawTrack="true"
-                    app:gradientCenterColor="@color/purple"
-                    app:gradientEndColor="@color/teal"
-                    app:gradientStartColor="@color/blue"
-                    app:progress="67"
-                    app:strokeGradientSize="stroke_only"
-                    app:strokeGradientStyle="candy_cane"
-                    app:strokeWidth="20dp"
-                    app:text="오늘의 목표는?"
-                    app:textColor="@color/blue"
-                    app:textEnabled="true"
-                    app:textFormat="pcnt_decimal"
-                    app:textSize="24sp"
-                    app:trackAlpha="25"
-                    app:trackColor="#000000"
-                    app:trackWidth="30dp" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp">
+
+
+                        <com.owl93.dpb.CircularProgressView
+                            android:id="@+id/personalAchievement"
+                            android:layout_width="270dp"
+                            android:layout_height="270dp"
+                            android:layout_gravity="center"
+                            android:padding="10dp"
+                            app:animationInterpolator="anticipate_overshoot"
+                            app:drawTrack="true"
+                            app:gradientCenterColor="@color/purple"
+                            app:gradientEndColor="@color/teal"
+                            app:gradientStartColor="@color/blue"
+                            app:progress="0"
+                            android:background="?attr/selectableItemBackground"
+                            app:strokeGradientSize="stroke_only"
+                            app:strokeGradientStyle="candy_cane"
+                            app:strokeWidth="20dp"
+                            app:textColor="@color/blue"
+                            app:textEnabled="true"
+                            app:textFormat="pcnt_decimal"
+                            app:textSize="24sp"
+                            app:trackAlpha="25"
+                            app:trackColor="#000000"
+                            app:trackWidth="30dp" />
+
+                        <TextView
+                            android:id="@+id/achievementText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="40dp"
+                            android:gravity="center"
+                            android:text="나만의 목표를 \n선택하세요!!"
+                            android:textColor="@color/blue"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                </FrameLayout>
+
+
 
                 **요일별 운동량
 
@@ -44,6 +65,7 @@
                     android:id="@+id/id_horizontal_barchart"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"></com.github.mikephil.charting.charts.HorizontalBarChart>
 
                 ** completed running list
