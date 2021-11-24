@@ -25,8 +25,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -47,6 +52,9 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
     private Uri mapUri;
     private String recruitToken;
+    private FirebaseDatabase database;
+    private FirebaseAuth mFirebaseAuth;
+    private DatabaseReference databaseReference;
 
 
     @Override
@@ -196,14 +204,6 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
     }
 
-    @Override
-    public void OnFitTestPressed(FitTestData fitTestData) {
-        Intent intent =new Intent(this,FitTestActivity.class);
-        intent.putExtra("targetCrew", fitTestData);
-        startActivity(intent);
-    }
-
-
     public void setRunningState(boolean state){
         isRunning=state;
     }
@@ -232,6 +232,37 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         }
 
         //on FireBase
+        database = FirebaseDatabase.getInstance();
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+        databaseReference = database.getReference("UU");
+        final FitTestData[] mFitTestData = new FitTestData[1];
+        databaseReference.child("UserAccount").child(firebaseUser.getUid()).child("FitTest").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                mFitTestData[0] =snapshot.getValue(FitTestData.class);
+                if(mFitTestData[0] !=null){
+                    mFitTestData[0].setNumberOfRunning();
+                    mFitTestData[0].setRunningTime(time);
+                    mFitTestData[0].setDistance(distance);
+                    mFitTestData[0].setDay(runningDayParseInt(runningDay));
+                    mFitTestData[0].setStartTime(startTime);
+                    mFitTestData[0].setStartAddress(startAddress);
+                    mFitTestData[0].setEndAddress(endAddress);
+                }
+                else{
+                    mFitTestData[0] =new FitTestData("Personal",time,distance,runningDayParseInt(runningDay),startTime,startAddress,endAddress);
+                }
+                databaseReference.child("UserAccount").child(firebaseUser.getUid()).child("FitTest").setValue(mFitTestData[0]);
+                mFitTestData[0].setCrewName("testU");
+                FirebaseDatabase.getInstance().getReference("Crew").child("testU").child("FitTest").setValue(mFitTestData[0]);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         // date는 시작 시간 yy:mm:dd:hh:mm:ss
         // distance는 총 운동 거리 (m단위)
@@ -241,11 +272,30 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         // runningDay는 운동한 요일(Mon~Sun), 한글로 바꾸고 싶으면 fragment_running에서 수정
         // start/endAddress는 시작/끝 위치
         //위경도를 알고싶으면
-        startAddress.getLatitude(); startAddress.getLongitude();
+        //startAddress.getLatitude(); startAddress.getLongitude();
         //위치를 알고싶으면( ~동 기준)
-        startAddress.getThoroughfare();
+        //startAddress.getThoroughfare();
     }
-
+    public int runningDayParseInt(String runningDay){
+        switch (runningDay){
+            case "Mon":
+                return 0;
+            case "Tue":
+                return 1;
+            case "Wed":
+                return 2;
+            case "Thu":
+                return 3;
+            case "Fri":
+                return 4;
+            case "Sat":
+                return 5;
+            case "Sun":
+                return 6;
+            default:
+                return -1;
+        }
+    }
 
 
 

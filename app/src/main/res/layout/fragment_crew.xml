@@ -198,8 +198,12 @@
                     android:layout_marginLeft="10dp">
                 </Spinner>
 
-
-
+                <Button
+                    android:id="@+id/fittest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fittest_Btn"
+                    android:layout_marginLeft="15dp"/>
 
 
 

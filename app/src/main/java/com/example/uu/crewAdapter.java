@@ -54,7 +54,6 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
     public OnCrewListener crewListener;
     interface OnCrewListener{
         void OnCrewAdded();
-        void OnFitTestPressed(FitTestData fitTestData);
     }
 
     public crewAdapter(ArrayList<crewObject> arrayList, Context context) {
@@ -98,14 +97,6 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
         holder.crewLoc.setText(arrayList.get(position).getLocation());
         holder.crewUserNum.setText(String.valueOf(arrayList.get(position).getTotalUserNum()));
 
-        holder.crewFitTestBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FitTestData fitTestData=new FitTestData(14,arrayList.get(position).getCrewName());
-                crewListener.OnFitTestPressed(fitTestData);
-            }
-        });
-
         holder.crewJoinBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,7 +130,6 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
         TextView crewName;
         TextView crewLoc;
         TextView crewUserNum;
-        Button crewFitTestBtn;
         Button crewJoinBtn;
 
         public CustomViewHolder(@NonNull View itemView) {
@@ -148,7 +138,6 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
             this.crewName = itemView.findViewById(R.id.crewName);
             this.crewLoc = itemView.findViewById(R.id.crewLocation);
             this.crewUserNum = itemView.findViewById(R.id.crewUserNum);
-            this.crewFitTestBtn = itemView.findViewById(R.id.fittestButton);
             this.crewJoinBtn = itemView.findViewById(R.id.joinCrewButton);
 
 

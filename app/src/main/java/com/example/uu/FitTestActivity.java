@@ -13,6 +13,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,16 +22,21 @@ import android.widget.TextView;
 
 import com.layer_net.stepindicator.StepIndicator;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
 public class FitTestActivity extends AppCompatActivity implements SectionsPagerAdapter.OnPageListener{
 
     private final Context mContext=this;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    private FitTestData targetCrew;
+    private List<crewObject> crewArrayList;
     private NoSwipeViewPager mViewPager;
     private StepIndicator stepIndicator;
+    private List<String> selectedPriority=new ArrayList<>();
+    private List<DoneCalculate> recommendCrew=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +45,12 @@ public class FitTestActivity extends AppCompatActivity implements SectionsPagerA
 
         Intent getIntent = getIntent();
 
-        targetCrew = getIntent.getParcelableExtra("targetCrew");
+        crewArrayList = getIntent.getParcelableArrayListExtra("crewArrayList");
+
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(mContext,targetCrew);
+        mSectionsPagerAdapter = new SectionsPagerAdapter(mContext);
         // Set up the ViewPager with the sections adapter.
         mViewPager = (NoSwipeViewPager) findViewById(R.id.stepViewPager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -72,8 +79,19 @@ public class FitTestActivity extends AppCompatActivity implements SectionsPagerA
     }
 
     @Override
-    public void OnCalculateFitnessClicked() {
+    public void OnCalculateFitnessClicked(List<String> selectedPriority) {
+        this.selectedPriority=selectedPriority;
+        setRecommendCrew();
+        mSectionsPagerAdapter.calculatedCrewList(recommendCrew);
         mViewPager.setCurrentItem(2);
     }
+    public void setRecommendCrew(){
+        for(int i=0;i<crewArrayList.size();i++){
 
+        }
+        recommendCrew.add(new DoneCalculate("b",2F));
+        recommendCrew.add(new DoneCalculate("C",1F));
+        recommendCrew.add(new DoneCalculate("a", 3F));
+        Collections.sort(recommendCrew);
+    }
 }

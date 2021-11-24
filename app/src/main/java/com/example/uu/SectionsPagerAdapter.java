@@ -3,6 +3,7 @@ package com.example.uu;
 import static android.view.MotionEvent.ACTION_UP;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -37,22 +38,23 @@ public class SectionsPagerAdapter extends PagerAdapter {
     private static final int FINAL_STEP=2;
 
     private final Context mContext;
-    private final FitTestData targetCrew;
 
     private List<String> selectedPriority=new ArrayList<>();
+    private List<DoneCalculate> recommendCrew=new ArrayList<>();
 
     private OnPageListener onPageListener;
     interface OnPageListener {
         void OnFitTestClose();
         void OnNextClicked(List<Integer> checkChips);
         void OnGobackToFirstClicked();
-        void OnCalculateFitnessClicked();
+        void OnCalculateFitnessClicked(List<String> selectedPriority);
     }
 
-    public SectionsPagerAdapter(Context mContext,FitTestData targetCrew) {
+    private boolean isDone=false;
+
+    public SectionsPagerAdapter(Context mContext) {
         super();
         this.mContext=mContext;
-        this.targetCrew=targetCrew;
         onPageListener=(OnPageListener) mContext;
     }
 
@@ -64,8 +66,6 @@ public class SectionsPagerAdapter extends PagerAdapter {
         switch (position){
             case FIRST_STEP:
                 view=inflater.inflate(R.layout.fittest_stepfirst,container,false);
-                TextView targetCrewName=view.findViewById(R.id.targetCrewName);
-                targetCrewName.setText(targetCrew.getCrewName());
                 ChipGroup chipGroup = view.findViewById(R.id.priorityChipGroup);
 
                 view.findViewById(R.id.fittestClose).setOnClickListener(new View.OnClickListener() {
@@ -125,7 +125,7 @@ public class SectionsPagerAdapter extends PagerAdapter {
                     @Override
                     public void onClick(View v) {
                         //return some Object from listener
-                        onPageListener.OnCalculateFitnessClicked();
+                        onPageListener.OnCalculateFitnessClicked(selectedPriority);
 
                         notifyDataSetChanged();
                     }
@@ -136,6 +136,9 @@ public class SectionsPagerAdapter extends PagerAdapter {
                 view=inflater.inflate(R.layout.fittest_stepfinal,container,false);
                 Animation animation= AnimationUtils.loadAnimation(mContext,R.anim.fade);
                 TextView score=view.findViewById(R.id.score);
+                if(isDone){
+                    score.setText(recommendCrew.get(0).getCrewName()+"/"+recommendCrew.get(0).getScore());
+                }
                 TextView description=view.findViewById(R.id.Description);
                 score.startAnimation(animation);
 
@@ -157,6 +160,12 @@ public class SectionsPagerAdapter extends PagerAdapter {
         }
         container.addView(view);
         return view;
+    }
+
+    public void calculatedCrewList(List<DoneCalculate> recommendCrew){
+        this.recommendCrew=recommendCrew;
+        isDone=true;
+        Log.d("kangtest",this.recommendCrew.get(0).getCrewName());
     }
 
     public void updateSelectedPriority(View view){
