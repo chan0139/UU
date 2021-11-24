@@ -186,7 +186,7 @@ public class fragment_record_achievements extends Fragment {
                 // 해당 아이템 클릭시, 상세정보 표시 ( 제목, 내용, 달성률, 달성 일자)
                 AlertDialog.Builder dlg = new AlertDialog.Builder(getContext());
                 dlg.setTitle(item.getObjName());
-                dlg.setMessage(item.getDescription()+"\n달성률 : "+item.getAchievement()+"%"+"\n달성 일자 : "+item.getClearDate());
+                dlg.setMessage(item.getDescription()+"\n\n달성률 : "+item.getAchievement()+"%");
                 dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int which) {
                         return;

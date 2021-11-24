@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -30,6 +31,13 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.owl93.dpb.CircularProgressView;
 
 import java.text.SimpleDateFormat;
@@ -46,6 +54,12 @@ public class fragment_record_results extends Fragment {
     // db init
     DatabaseHelper dbHelper;
     SQLiteDatabase sqLiteDb;
+
+    //firebase init
+    DatabaseReference databaseReference;
+    FirebaseDatabase database;
+    FirebaseAuth mFirebaseAuth;
+    FirebaseUser firebaseUser ;
 
     //data list
     ArrayList<BarEntry> barEntries=new ArrayList<>();
@@ -74,6 +88,11 @@ public class fragment_record_results extends Fragment {
         preferences= getActivity().getSharedPreferences("achievement", Activity.MODE_PRIVATE);
         editor=preferences.edit();
 
+        //init firebase db
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = mFirebaseAuth.getCurrentUser();
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference("UU");
 
         //CircularProgressView
         personalAchievement=(CircularProgressView) rootView.findViewById(R.id.personalAchievement);
@@ -159,8 +178,6 @@ public class fragment_record_results extends Fragment {
             distance=cursor.getInt(0);
             day=getDateDay(calendar.get(Calendar.DAY_OF_WEEK));
 
-            Log.d("day",targetDate+distance);
-
             barEntries.add(new BarEntry(i+7,distance+5));
             xAxisName.add(day);
         }
@@ -205,6 +222,7 @@ public class fragment_record_results extends Fragment {
             int goalIndex=preferences.getInt("goalObj",0);
             int goal=preferences.getInt("goal",0);
 
+            Log.d("check",goalIndex+"  "+goal);
             updateCircularView(goalIndex,goal);
         }
     }
@@ -328,5 +346,39 @@ public class fragment_record_results extends Fragment {
 
             personalAchievement.setProgress(((float)current_state/total_goal)*100);
         }
+        else if(index==2){
+            readData(databaseReference.child("UserAccount").child(firebaseUser.getUid()).child("userRecruitJoinNumber"), new fragment_record_achievements.OnGetDataListener() {
+                @Override
+                public void onSuccess(DataSnapshot dataSnapshot) {
+                    current_state = dataSnapshot.getValue(Integer.class);
+                }
+                @Override
+                public void onStart() {
+
+                }
+
+                @Override
+                public void onFailure() {
+
+                }
+            });
+
+            personalAchievement.setProgress(((float)current_state/total_goal)*100);
+        }
+    }
+
+    public void readData(DatabaseReference ref, final fragment_record_achievements.OnGetDataListener listener) {
+        listener.onStart();
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listener.onSuccess(snapshot);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                listener.onFailure();
+            }
+        });
     }
 }
