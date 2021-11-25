@@ -21,6 +21,7 @@ import android.content.DialogInterface;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     private String startAddress;
     private String endAddress;
     private String address;
+    private String getDistance;
     private List<com.example.uu.LatLng> checkpoint=new ArrayList<>();
 
     private String recruitToken;
@@ -303,6 +305,8 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         recruitObject.setOrigin(startAddress);
         recruitObject.setDestination(endAddress);
         recruitObject.setAddress(address);
+        recruitObject.setDistance(getDistance);
+
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Recruit");
         databaseReference.child(scheduleToken).setValue(recruitObject);
@@ -328,6 +332,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
             checkpoint = data.<com.example.uu.LatLng>getParcelableArrayListExtra("checkpoint");
             address = data.getStringExtra("address");
+            getDistance = data.getStringExtra("distance");
             startAddress=data.getStringExtra("startAddress");
             //Log.d("Tlqkf",startAddress+"");
             endAddress=data.getExtras().getString("endAddress");

@@ -32,8 +32,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-
-
+import androidx.viewpager.widget.PagerTitleStrip;
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -245,6 +244,7 @@ public class customDialog extends DialogFragment {
         String castDay;
         String castHour;
         String castAlarmHour;
+        String castmin;
         if(0< selectedDay && selectedDay <10){
             castDay = '0' + Integer.toString(selectedDay);
         } else castDay = Integer.toString(selectedDay);
@@ -255,7 +255,9 @@ public class customDialog extends DialogFragment {
             castHour = Integer.toString(selectedHour);
             castAlarmHour = Integer.toString(selectedHour-1);
         }
-        time = castHour + ':' + Integer.toString(selectedMin);
+        if(selectedMin == 0) castmin = Integer.toString(selectedMin) + '0';
+        else castmin = Integer.toString(selectedMin);
+        time = castHour + ':' + castmin;
         alarmTime = castAlarmHour + ':' + Integer.toString(selectedMin);
         date = Integer.toString(selectedMonth) +'.' + castDay;
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();

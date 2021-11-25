@@ -24,6 +24,15 @@ public class recruit_object {
     private String origin;
     private String destination;
     private String address;
+    private String distance;
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
 
     public String getAddress() {
         return address;

@@ -4,9 +4,21 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/bottom_border.xml" value="0.22135416666666666" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/bottom_boundary.xml" value="0.2838541666666667" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/button.xml" value="0.22135416666666666" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/ic_achievement.xml" value="0.25625" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/ic_clock_regular.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/ic_crew.xml" value="0.30520833333333336" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/ic_crew_selected.xml" value="0.30520833333333336" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/ic_map_marker_alt_solid.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/ic_route_solid.xml" value="0.10277777777777777" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/ic_running.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/ic_running_solid.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/ic_send_button.xml" value="0.25625" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/ic_settings.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/ic_trophy.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/ic_undo.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/ic_user_circle.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/level1.xml" value="0.2921875" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/level2.xml" value="0.2921875" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/level3.xml" value="0.2921875" />
@@ -14,10 +26,12 @@
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/level5.xml" value="0.2921875" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/activity_after_login_main.xml" value="0.28442028985507245" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/activity_drawing_map.xml" value="0.28854166666666664" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/activity_loading.xml" value="0.2375" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/activity_lounge.xml" value="0.3140625" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/activity_main.xml" value="0.20208333333333334" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/activity_temp.xml" value="0.3151041666666667" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/bar_profile.xml" value="0.27708333333333335" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/bottom_boundary.xml" value="0.2677083333333333" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/dialog_detail_recruit.xml" value="0.33" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/dialog_recruit.xml" value="0.33" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_crew.xml" value="0.29375" />
@@ -113,6 +127,9 @@
         <entry key="..\:/Users/simon/GitHub/UU/app/src/main/res/xml/network_security_config.xml" value="0.36614583333333334" />
       </map>
     </option>
+  </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/app/src/main/res/values/dimen.xml" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />

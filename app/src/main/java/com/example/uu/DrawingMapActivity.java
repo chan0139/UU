@@ -16,6 +16,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
@@ -54,6 +55,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -76,6 +78,8 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
     private String startAddress;
     private String endAddress;
     private int counter = 0;
+    private double distance = 0;
+    private String distance2;
     private Object Context;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -140,6 +144,21 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                float[] results=new float[3];
+                for(int i=0;i<checkpoint.size()-1;i++)
+                {
+                    Location.distanceBetween(checkpoint.get(i).latitude,
+                            checkpoint.get(i).longitude,
+                            checkpoint.get(i+1).latitude,
+                            checkpoint.get(i+1).longitude,results);
+                    distance+=(int)results[0];
+                }
+                distance /= 1000.0;
+                DecimalFormat form = new DecimalFormat("#.#");
+                distance2 = form.format(distance);
+
+
                 DirectionsApiRequest converter = new DirectionsApiRequest(mGeoApiContext);
                 converter.language("ko");
                 converter.mode(TravelMode.TRANSIT);
@@ -164,6 +183,7 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
                                 sendData.putExtra("startAddress",splitStr[2]);
                                 sendData.putExtra("endAddress",splitStr2[2]);
                                 sendData.putExtra("mapUri",mapUri);
+                                sendData.putExtra("distance", distance2);
                                 sendData.putParcelableArrayListExtra("checkpoint", (ArrayList<? extends Parcelable>) checkpoint);
                                 setResult(Activity.RESULT_OK, sendData);
                                 finish();

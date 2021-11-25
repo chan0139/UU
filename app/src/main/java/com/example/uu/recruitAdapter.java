@@ -79,9 +79,10 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
                 .load(arrayList.get(position).getMapUrl())
                 .into(holder.testImage);
         holder.date.setText(arrayList.get(position).getDate());
-        holder.leader.setText(arrayList.get(position).getLeader());
-        holder.currentUserNum.setText(String.valueOf(arrayList.get(position).getCurrentUserNum()));
-        holder.totalUserNum.setText(String.valueOf(arrayList.get(position).getTotalUserNum()));
+        holder.time.setText(arrayList.get(position).getTime());
+        holder.location.setText(String.valueOf(arrayList.get(position).getDestination()));
+        holder.distance.setText(String.valueOf(arrayList.get(position).getDistance()));
+        holder.speed.setText(arrayList.get(position).getRunningSpeed());
         userRecruitList = new ArrayList<>();
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
@@ -155,7 +156,6 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
                             return;  //자신이 만든 recruit 조인 불가능 처리
                         }
 
-                        holder.currentUserNum.setText(String.valueOf(arrayList.get(position).getCurrentUserNum() + 1));         // 화면에 보이는 현재인원 + 1
                         mDatabaseRef.child(arrayList.get(position).getRecruitId()).child("currentUserNum").setValue(arrayList.get(position).getCurrentUserNum() + 1); // DB에 현재인원 추가
                         Map<String, Object> addUser = new HashMap<String, Object>();
                         Map<String, Object> addUserRecruit = new HashMap<String, Object>();
@@ -205,6 +205,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
                 bundle.putString("curuser", curUserNum);
                 bundle.putString("totuser", totalUserNum);
                 bundle.putString("address", arrayList.get(position).getAddress());
+                bundle.putString("distance", arrayList.get(position).getDistance());
                 dialog.setArguments(bundle);
 
 
@@ -222,18 +223,20 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
     public class CustomViewHolder extends RecyclerView.ViewHolder {
         ImageView testImage;
         TextView date;
-        TextView leader;
-        TextView currentUserNum;
-        TextView totalUserNum;
+        TextView time;
+        TextView location;
+        TextView distance;
+        TextView speed;
         Button joinButton;
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
             this.testImage = itemView.findViewById(R.id.testImage);
             this.date = itemView.findViewById(R.id.date);
-            this.leader = itemView.findViewById(R.id.leader);
-            this.currentUserNum = itemView.findViewById(R.id.currentUserNum);
-            this.totalUserNum = itemView.findViewById(R.id.totalUserNum);
+            this.time = itemView.findViewById(R.id.time);
+            this.location = itemView.findViewById(R.id.location);
+            this.distance = itemView.findViewById(R.id.distance);
+            this.speed = itemView.findViewById(R.id.speed);
             this.joinButton = itemView.findViewById(R.id.joinButton);
 
         }

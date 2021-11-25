@@ -174,6 +174,7 @@ public class fragment_recruitment extends Fragment{
                         arrayList.clear(); // 기존 배열리스트 초기화
                         for (DataSnapshot Snapshot : dataSnapshot.getChildren()) {
                             recruit_object recruit = Snapshot.getValue(recruit_object.class);
+                            if(recruit.getCurrentUserNum() == recruit.getTotalUserNum()) continue;
                             if(selectedGu.equals("지역선택")){
                                 arrayList.add(recruit);
                                 continue;

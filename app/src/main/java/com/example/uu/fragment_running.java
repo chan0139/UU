@@ -166,7 +166,7 @@ public class fragment_running extends Fragment
                         recruitment_checkpoint.put(recruit.getRecruitId(),recruit.getCheckpoint());
 
                         //쓰는 예시 --> 체크포인트의 첫번째 Latitude
-                        Log.d("getCheckpoint",recruitment_checkpoint.get(runningKey.get(0)).get(0).getLatitude()+"");
+                        //Log.d("getCheckpoint",recruitment_checkpoint.get(runningKey.get(0)).get(0).getLatitude()+"");
                     }
                 }
             }
