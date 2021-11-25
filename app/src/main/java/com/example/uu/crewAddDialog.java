@@ -25,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.github.drjacky.imagepicker.ImagePicker;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,7 +37,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import kotlin.Unit;
@@ -197,11 +200,35 @@ public class crewAddDialog extends DialogFragment {
         addUser.put(firebaseUser.getUid(), "id");
         crew.setUserList(addUser);
         mDatabaseRef.child(getCrewName).setValue(crew);
+        mDatabaseRef.child(getCrewName).child("FitTest").setValue(initFitTestData());
         mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("currentCrew").setValue(getCrewName);
         Toast.makeText(getContext(), "Success to save in DB", Toast.LENGTH_SHORT).show();
     }
 
-
+    public FitTestData initFitTestData(){
+        FitTestData mfitTestData=new FitTestData();
+        mfitTestData.setNumberOfRunning(0);
+        mfitTestData.setCrewName(getCrewName);
+        mfitTestData.setRunningTime(0);
+        mfitTestData.setDistance(0);
+        List<Integer> day=new ArrayList<>();
+        List<Integer> starttime=new ArrayList<>();
+        while(starttime.size()!=24){
+            starttime.add(0);
+            day.add(0);
+            if(starttime.size()==7){
+                mfitTestData.setDay(day);
+            }
+        }
+        mfitTestData.setStartTime(starttime);
+        List<LatLng> start=new ArrayList<>();
+        start.add(new LatLng(0,0));
+        mfitTestData.setStartAddress(start);
+        List<LatLng> end=new ArrayList<>();
+        end.add(new LatLng(0,0));
+        mfitTestData.setEndAddress(end);
+        return mfitTestData;
+    }
 
 
 }

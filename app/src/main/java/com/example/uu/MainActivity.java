@@ -24,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -236,26 +237,23 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
         databaseReference = database.getReference("UU");
-        final FitTestData[] mFitTestData = new FitTestData[1];
         databaseReference.child("UserAccount").child(firebaseUser.getUid()).child("FitTest").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                mFitTestData[0] =snapshot.getValue(FitTestData.class);
-                if(mFitTestData[0] !=null){
-                    mFitTestData[0].setNumberOfRunning();
-                    mFitTestData[0].setRunningTime(time);
-                    mFitTestData[0].setDistance(distance);
-                    mFitTestData[0].setDay(runningDayParseInt(runningDay));
-                    mFitTestData[0].setStartTime(startTime);
-                    mFitTestData[0].setStartAddress(startAddress);
-                    mFitTestData[0].setEndAddress(endAddress);
-                }
-                else{
-                    mFitTestData[0] =new FitTestData("Personal",time,distance,runningDayParseInt(runningDay),startTime,startAddress,endAddress);
-                }
-                databaseReference.child("UserAccount").child(firebaseUser.getUid()).child("FitTest").setValue(mFitTestData[0]);
-                mFitTestData[0].setCrewName("testU");
-                FirebaseDatabase.getInstance().getReference("Crew").child("testU").child("FitTest").setValue(mFitTestData[0]);
+                FitTestData mFitTestData;
+                mFitTestData =snapshot.getValue(FitTestData.class);
+                assert mFitTestData != null;
+                mFitTestData=updateData(mFitTestData,
+                        distance,
+                        time,
+                        startTime,
+                        runningDay,
+                        startAddress,
+                        endAddress);
+
+                databaseReference.child("UserAccount").child(firebaseUser.getUid()).child("FitTest").setValue(mFitTestData);
+                mFitTestData.setCrewName("exampleFittest");
+                FirebaseDatabase.getInstance().getReference("Crew").child("testU").child("FitTest").setValue(mFitTestData);
             }
 
             @Override
@@ -275,6 +273,33 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         //startAddress.getLatitude(); startAddress.getLongitude();
         //위치를 알고싶으면( ~동 기준)
         //startAddress.getThoroughfare();
+    }
+    public FitTestData updateData(FitTestData mFitTestData,int distance, int time,int startTime, String runningDay, Address startAddress, Address endAddress){
+        mFitTestData.setNumberOfRunning(mFitTestData.getRunningTime()+1);
+        mFitTestData.setRunningTime((mFitTestData.getRunningTime()*(mFitTestData.getNumberOfRunning()-1)+time)/mFitTestData.getNumberOfRunning());
+        mFitTestData.setDistance((mFitTestData.getDistance()*(mFitTestData.getNumberOfRunning()-1)+distance)/mFitTestData.getRunningTime());
+        mFitTestData.getDay().set(runningDayParseInt(runningDay),mFitTestData.getDay().get(runningDayParseInt(runningDay))+1);
+        mFitTestData.getStartTime().set(startTime,mFitTestData.getStartTime().get(startTime)+1);
+        if(mFitTestData.getStartAddress().size()==10){
+            mFitTestData.getStartAddress().remove(0);
+        }
+        if(mFitTestData.getNumberOfRunning()==1){
+            mFitTestData.getStartAddress().set(0,new LatLng(startAddress.getLatitude(),startAddress.getLongitude()));
+        }
+        else{
+            mFitTestData.getStartAddress().add(new LatLng(startAddress.getLatitude(),startAddress.getLongitude()));
+        }
+
+        if(mFitTestData.getEndAddress().size()==10){
+            mFitTestData.getEndAddress().remove(0);
+        }
+        if(mFitTestData.getNumberOfRunning()==1){
+            mFitTestData.getEndAddress().set(0,new LatLng(endAddress.getLatitude(),endAddress.getLongitude()));
+        }
+        else{
+            mFitTestData.getEndAddress().add(new LatLng(endAddress.getLatitude(),endAddress.getLongitude()));
+        }
+        return mFitTestData;
     }
     public int runningDayParseInt(String runningDay){
         switch (runningDay){
@@ -330,6 +355,9 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
             StorageReference riverRef = setstorageReference.child("recruitment/"+recruitToken+".png");
             UploadTask uploadTask= riverRef.putFile(mapUri);
 
+        }
+        else if(resultCode==777){
+            showRecruitmentFragment();
         }
     }
 }

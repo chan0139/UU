@@ -179,17 +179,13 @@ public class SectionsPagerAdapter extends PagerAdapter {
         }
         chip=view.findViewById(R.id.chip2);
         if(chip.isChecked()){
-            selectedPriority.add("Average Running Days per Week");
+            selectedPriority.add("What Day do you usually run");
         }
         chip=view.findViewById(R.id.chip3);
         if(chip.isChecked()){
-            selectedPriority.add("What Day do you usually run");
-        }
-        chip=view.findViewById(R.id.chip4);
-        if(chip.isChecked()){
             selectedPriority.add("What Time do you usually run");
         }
-        chip=view.findViewById(R.id.chip5);
+        chip=view.findViewById(R.id.chip4);
         if(chip.isChecked()){
             selectedPriority.add("Where do you usually run");
         }

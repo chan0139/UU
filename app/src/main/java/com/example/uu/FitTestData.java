@@ -1,12 +1,7 @@
 package com.example.uu;
 
-import android.location.Address;
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.android.gms.maps.model.LatLng;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FitTestData {
@@ -22,33 +17,15 @@ public class FitTestData {
     private List<LatLng> startAddress;  // 6
     private List<LatLng> endAddress;     // 6
 
-    public FitTestData(String crewName, int runningTime, int distance,int day, int startTime, Address startAddress, Address endAddress) {
-        this.numberOfRunning = 1;
-        this.crewName = crewName;
-        this.runningTime = runningTime;
-        this.distance = distance;
-        this.day = new ArrayList<>();
-        for(int i=0;i<7;i++){
-            this.day.add(0);
-        }
-        this.day.set(day,this.day.get(day)+1);
-        this.startTime = new ArrayList<>();
-        for(int i=0;i<24;i++){
-            this.startTime.add(0);
-        }
-        this.startTime.set(startTime,this.startTime.get(startTime)+1);
-        this.startAddress = new ArrayList<>();
-        this.startAddress.add(new LatLng(startAddress.getLatitude(),startAddress.getLongitude()));
-        this.endAddress = new ArrayList<>();
-        this.endAddress.add(new LatLng(endAddress.getLatitude(),endAddress.getLongitude()));
+    public FitTestData() {
     }
 
     public int getNumberOfRunning() {
         return numberOfRunning;
     }
 
-    public void setNumberOfRunning() {
-        this.numberOfRunning = this.numberOfRunning+1;
+    public void setNumberOfRunning(int numberOfRunning) {
+        this.numberOfRunning = numberOfRunning;
     }
 
     public String getCrewName() {
@@ -64,7 +41,7 @@ public class FitTestData {
     }
 
     public void setRunningTime(int runningTime) {
-        this.runningTime = (this.runningTime*(numberOfRunning-1)+runningTime)/numberOfRunning;
+        this.runningTime = runningTime;
     }
 
     public int getDistance() {
@@ -72,44 +49,38 @@ public class FitTestData {
     }
 
     public void setDistance(int distance) {
-        this.distance = (this.distance*(numberOfRunning-1)+distance)/numberOfRunning;
+        this.distance = distance;
     }
 
     public List<Integer> getDay() {
         return day;
     }
 
-    public void setDay(int day) {
-        this.day.set(day,this.day.get(day)+1);
+    public void setDay(List<Integer> day) {
+        this.day = day;
     }
 
     public List<Integer> getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(int startTime) {
-        this.startTime.set(startTime,this.startTime.get(startTime)+1);
+    public void setStartTime(List<Integer> startTime) {
+        this.startTime = startTime;
     }
 
     public List<LatLng> getStartAddress() {
         return startAddress;
     }
 
-    public void setStartAddress(Address startAddress) {
-        if(this.startAddress.size()==10){
-            this.startAddress.remove(0);
-        }
-        this.startAddress.add(new LatLng(startAddress.getLatitude(),startAddress.getLongitude()));
+    public void setStartAddress(List<LatLng> startAddress) {
+        this.startAddress = startAddress;
     }
 
     public List<LatLng> getEndAddress() {
         return endAddress;
     }
 
-    public void setEndAddress(Address endAddress) {
-        if(this.endAddress.size()==10){
-            this.endAddress.remove(0);
-        }
-        this.endAddress.add(new LatLng(endAddress.getLatitude(),endAddress.getLongitude()));
+    public void setEndAddress(List<LatLng> endAddress) {
+        this.endAddress = endAddress;
     }
 }
