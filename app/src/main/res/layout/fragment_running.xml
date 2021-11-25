@@ -26,6 +26,7 @@
             android:name="com.example.uu.RunningTimerFragment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/custom_font"
             tools:layout="@layout/fragment_running_timer" />
 
     </FrameLayout>

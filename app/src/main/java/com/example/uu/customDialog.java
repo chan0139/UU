@@ -9,19 +9,23 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -35,6 +39,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.PagerTitleStrip;
 
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -68,6 +73,8 @@ public class customDialog extends DialogFragment {
     Uri mapUri;
     String[] runningType = {"평보","경보","달리기"};
     private String getAddress;
+    private int width;
+    private int height;
 
     private recruit_object recruit;
 
@@ -86,12 +93,28 @@ public class customDialog extends DialogFragment {
         super.onAttach(context);
         scheduleCreatedListener=(OnScheduleCreatedListener) context;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        Point deviceSize = new Point();
+        display.getSize(deviceSize);
+        width = (int) (deviceSize.x *(0.8));
+        height = (int) (deviceSize.y *(0.8));
+
+
+        getDialog().getWindow().setLayout(width,height);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootview = (ViewGroup) inflater.inflate(R.layout.dialog_recruit, container, false);
 
-
+        ImageView routeGif = (ImageView) rootview.findViewById(R.id.routeGif);
+        Glide.with(this).load(R.raw.route).into(routeGif);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();

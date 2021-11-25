@@ -17,7 +17,7 @@
             android:src="@drawable/ic_launcher_background" />
 
         <LinearLayout
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -62,18 +62,24 @@
                     android:id="@+id/crewUserNum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
                     android:text="유저수" />
             </LinearLayout>
 
 
         </LinearLayout>
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
         <Button
             android:id="@+id/joinCrewButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="5dp"
+            android:fontFamily="@font/custom_font"
             android:text="join" />
 
     </LinearLayout>

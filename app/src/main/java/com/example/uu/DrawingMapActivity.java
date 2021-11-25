@@ -32,6 +32,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.util.MapUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -63,8 +64,8 @@ import java.util.List;
 
 public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleMap.OnPolylineClickListener {
-    private static final String API_KEY="AIzaSyCtR1gj33Jv0oDKpb7PyHVYlXXJsFRp_KQ";
-    private GeoApiContext mGeoApiContext=null;
+    private static final String API_KEY = "AIzaSyCtR1gj33Jv0oDKpb7PyHVYlXXJsFRp_KQ";
+    private GeoApiContext mGeoApiContext = null;
     private Uri mapUri;
     public static String TAG = "draw_map";
     static boolean isDrawing = false;
@@ -87,12 +88,12 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawing_map);
-        Intent sendData=new Intent();
+        Intent sendData = new Intent();
         checkpoint.clear();
-        startAddress=null;
-        endAddress=null;
-        if(mGeoApiContext==null){
-            mGeoApiContext=new GeoApiContext.Builder().apiKey(API_KEY).build();
+        startAddress = null;
+        endAddress = null;
+        if (mGeoApiContext == null) {
+            mGeoApiContext = new GeoApiContext.Builder().apiKey(API_KEY).build();
         }
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.make_route);
         mapFragment.getMapAsync(this);
@@ -145,14 +146,13 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View view) {
 
-                float[] results=new float[3];
-                for(int i=0;i<checkpoint.size()-1;i++)
-                {
+                float[] results = new float[3];
+                for (int i = 0; i < checkpoint.size() - 1; i++) {
                     Location.distanceBetween(checkpoint.get(i).latitude,
                             checkpoint.get(i).longitude,
-                            checkpoint.get(i+1).latitude,
-                            checkpoint.get(i+1).longitude,results);
-                    distance+=(int)results[0];
+                            checkpoint.get(i + 1).latitude,
+                            checkpoint.get(i + 1).longitude, results);
+                    distance += (int) results[0];
                 }
                 distance /= 1000.0;
                 DecimalFormat form = new DecimalFormat("#.#");
@@ -164,25 +164,25 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
                 converter.mode(TravelMode.TRANSIT);
                 converter.alternatives(false);
                 converter.origin(
-                        new com.google.maps.model.LatLng(checkpoint.get(0).latitude,checkpoint.get(0).longitude)
+                        new com.google.maps.model.LatLng(checkpoint.get(0).latitude, checkpoint.get(0).longitude)
                 );
                 converter.destination(
-                        new com.google.maps.model.LatLng(checkpoint.get(checkpoint.size()-1).latitude,checkpoint.get(checkpoint.size()-1).longitude)
+                        new com.google.maps.model.LatLng(checkpoint.get(checkpoint.size() - 1).latitude, checkpoint.get(checkpoint.size() - 1).longitude)
                 )
                         .setCallback(new PendingResult.Callback<DirectionsResult>() {
                             @Override
                             public void onResult(DirectionsResult result) {
 
-                                startAddress=result.routes[0].legs[0].startAddress;
-                                endAddress=result.routes[0].legs[0].endAddress;
+                                startAddress = result.routes[0].legs[0].startAddress;
+                                endAddress = result.routes[0].legs[0].endAddress;
                                 String[] splitStr = startAddress.split(" ");
                                 String[] splitStr2 = endAddress.split(" ");
                                 //Log.d("Tlqkf",startAddress+"");
                                 //Log.d("Tlqkf",endAddress+"");
                                 sendData.putExtra("address", startAddress);
-                                sendData.putExtra("startAddress",splitStr[2]);
-                                sendData.putExtra("endAddress",splitStr2[2]);
-                                sendData.putExtra("mapUri",mapUri);
+                                sendData.putExtra("startAddress", splitStr[2]);
+                                sendData.putExtra("endAddress", splitStr2[2]);
+                                sendData.putExtra("mapUri", mapUri);
                                 sendData.putExtra("distance", distance2);
                                 sendData.putParcelableArrayListExtra("checkpoint", (ArrayList<? extends Parcelable>) checkpoint);
                                 setResult(Activity.RESULT_OK, sendData);
@@ -191,7 +191,7 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
 
                             @Override
                             public void onFailure(Throwable e) {
-                                Log.d("Tlqkf","direction fail");
+                                Log.d("Tlqkf", "direction fail");
                             }
                         });
 
@@ -220,17 +220,7 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
         LatLng Gyeongbokgung = new LatLng(37.5779805, 126.977364);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Gyeongbokgung, 15));
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        mMap.setMyLocationEnabled(true);
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-            @Override
-            public boolean onMyLocationButtonClick() {
-                return false;
-            }
-        });
+
 
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -255,6 +245,20 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
                 }
 
 
+            }
+
+        });
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                return false;
             }
         });
 

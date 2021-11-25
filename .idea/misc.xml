@@ -24,6 +24,8 @@
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/level3.xml" value="0.2921875" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/level4.xml" value="0.2921875" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/drawable/level5.xml" value="0.2921875" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/font/custom.xml" value="0.33055555555555555" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/font/font_family.xml" value="0.12222222222222222" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/activity_after_login_main.xml" value="0.28442028985507245" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/activity_drawing_map.xml" value="0.28854166666666664" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/activity_loading.xml" value="0.2375" />
@@ -32,10 +34,11 @@
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/activity_temp.xml" value="0.3151041666666667" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/bar_profile.xml" value="0.27708333333333335" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/bottom_boundary.xml" value="0.2677083333333333" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/dialog_crew_add.xml" value="0.31666666666666665" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/dialog_detail_recruit.xml" value="0.33" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/dialog_recruit.xml" value="0.33" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_crew.xml" value="0.29375" />
-        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_login.xml" value="0.27708333333333335" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_login.xml" value="0.24414715719063546" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_ranking.xml" value="0.27708333333333335" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_record.xml" value="0.18697916666666667" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_record_achievements.xml" value="0.33" />
@@ -46,6 +49,7 @@
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_running.xml" value="0.2864583333333333" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/fragment_running_timer.xml" value="0.18697916666666667" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/item_message.xml" value="0.3140625" />
+        <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/item_message_from_me.xml" value="0.31666666666666665" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/list_achievement.xml" value="0.18697916666666667" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/list_crew.xml" value="0.2140625" />
         <entry key="..\:/Users/LEE/Documents/GitHub/UU/app/src/main/res/layout/list_crew_schedule.xml" value="0.18697916666666667" />
@@ -127,9 +131,6 @@
         <entry key="..\:/Users/simon/GitHub/UU/app/src/main/res/xml/network_security_config.xml" value="0.36614583333333334" />
       </map>
     </option>
-  </component>
-  <component name="ProjectPlainTextFileTypeManager">
-    <file url="file://$PROJECT_DIR$/app/src/main/res/values/dimen.xml" />
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />

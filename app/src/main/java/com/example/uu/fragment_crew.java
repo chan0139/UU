@@ -126,6 +126,9 @@ public class fragment_crew extends Fragment{
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
 
+        ImageView runGif = (ImageView) rootview.findViewById(R.id.crewYesCrewImage);
+        Glide.with(this).load(R.raw.loading).into(runGif);
+
         databaseReference = database.getReference("UU");
         if(firebaseUser == null){
             Toast.makeText(rootview.getContext(), "Need to login", Toast.LENGTH_SHORT).show();

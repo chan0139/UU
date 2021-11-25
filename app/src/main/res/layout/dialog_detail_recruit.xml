@@ -175,6 +175,7 @@
         android:id="@+id/closeButton"
         android:layout_width="90dp"
         android:layout_height="40dp"
+        android:fontFamily="@font/custom_font"
         android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:text="Close"/>
