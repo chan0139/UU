@@ -45,11 +45,19 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Calendar;
 import java.util.List;
 
@@ -104,6 +112,17 @@ public class fragment_running extends Fragment
 
     private View mLayout;  // Snackbar 사용하기 위해서는 View가 필요
 
+    //checkpoint
+    private HashMap<String,List<com.example.uu.LatLng>> recruitment_checkpoint=new HashMap<>();
+    //현재 참가중인 러닝 key
+    private HashMap<Integer,String> runningKey=new HashMap<>();
+
+    //Firebase realtime DB
+    private FirebaseDatabase database;
+    private DatabaseReference mDatabaseRef;
+    private DatabaseReference databaseReferenceRecruit;
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,6 +139,54 @@ public class fragment_running extends Fragment
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //현재 참가중인 running list 불러오기
+        database = FirebaseDatabase.getInstance();
+        mDatabaseRef = database.getReference("UU");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        //running의 key값 불러오기
+        mDatabaseRef.child("UserAccount").child(user.getUid()).child("recruitList").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                runningKey.clear();
+                int size=0;
+                for (DataSnapshot snapshotNode: snapshot.getChildren()) {
+                    String getUserRecruit = (String) snapshotNode.getKey();
+                    runningKey.put(size,getUserRecruit);
+                    size+=1;
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        //runnig key값 별로 checkpoint 불러오기
+        mDatabaseRef=database.getReference("Recruit");
+        mDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // DB data를 받아오는곳
+                for (DataSnapshot Snapshot : dataSnapshot.getChildren()) {
+                    recruit_object recruit = Snapshot.getValue(recruit_object.class);
+                    if(runningKey.containsValue(recruit.getRecruitId())){
+                        recruitment_checkpoint.put(recruit.getRecruitId(),recruit.getCheckpoint());
+
+                        //쓰는 예시 --> 체크포인트의 첫번째 Latitude
+                        //Log.d("getCheckpoint",recruitment_checkpoint.get(runningKey.get(0)).get(0).getLatitude()+"");
+                    }
+                }
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                //DB 받아오던 중 에러 발생하는 경우
+                Log.e("Error", String.valueOf(error.toException()));
+            }
+        });
 
         //특정 작업시 화면이 꺼지지않게 유지
         getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

@@ -1,17 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:id="@+id/linear_dialog"
+<LinearLayout android:id="@+id/linear_dialog"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="260dp"
-    android:layout_height="380dp"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/routeGif"
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:textStyle="bold"
+        android:text="Create your Recruit Schedule!"/>
     <Button
         android:id="@+id/setMap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="set Map"
         android:layout_gravity="center"
-        android:layout_margin="20dp"/>
+        android:fontFamily="@font/custom_font"
+        android:layout_marginTop="10dp"/>
 
 
 
@@ -31,6 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="크루명 혹은 본인 이름을 입력하세요."
+            android:fontFamily="@font/custom_font"
             android:textSize="12dp"
             />
     </LinearLayout>
@@ -51,6 +68,7 @@
             android:id="@+id/editTextUserNum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/custom_font"
             android:hint="숫자만 입력 가능합니다."
             android:digits="0123456789"
             android:textSize="14dp"
@@ -72,6 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
+            android:fontFamily="@font/custom_font"
             android:text="날짜 선택" />
 
         <TextView
@@ -94,6 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
+            android:fontFamily="@font/custom_font"
             android:text="시간 선택" />
 
         <TextView
@@ -117,6 +137,7 @@
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="150dp"
+            android:fontFamily="@font/custom_font"
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
@@ -131,10 +152,12 @@
                     android:id="@+id/noBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/custom_font"
                     android:text="Cancel"/>
                 <Button
                     android:id="@+id/yesBtn"
                     android:layout_width="wrap_content"
+                    android:fontFamily="@font/custom_font"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:text="Add"/>

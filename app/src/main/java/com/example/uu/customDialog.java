@@ -9,30 +9,37 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.viewpager.widget.PagerTitleStrip;
 
 
-
-
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -51,7 +58,8 @@ import java.util.Map;
 import java.util.Random;
 
 
-public class customDialog extends Dialog {
+public class customDialog extends DialogFragment {
+    public static String TAG="dialog_recruit_add";
     Activity MainActivity=new MainActivity();
     int selectedYear=0, selectedMonth=0, selectedDay=0, selectedHour=0, selectedMin=0, getUserNum;
     String getLeader;
@@ -64,28 +72,49 @@ public class customDialog extends Dialog {
     String selectedSpeed;
     Uri mapUri;
     String[] runningType = {"평보","경보","달리기"};
+    private String getAddress;
+    private int width;
+    private int height;
 
     private recruit_object recruit;
 
     private Activity activity;
     Context context;
 
-    public customDialog(@NonNull Context context) {
-        super(context);
-        this.context=context;
-    }
 
     public OnScheduleCreatedListener scheduleCreatedListener;
-
     interface OnScheduleCreatedListener{
         void OnScheduleCreated(String scheduleToken,recruit_object recruit);
         void OnDrawingAcitivyPressed(String recruitToken);
     }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-        scheduleCreatedListener=(OnScheduleCreatedListener)context;
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        scheduleCreatedListener=(OnScheduleCreatedListener) context;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        Point deviceSize = new Point();
+        display.getSize(deviceSize);
+        width = (int) (deviceSize.x *(0.8));
+        height = (int) (deviceSize.y *(0.8));
+
+
+        getDialog().getWindow().setLayout(width,height);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        ViewGroup rootview = (ViewGroup) inflater.inflate(R.layout.dialog_recruit, container, false);
+
+        ImageView routeGif = (ImageView) rootview.findViewById(R.id.routeGif);
+        Glide.with(this).load(R.raw.route).into(routeGif);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
@@ -105,13 +134,11 @@ public class customDialog extends Dialog {
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("Recruit");
 
-        getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_recruit);
-        setCancelable(true);
 
         randomStr = RandomGenerator();
 
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+
+        Spinner spinner = (Spinner) rootview.findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, runningType);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(adapter);
@@ -127,23 +154,50 @@ public class customDialog extends Dialog {
         });
 
 
-        Button dateButton = findViewById(R.id.dateButton);
+        Button dateButton = rootview.findViewById(R.id.dateButton);
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showDate();
+                Calendar today = Calendar.getInstance();
+                int currentY = today.get(Calendar.YEAR);
+                int currentM = today.get(Calendar.MONTH);
+                int currentD = today.get(Calendar.DATE);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        selectedYear = year;
+                        selectedMonth = month+1;
+
+                        selectedDay = dayOfMonth;
+                        if(selectedMonth*selectedDay!=0){
+                            TextView setDate=rootview.findViewById(R.id.setdate);
+                            setDate.setText(selectedMonth+" 월 "+selectedDay+" 일   ");
+                        }
+
+                    }
+                },currentY, currentM, currentD);
+                datePickerDialog.show();
             }
         });
 
-        Button timeButton = findViewById(R.id.timeButton);
+        Button timeButton = rootview.findViewById(R.id.timeButton);
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showTime();
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        selectedHour = hourOfDay;
+                        selectedMin = minute;
+                        TextView setDate=rootview.findViewById(R.id.settime);
+                        setDate.setText(selectedHour+" 시 "+selectedMin+" 분   ");
+                    }
+                }, 14, 00, true);
+                timePickerDialog.show();
             }
         });
 
-        Button setMap=findViewById(R.id.setMap);
+        Button setMap=rootview.findViewById(R.id.setMap);
         setMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -151,13 +205,13 @@ public class customDialog extends Dialog {
             }
         });
 
-        Button addButton = findViewById(R.id.yesBtn);
+        Button addButton = rootview.findViewById(R.id.yesBtn);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // 이 버튼 누르면 DB에 모집정보 저장
 
-                EditText editTextLeader = (EditText)findViewById(R.id.editTextLeader);
+                EditText editTextLeader = (EditText)rootview.findViewById(R.id.editTextLeader);
                 if ( editTextLeader.getText().toString().length() == 0 ) {
                     Toast.makeText(getContext(), "Input Leader Information.", Toast.LENGTH_SHORT).show();
                     dismiss();
@@ -165,13 +219,14 @@ public class customDialog extends Dialog {
                     getLeader = editTextLeader.getText().toString();
                 }
 
-                EditText editTextUserNum = (EditText)findViewById(R.id.editTextUserNum);
+                EditText editTextUserNum = (EditText)rootview.findViewById(R.id.editTextUserNum);
                 if ( editTextUserNum.getText().toString().length() == 0 ) {
                     Toast.makeText(getContext(), "Input UserNumber Information.", Toast.LENGTH_SHORT).show();
                     dismiss();
                 } else {
                     getUserNum = Integer.parseInt(editTextUserNum.getText().toString());
                 }
+
                 saveRecruitInfo();
 
                 //FragmentTransaction tr = activity.getFragmentManager().beginTransaction();
@@ -188,74 +243,58 @@ public class customDialog extends Dialog {
             }
         });
 
-        Button cancelButton = findViewById(R.id.noBtn);
+        Button cancelButton = rootview.findViewById(R.id.noBtn);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+                dismiss();
             }
-
         });
 
+        return rootview;
     }
 
-    void showDate() {
-        Calendar today = Calendar.getInstance();
-        int currentY = today.get(Calendar.YEAR);
-        int currentM = today.get(Calendar.MONTH);
-        int currentD = today.get(Calendar.DATE);
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                selectedYear = year;
-                selectedMonth = month+1;
-
-                selectedDay = dayOfMonth;
-                if(selectedMonth*selectedDay!=0){
-                    TextView setDate=findViewById(R.id.setdate);
-                    setDate.setText(selectedMonth+" 월 "+selectedDay+" 일   ");
-                }
-
-            }
-        },currentY, currentM, currentD);
-        datePickerDialog.show();
-    }
-
-    void showTime() {
-        TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                selectedHour = hourOfDay;
-                selectedMin = minute;
-                if(selectedHour*selectedMin!=0){
-                    TextView setDate=findViewById(R.id.settime);
-                    setDate.setText(selectedHour+" 시 "+selectedMin+" 분   ");
-                }            }
-        }, 14, 00, true);
-        timePickerDialog.show();
-    }
 
     void saveRecruitInfo(){
+
+        //Bundle bundle = getArguments();
+        //getAddress = bundle.getString("address");
+        //Log.e("Address", getAddress);
+
         String date;
         String time;
+        String alarmTime;
         String castDay;
+        String castHour;
+        String castAlarmHour;
+        String castmin;
         if(0< selectedDay && selectedDay <10){
             castDay = '0' + Integer.toString(selectedDay);
+        } else castDay = Integer.toString(selectedDay);
+        if(0< selectedHour && selectedHour < 10){
+            castHour = '0' + Integer.toString(selectedHour);
+            castAlarmHour = '0' + Integer.toString(selectedHour-1);
+        } else {
+            castHour = Integer.toString(selectedHour);
+            castAlarmHour = Integer.toString(selectedHour-1);
         }
-        else castDay = Integer.toString(selectedDay);
-        time = Integer.toString(selectedHour) + ':' + Integer.toString(selectedMin);
+        if(selectedMin == 0) castmin = Integer.toString(selectedMin) + '0';
+        else castmin = Integer.toString(selectedMin);
+        time = castHour + ':' + castmin;
+        alarmTime = castAlarmHour + ':' + Integer.toString(selectedMin);
         date = Integer.toString(selectedMonth) +'.' + castDay;
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
         recruit = new recruit_object();
         recruit.setDate(date);
         recruit.setTime(time);
+        recruit.setAlarmTime(alarmTime);
         recruit.setLeader(getLeader);
         recruit.setTotalUserNum(getUserNum);
         recruit.setCurrentUserNum(1);
         recruit.setRunningSpeed(selectedSpeed);
         recruit.setRecruitId(randomStr);
         recruit.setHostId(firebaseUser.getUid());
-        mDatabaseRef.child(randomStr).setValue(recruit);
+        //mDatabaseRef.child(randomStr).setValue(recruit);
 
         Map<String, Object> addUserRecruit = new HashMap<String, Object>();
         addUserRecruit.put(randomStr, "join");
@@ -286,18 +325,10 @@ public class customDialog extends Dialog {
                     break;
             }
         }
-    return new String(temp);
+        return new String(temp);
     }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        dismiss();
-    }
-
 
 }
-
 
 
 

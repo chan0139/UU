@@ -70,6 +70,10 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
 
     @Override
     public void onBindViewHolder(@NonNull crewAdapter.CustomViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        Glide.with(holder.itemView)
+                .load(R.raw.loading)
+                .into(holder.crewImage);
+
         mFirebaseAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
 
