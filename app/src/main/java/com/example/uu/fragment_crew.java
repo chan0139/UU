@@ -1,9 +1,12 @@
 package com.example.uu;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Address;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -217,6 +220,11 @@ public class fragment_crew extends Fragment{
                         crewArrayList.clear(); // 기존 배열리스트 초기화
                         for (DataSnapshot Snapshot : dataSnapshot.getChildren()) {
                             crewObject crew = Snapshot.getValue(crewObject.class);
+
+                            /*kangtest*/
+                            //crew.setFitTestData(new FitTestData(1330,55,new Address()));
+                            /*kangtest*/
+
                             if(selectedGu.equals("지역선택")){
                                 crewArrayList.add(crew);
                                 continue;
@@ -224,7 +232,6 @@ public class fragment_crew extends Fragment{
                             if (crew.getLocation().equals(selectedGu)) {
                                 crewArrayList.add(crew);
                             }
-
 
                         }
                         crewAdapter.notifyDataSetChanged(); //리스트 저장 및 새로고침
@@ -245,6 +252,15 @@ public class fragment_crew extends Fragment{
         crewAdapter = new crewAdapter(crewArrayList, getContext());
         crewRecyclerView.setAdapter(crewAdapter); //리사이클러뷰에 어댑터 연결
 
+        rootview.findViewById(R.id.fittest).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getContext(),FitTestActivity.class);
+                intent.putParcelableArrayListExtra("crewArrayList", (ArrayList<? extends Parcelable>) crewArrayList);
+                startActivity(intent);
+
+            }
+        });
 
         //
 

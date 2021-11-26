@@ -34,7 +34,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -61,7 +60,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener ,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener, crewAdapter.OnCrewAddedListener, fragment_crew.OnCrewAddedListener {
+public class MainActivity extends AppCompatActivity  implements customDialog.OnScheduleCreatedListener ,fragment_login.OnLogInCompleteListener, crewAddDialog.OnCrewAddedListener, crewAdapter.OnCrewListener, fragment_crew.OnCrewAddedListener {
     private static final String API_KEY="AIzaSyCtR1gj33Jv0oDKpb7PyHVYlXXJsFRp_KQ";
     private GeoApiContext mGeoApiContext=null;
 
@@ -84,6 +83,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     private List<com.example.uu.LatLng> checkpoint=new ArrayList<>();
 
     private String recruitToken;
+    private DatabaseReference databaseReference;
 
     //for notification
     private AlarmManager alarmManager;
@@ -266,19 +266,14 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
     }
 
-
-    public void setRunningState(boolean state) {
-        isRunning = state;
+    public void setRunningState(boolean state){
+        isRunning=state;
     }
 
-
     // record to db if running ends
-
-    public void recordRunningState(String date, int distance, int time, float calories, int startTime, String runningDay, Address startAddress, Address endAddress)
-    {
-        // on local DB
+    public void recordRunningState(String date, int distance, int time, float calories, int startTime, String runningDay, Address startAddress, Address endAddress){
         //only record actual running data
-        if (distance != 0) {
+        if(distance!=0) {
             sqLiteDb = dbHelper.getWritableDatabase();
             // Create a new map of values, where column names are the keys
             ContentValues values = new ContentValues();
@@ -289,13 +284,42 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
             // Insert the new row, returning the primary key value of the new row
             long newRowId = sqLiteDb.insert(DatabaseHelper.TABLE_NAME, null, values);
-            if (newRowId == -1)
-                Log.e("DB Error", "data insertion error");
+            if(newRowId==-1)
+                Log.e("DB Error","data insertion error");
             else
-                Log.d("DB Record", "db 저장 완료" + date);
+                Log.d("DB Record","db 저장 완료"+date);
         }
 
         //on FireBase
+        database = FirebaseDatabase.getInstance();
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+        databaseReference = database.getReference("UU");
+        databaseReference.child("UserAccount").child(firebaseUser.getUid()).child("FitTest").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                FitTestData mFitTestData;
+                mFitTestData =snapshot.getValue(FitTestData.class);
+                assert mFitTestData != null;
+                mFitTestData=updateData(mFitTestData,
+                        distance,
+                        time,
+                        startTime,
+                        runningDay,
+                        startAddress,
+                        endAddress);
+
+
+                databaseReference.child("UserAccount").child(firebaseUser.getUid()).child("FitTest").setValue(mFitTestData);
+                mFitTestData.setCrewName("exampleFittest");
+                FirebaseDatabase.getInstance().getReference("Crew").child("exampleFittest").child("FitTest").setValue(mFitTestData);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         // date는 시작 시간 yy:mm:dd:hh:mm:ss
         // distance는 총 운동 거리 (m단위)
@@ -305,11 +329,70 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         // runningDay는 운동한 요일(Mon~Sun), 한글로 바꾸고 싶으면 fragment_running에서 수정
         // start/endAddress는 시작/끝 위치
         //위경도를 알고싶으면
-        startAddress.getLatitude(); startAddress.getLongitude();
+        //startAddress.getLatitude(); startAddress.getLongitude();
         //위치를 알고싶으면( ~동 기준)
-        startAddress.getThoroughfare();
+        //startAddress.getThoroughfare();
     }
+    public FitTestData updateData(FitTestData mFitTestData,int distance, int time,int startTime, String runningDay, Address startAddress, Address endAddress){
 
+        if(mFitTestData.getNumberOfRunning()!=0){
+           mFitTestData.setNumberOfRunning(mFitTestData.getNumberOfRunning()+1);
+           mFitTestData.setRunningTime((mFitTestData.getRunningTime()*(mFitTestData.getNumberOfRunning()-1)+time)/mFitTestData.getNumberOfRunning());
+           mFitTestData.setDistance((mFitTestData.getDistance()*(mFitTestData.getNumberOfRunning()-1)+distance)/mFitTestData.getNumberOfRunning());
+        }
+        else{
+            mFitTestData.setNumberOfRunning(1);
+           mFitTestData.setRunningTime(time);
+           mFitTestData.setDistance(distance);
+        }
+        mFitTestData.getDay().set(runningDayParseInt(runningDay),mFitTestData.getDay().get(runningDayParseInt(runningDay))+1);
+        mFitTestData.getStartTime().set(startTime,mFitTestData.getStartTime().get(startTime)+1);
+        if(mFitTestData.getStartAddress().size()==10){
+            mFitTestData.getStartAddress().remove(0);
+        }
+        com.example.uu.LatLng temp=new LatLng();
+        temp.setLatitude(startAddress.getLatitude());
+        temp.setLongitude(startAddress.getLongitude());
+        if(mFitTestData.getNumberOfRunning()==1){
+            mFitTestData.getStartAddress().set(0,temp);
+        }
+        else{
+            mFitTestData.getStartAddress().add(temp);
+        }
+
+        if(mFitTestData.getEndAddress().size()==10){
+            mFitTestData.getEndAddress().remove(0);
+        }
+        temp.setLatitude(endAddress.getLatitude());
+        temp.setLongitude(endAddress.getLongitude());
+        if(mFitTestData.getNumberOfRunning()==1){
+            mFitTestData.getEndAddress().set(0,temp);
+        }
+        else{
+            mFitTestData.getEndAddress().add(temp);
+        }
+        return mFitTestData;
+    }
+    public int runningDayParseInt(String runningDay){
+        switch (runningDay){
+            case "Mon":
+                return 0;
+            case "Tue":
+                return 1;
+            case "Wed":
+                return 2;
+            case "Thu":
+                return 3;
+            case "Fri":
+                return 4;
+            case "Sat":
+                return 5;
+            case "Sun":
+                return 6;
+            default:
+                return -1;
+        }
+    }
 
     public void OnScheduleCreated(String scheduleToken, recruit_object recruitObject) {
 
@@ -317,7 +400,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         StorageReference getstorageReference = storage.getReference();
         StorageReference recruitImg = getstorageReference.child("recruitment/" + scheduleToken + ".png");
 
-        recruitObject.setMapUrl("https://firebasestorage.googleapis.com/v0/b/doubleu-2df72.appspot.com/o/recruitment%2F" + recruitImg.getName() + "?alt=media");
+        recruitObject.setMapUrl("https://firebasestorage.googleapis.com/v0/b/doubleu-2df72.appspot.com/o/recruitment%2F"+recruitImg.getName()+"?alt=media");
 
         recruitObject.setCheckpoint(this.checkpoint);
         recruitObject.setOrigin(startAddress);
@@ -355,6 +438,9 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
             //Log.d("Tlqkf",startAddress+"");
             endAddress=data.getExtras().getString("endAddress");
             //Log.d("Tlqkf",endAddress+"");
+        }
+        else if(resultCode==777){
+            showRecruitmentFragment();
         }
     }
 

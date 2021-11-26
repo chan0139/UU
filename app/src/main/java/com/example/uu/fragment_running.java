@@ -2,6 +2,8 @@ package com.example.uu;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -57,8 +59,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 public class fragment_running extends Fragment
@@ -445,7 +447,7 @@ public class fragment_running extends Fragment
     }
 
 
-     //ActivityCompat.requestPermissions 을 사용한 퍼미션 요청의 결과를 리턴
+    //ActivityCompat.requestPermissions 을 사용한 퍼미션 요청의 결과를 리턴
     @Override
     public void onRequestPermissionsResult(int permsRequestCode,
                                            @NonNull String[] permissions,
@@ -534,7 +536,7 @@ public class fragment_running extends Fragment
     // For drawing polyline after running finished
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void onButtonStart()
+    public void onButtonStart()throws IOException
     {
 
         checkpoints.clear();

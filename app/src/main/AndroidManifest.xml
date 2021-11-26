@@ -34,6 +34,9 @@
         </receiver>
 
         <activity
+            android:name=".FitTestActivity"
+            android:exported="true" />
+        <activity
             android:name=".LoungeActivity"
             android:exported="true" />
         <activity

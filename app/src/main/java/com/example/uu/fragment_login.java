@@ -53,6 +53,8 @@ import org.w3c.dom.Text;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Executor;
 
@@ -182,6 +184,7 @@ public class fragment_login extends Fragment{
 
                                     //setValue -> db에 insert
                                     mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(user);
+                                    mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("FitTest").setValue(initFitTestData());
                                     //Toast.makeText(rootview.getContext(), "Success to save in DB", Toast.LENGTH_SHORT).show();
 
                                 }
@@ -254,6 +257,33 @@ public class fragment_login extends Fragment{
 
     private void updateUI(FirebaseUser user) {
 
+    }
+    public FitTestData initFitTestData(){
+        FitTestData mfitTestData=new FitTestData();
+        mfitTestData.setNumberOfRunning(0);
+        mfitTestData.setCrewName("Personal");
+        mfitTestData.setRunningTime(0);
+        mfitTestData.setDistance(0);
+        List<Integer> day=new ArrayList<>();
+        List<Integer> starttime=new ArrayList<>();
+        while(starttime.size()!=24){
+            starttime.add(0);
+            if(day.size()<7){
+                day.add(0);
+            }
+        }
+        mfitTestData.setDay(day);
+        mfitTestData.setStartTime(starttime);
+        List<com.example.uu.LatLng> start=new ArrayList<>();
+        LatLng temp=new LatLng();
+        temp.setLatitude((double) 0);
+        temp.setLongitude((double) 0);
+        start.add(temp);
+        mfitTestData.setStartAddress(start);
+        List<com.example.uu.LatLng> end=new ArrayList<>();
+        end.add(temp);
+        mfitTestData.setEndAddress(end);
+        return mfitTestData;
     }
 }
 

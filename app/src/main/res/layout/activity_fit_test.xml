@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FitTestActivity">
+
+
+    <com.layer_net.stepindicator.StepIndicator
+        android:id="@+id/step_indicator"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        app:siBackgroundColor="@color/background_default"
+        app:siStepColor="@color/step_default"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.example.uu.NoSwipeViewPager
+        android:id="@+id/stepViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/step_indicator"
+        android:touchscreenBlocksFocus="false"/>
+    <RelativeLayout
+        android:id="@+id/needRecord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/denyDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="You don't have\nany Record\nGo Out and"
+            android:textAlignment="center"
+            android:textSize="40sp"/>
+        <TextView
+            android:id="@+id/rUUn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="70dp"
+            android:text="rUUn!"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:layout_below="@+id/denyDescription"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="40dp"/>
+        <Button
+            android:id="@+id/gotoRecruitment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="see Recruitment"
+            android:layout_below="@+id/rUUn"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

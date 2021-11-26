@@ -36,7 +36,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import kotlin.Unit;
@@ -197,11 +199,38 @@ public class crewAddDialog extends DialogFragment {
         addUser.put(firebaseUser.getUid(), "id");
         crew.setUserList(addUser);
         mDatabaseRef.child(getCrewName).setValue(crew);
+        mDatabaseRef.child(getCrewName).child("FitTest").setValue(initFitTestData());
         mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("currentCrew").setValue(getCrewName);
         Toast.makeText(getContext(), "Success to save in DB", Toast.LENGTH_SHORT).show();
     }
 
-
+    public FitTestData initFitTestData(){
+        FitTestData mfitTestData=new FitTestData();
+        mfitTestData.setNumberOfRunning(0);
+        mfitTestData.setCrewName(getCrewName);
+        mfitTestData.setRunningTime(0);
+        mfitTestData.setDistance(0);
+        List<Integer> day=new ArrayList<>();
+        List<Integer> starttime=new ArrayList<>();
+        while(starttime.size()!=24){
+            starttime.add(0);
+            if(day.size()<7){
+                day.add(0);
+            }
+        }
+        mfitTestData.setDay(day);
+        mfitTestData.setStartTime(starttime);
+        List<com.example.uu.LatLng> start=new ArrayList<>();
+        LatLng temp=new LatLng();
+        temp.setLongitude((double) 0);
+        temp.setLatitude((double) 0);
+        start.add(temp);
+        mfitTestData.setStartAddress(start);
+        List<com.example.uu.LatLng> end=new ArrayList<>();
+        end.add(temp);
+        mfitTestData.setEndAddress(end);
+        return mfitTestData;
+    }
 
 
 }

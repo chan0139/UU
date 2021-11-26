@@ -69,6 +69,7 @@
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_club.xml" value="0.38229166666666664" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_crew.xml" value="0.22864583333333333" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_crew_selected.xml" value="0.22864583333333333" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_grip_lines_vertical_solid.xml" value="0.2833333333333333" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_lounge.xml" value="0.22864583333333333" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_lounge_selected.xml" value="0.22864583333333333" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_route.xml" value="0.27708333333333335" />
@@ -77,23 +78,34 @@
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_settings.xml" value="0.2046875" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/drawable/ic_undo.xml" value="0.2046875" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/activity_drawing_map.xml" value="0.18854166666666666" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/activity_fit_test.xml" value="0.25" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/activity_loading.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/activity_lounge.xml" value="0.2125" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/activity_main.xml" value="0.2125" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/activity_test_draw_line.xml" value="0.25" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/dialog_detail_recruit.xml" value="0.23333333333333334" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/dialog_recruit.xml" value="0.33" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/draw_map.xml" value="0.19" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fittest_stepfinal.xml" value="0.2671875" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fittest_stepfirst.xml" value="0.2671875" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fittest_stepsecond.xml" value="0.171875" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fragment_club.xml" value="0.2609375" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fragment_crew.xml" value="0.29270833333333335" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fragment_fittest_stepfirst.xml" value="0.1" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fragment_lounge.xml" value="0.21614583333333334" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fragment_ranking.xml" value="0.1" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fragment_record.xml" value="0.225" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fragment_record_achievements.xml" value="0.23333333333333334" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fragment_record_results.xml" value="0.23333333333333334" />
-        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fragment_recruitment.xml" value="0.2125" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fragment_recruitment.xml" value="0.1" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fragment_recruitment_crew.xml" value="0.25" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/fragment_step_sample.xml" value="0.2682291666666667" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/item_message.xml" value="0.25" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/item_message_fromMe.xml" value="0.19895833333333332" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/list_crew.xml" value="0.2546875" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/list_crew_user.xml" value="0.171875" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/row_item_selectedpriority.xml" value="0.171875" />
+        <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/row_item_selectedpriority_num.xml" value="0.171875" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/layout/toolbar.xml" value="0.2125" />
         <entry key="..\:/Users/kkch1/AndroidStudioProjects/UU/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.1" />
         <entry key="..\:/Users/simon/GitHub/UU/app/src/main/res/drawable/bottom_border.xml" value="0.3072916666666667" />

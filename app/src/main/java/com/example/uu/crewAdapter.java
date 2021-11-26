@@ -3,8 +3,10 @@ package com.example.uu;
 import android.annotation.SuppressLint;
 import android.content.Context;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,14 +51,15 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
     private FirebaseAuth mFirebaseAuth;
     private String userInCrew;
 
-    public OnCrewAddedListener crewAddedListener;
-    interface OnCrewAddedListener{
-        void  OnCrewAdded();
+    public OnCrewListener crewListener;
+    interface OnCrewListener{
+        void OnCrewAdded();
     }
 
     public crewAdapter(ArrayList<crewObject> arrayList, Context context) {
         this.arrayList = arrayList;
-        crewAddedListener = (OnCrewAddedListener) context;
+        this.context=context;
+        crewListener = (OnCrewListener) context;
     }
 
     @NonNull
@@ -114,7 +117,7 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
                 mDatabaseRef.child(arrayList.get(position).getCrewName()).child("userList").updateChildren(addUser); // DB에 현재인원 추가
                 mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("currentCrew").setValue(arrayList.get(position).getCrewName()); //유저 소속크루 설정
 
-                crewAddedListener.OnCrewAdded();
+                crewListener.OnCrewAdded();
             }
         });
     }

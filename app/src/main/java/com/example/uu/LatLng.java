@@ -3,7 +3,7 @@ package com.example.uu;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class LatLng extends com.google.maps.model.LatLng implements Parcelable {
+public class LatLng implements Parcelable {
     private Double latitude;
     private Double longitude;
 
