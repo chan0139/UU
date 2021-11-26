@@ -53,10 +53,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Calendar;
 import java.util.List;
 
 public class fragment_running extends Fragment
@@ -70,7 +72,6 @@ public class fragment_running extends Fragment
 
 
     private GoogleMap mMap;
-    String formatedNow;
 
     //show current location
     private static final String TAG = "UU";
@@ -79,11 +80,21 @@ public class fragment_running extends Fragment
     private static final int FASTEST_UPDATE_INTERVAL_MS = 500; // 0.5초
 
 
+    private Geocoder geocoder;
     private LocationManager locationManager;
+    private List<LatLng> checkpoints=new ArrayList<>();
+    private LatLng currentPosition;
+
+
     private boolean walkState = false;                    //걸음 상태
     private int runningTime=0;
-    private List<LatLng> checkpoints=new ArrayList<>();
     private int distance=0;
+    private float calories=0;
+    private String formatedNow;
+    private String day;
+    private int startTime=0;
+    private Address startAddress;
+    private Address endAddress;
 
     // onRequestPermissionsResult에서 수신된 결과에서 ActivityCompat.requestPermissions를 사용한 퍼미션 요청을 구별하기 위해 사용
     private static final int PERMISSIONS_REQUEST_CODE = 100;
@@ -92,8 +103,6 @@ public class fragment_running extends Fragment
     // 앱을 실행하기 위해 필요한 퍼미션을 정의
     String[] REQUIRED_PERMISSIONS = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};  // 외부 저장소
 
-
-    LatLng currentPosition;
 
 
     private FusedLocationProviderClient mFusedLocationClient;
@@ -186,6 +195,15 @@ public class fragment_running extends Fragment
         ViewGroup rootview = (ViewGroup) inflater.inflate(R.layout.fragment_running, container, false);
         mLayout = getActivity().findViewById(R.id.layout_running);
 
+        setMap();
+
+        geocoder=new Geocoder(getActivity());
+
+        return rootview;
+    }
+
+    private void setMap()
+    {
         //init map
         //LocationRequest objects are used to request a quality of service for location updates from the FusedLocationProviderApi.
         //for location request & authentication update
@@ -204,8 +222,6 @@ public class fragment_running extends Fragment
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         //set callback
         mapFragment.getMapAsync(this);
-
-        return rootview;
     }
 
     @Override
@@ -520,6 +536,7 @@ public class fragment_running extends Fragment
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void onButtonStart()
     {
+
         checkpoints.clear();
         mMap.clear();
         Toast.makeText(getContext(), "운동 시작!", Toast.LENGTH_SHORT).show();
@@ -529,6 +546,34 @@ public class fragment_running extends Fragment
         LocalDateTime now=LocalDateTime.now();
         formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy:MM:dd-HH:mm:ss"));
 
+        Calendar calendar=Calendar.getInstance();
+        startAddress=geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),10).get(0);
+        startTime=calendar.get(Calendar.HOUR_OF_DAY);
+        int dayIndex=calendar.get(Calendar.DAY_OF_WEEK);
+        switch (dayIndex){
+            case 1:
+                day="Sun";
+                break;
+            case 2:
+                day="Mon";
+                break;
+            case 3:
+                day="Tue";
+                break;
+            case 4:
+                day="Wed";
+                break;
+            case 5:
+                day="Thu";
+                break;
+            case 6:
+                day="Fri";
+                break;
+            case 7:
+                day="Sat";
+                break;
+        }
+
         ((MainActivity)getActivity()).setRunningState(true);
     }
 
@@ -537,14 +582,16 @@ public class fragment_running extends Fragment
         walkState = false;
     }
 
-    public void onButtonEnd()
-    {
+    public void onButtonEnd() throws IOException {
         walkState = false;
         // 액티비티에도 종료 사실 알려주기, 운동이 종료되지 않았는데 화면 전환 시도시 경고 문구 표시
         ((MainActivity)getActivity()).setRunningState(false);
 
         AlertDialog.Builder dlg = new AlertDialog.Builder(getActivity());
         String msg="";
+
+        //end position
+        endAddress=geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),10).get(0);
 
         //running time
         String min=Integer.toString((runningTime/100)/60);
@@ -558,7 +605,7 @@ public class fragment_running extends Fragment
                     checkpoints.get(i).longitude,
                     checkpoints.get(i+1).latitude,
                     checkpoints.get(i+1).longitude,results);
-            distance+=(int)results[0];
+            distance+=(int)results[0];      // m 단위로 달린 거리 받아오기
         }
 
         // Kcal calc
@@ -582,7 +629,7 @@ public class fragment_running extends Fragment
             Met=2.0;
 
         double Kcal=userWeight*Met*time;
-        float calories=(float) Math.round((Kcal*10)/10.0);
+        calories=(float) Math.round((Kcal*10)/10.0);
 
 
         // Dialog for running info
@@ -590,7 +637,7 @@ public class fragment_running extends Fragment
 
         msg="얼마나 달렸을까? "+min+"분 "+sec+"초\n";
         msg+="얼만큼 뛰었을까? "+Integer.toString(distance)+"m\n";
-        msg+="뛴만큼 빠졌을까? "+Float.toString(calories)+"Kcal";       //소숫점 첫째 자리까지 표현
+        msg+="뛴만큼 빠졌을까? "+Float.toString(calories)+"Kcal\n"+day+"\n"+Integer.toString(startTime)+"\n"+endAddress+"\n"+startAddress;       //소숫점 첫째 자리까지 표현
         dlg.setMessage(msg); // 메시지
 
         dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
@@ -602,8 +649,9 @@ public class fragment_running extends Fragment
         dlg.show();
 
         //write on db
-        ((MainActivity)getActivity()).recordRunningState(formatedNow,distance,(runningTime/100)/60,calories);
-        formatedNow="";
+        ((MainActivity)getActivity()).recordRunningState(formatedNow,distance,(runningTime/100)/60,calories,startTime,day,startAddress,endAddress);
+
+        formatedNow="";distance=0;calories=0;runningTime=0;endAddress=null;
     }
 
     private void drawPath(){        //polyline을 그려주는 메소드
