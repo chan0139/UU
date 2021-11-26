@@ -39,6 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:background="@drawable/button"
+            android:fontFamily="@font/custom_font"
             android:text="시작" />
 
         <LinearLayout
@@ -56,6 +57,7 @@
                 android:background="@drawable/button"
                 android:backgroundTint="?android:attr/panelBackground"
                 android:backgroundTintMode="add"
+                android:fontFamily="@font/custom_font"
                 android:text="일시정지"
                 android:textColor="#000000"
                 android:textSize="16sp"
@@ -69,6 +71,7 @@
                 android:background="@drawable/button"
                 android:backgroundTint="?android:attr/panelBackground"
                 android:backgroundTintMode="add"
+                android:fontFamily="@font/custom_font"
                 android:text="중지"
                 android:textColor="#000000"
                 android:textSize="16sp"

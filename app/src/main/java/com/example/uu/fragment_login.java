@@ -1,11 +1,13 @@
 package com.example.uu;
 
+import android.animation.AnimatorSet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.style.TtsSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,10 +24,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -42,11 +47,18 @@ import com.kakao.usermgmt.callback.MeV2ResponseCallback;
 import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.usermgmt.response.model.Gender;
 import com.kakao.util.exception.KakaoException;
+import com.kiprotich.japheth.TextAnim;
+
+import org.w3c.dom.Text;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Executor;
+
+
 
 
 public class fragment_login extends Fragment{
@@ -73,6 +85,50 @@ public class fragment_login extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootview=(ViewGroup) inflater.inflate(R.layout.fragment_login,container,false);
+
+        ImageView runGif = (ImageView) rootview.findViewById(R.id.loginGif);
+        Glide.with(this).load(R.raw.mov_location).into(runGif);
+
+        TextAnim textAnimation;
+        TextAnim textAnimation2;
+
+        textAnimation = rootview.findViewById(R.id.textAnimation);
+        textAnimation2 = rootview.findViewById(R.id.textAnimation2);
+
+
+            textAnimation
+                    .setWidth(12)
+                    .setDelay(30)
+                    .setColor(Color.DKGRAY)
+                    .setConfig(TextAnim.Configuration.INTERMEDIATE)
+                    .setSizeFactor(30f)
+                    .setLetterSpacing(25f)
+                    .setText("RUN WITH U")
+                    .setListener(new TextAnim.Listener() {
+                        @Override
+                        public void WritingFinished() {
+                            //
+                        }
+                    })
+                    .startAnimation();
+
+
+            textAnimation2
+                    .setWidth(12)
+                    .setDelay(30)
+                    .setColor(Color.DKGRAY)
+                    .setConfig(TextAnim.Configuration.INTERMEDIATE)
+                    .setSizeFactor(30f)
+                    .setLetterSpacing(25f)
+                    .setText("SHARE WITH U")
+                    .setListener(new TextAnim.Listener() {
+                        @Override
+                        public void WritingFinished() {
+                            //
+                        }
+                    })
+                    .startAnimation();
+
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("UU");
@@ -128,6 +184,7 @@ public class fragment_login extends Fragment{
 
                                     //setValue -> db에 insert
                                     mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).setValue(user);
+                                    mDatabaseRef.child("UserAccount").child(firebaseUser.getUid()).child("FitTest").setValue(initFitTestData());
                                     //Toast.makeText(rootview.getContext(), "Success to save in DB", Toast.LENGTH_SHORT).show();
 
                                 }
@@ -200,6 +257,33 @@ public class fragment_login extends Fragment{
 
     private void updateUI(FirebaseUser user) {
 
+    }
+    public FitTestData initFitTestData(){
+        FitTestData mfitTestData=new FitTestData();
+        mfitTestData.setNumberOfRunning(0);
+        mfitTestData.setCrewName("Personal");
+        mfitTestData.setRunningTime(0);
+        mfitTestData.setDistance(0);
+        List<Integer> day=new ArrayList<>();
+        List<Integer> starttime=new ArrayList<>();
+        while(starttime.size()!=24){
+            starttime.add(0);
+            if(day.size()<7){
+                day.add(0);
+            }
+        }
+        mfitTestData.setDay(day);
+        mfitTestData.setStartTime(starttime);
+        List<com.example.uu.LatLng> start=new ArrayList<>();
+        LatLng temp=new LatLng();
+        temp.setLatitude((double) 0);
+        temp.setLongitude((double) 0);
+        start.add(temp);
+        mfitTestData.setStartAddress(start);
+        List<com.example.uu.LatLng> end=new ArrayList<>();
+        end.add(temp);
+        mfitTestData.setEndAddress(end);
+        return mfitTestData;
     }
 }
 

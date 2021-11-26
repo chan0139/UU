@@ -52,6 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
+            android:fontFamily="@font/custom_font"
             android:hint="크루명을 입력하세요."
             android:textSize="14dp" />
     </LinearLayout>
@@ -109,6 +110,7 @@
             android:layout_marginLeft="5dp"
             android:hint="200자 이내로 입력하세요."
             android:maxLength="200"
+            android:fontFamily="@font/custom_font"
             android:textSize="14dp" />
     </LinearLayout>
 
@@ -128,12 +130,14 @@
             android:id="@+id/cancelCrewBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/custom_font"
             android:text="Cancel" />
 
         <Button
             android:id="@+id/addCrewBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/custom_font"
             android:layout_marginLeft="5dp"
             android:text="Create" />
     </LinearLayout>

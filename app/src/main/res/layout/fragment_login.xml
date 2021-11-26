@@ -1,16 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.kiprotich.japheth.TextAnim
+        android:layout_marginTop="50dp"
+        android:id="@+id/textAnimation"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp" />
+
+    <com.kiprotich.japheth.TextAnim
+        android:id="@+id/textAnimation2"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp" />
+
+    <ImageView
+        android:id="@+id/loginGif"
+        android:layout_width="400dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="136dp"
+        android:layout_gravity="center_horizontal"
+        tools:srcCompat="@tools:sample/avatars" />
+
 
     <com.kakao.usermgmt.LoginButton
+        android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center_horizontal"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>

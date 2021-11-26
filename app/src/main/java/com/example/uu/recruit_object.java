@@ -1,11 +1,12 @@
 package com.example.uu;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.util.Base64;
+import android.os.Parcel;
 
-import java.io.ByteArrayOutputStream;
+import androidx.annotation.NonNull;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class recruit_object {
@@ -16,13 +17,70 @@ public class recruit_object {
     private int totalUserNum;
     private String date;
     private String time;
+    private String alarmTime;
     private String userInfo;
     private String hostId;
     private String runningSpeed;
+    private String origin;
+    private String destination;
+    private String address;
+    private String distance;
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    private List<LatLng> checkpoint= new ArrayList<>();
+
+    public List<LatLng> getCheckpoint() {
+        return checkpoint;
+    }
+
+    public void setCheckpoint(List<LatLng> checkpoint) {
+        this.checkpoint = checkpoint;
+    }
+
+    public recruit_object() { }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+
+    public String getAlarmTime() {
+        return alarmTime;
+    }
+
+    public void setAlarmTime(String alarmTime) {
+        this.alarmTime = alarmTime;
+    }
 
     private Map<String, Object> users = new HashMap<String, Object>();
 
-    public recruit_object() { }
 
     public String getRecruitId() {
         return recruitId;
