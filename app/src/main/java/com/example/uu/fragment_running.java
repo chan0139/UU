@@ -2,8 +2,6 @@ package com.example.uu;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -55,7 +53,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -81,8 +78,6 @@ public class fragment_running extends Fragment
     private static final int UPDATE_INTERVAL_MS = 1000;  // 1초
     private static final int FASTEST_UPDATE_INTERVAL_MS = 500; // 0.5초
 
-
-    private Geocoder geocoder;
     private LocationManager locationManager;
     private List<LatLng> checkpoints=new ArrayList<>();
     private LatLng currentPosition;
@@ -95,8 +90,8 @@ public class fragment_running extends Fragment
     private String formatedNow;
     private String day;
     private int startTime=0;
-    private Address startAddress;
-    private Address endAddress;
+    private Location startAddress;
+    private Location endAddress;
 
     // onRequestPermissionsResult에서 수신된 결과에서 ActivityCompat.requestPermissions를 사용한 퍼미션 요청을 구별하기 위해 사용
     private static final int PERMISSIONS_REQUEST_CODE = 100;
@@ -199,7 +194,6 @@ public class fragment_running extends Fragment
 
         setMap();
 
-        geocoder=new Geocoder(getActivity());
 
         return rootview;
     }
@@ -536,8 +530,7 @@ public class fragment_running extends Fragment
     // For drawing polyline after running finished
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void onButtonStart()throws IOException
-    {
+    public void onButtonStart()  {
 
         checkpoints.clear();
         mMap.clear();
@@ -549,7 +542,8 @@ public class fragment_running extends Fragment
         formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy:MM:dd-HH:mm:ss"));
 
         Calendar calendar=Calendar.getInstance();
-        startAddress=geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),10).get(0);
+        startAddress=location;
+
         startTime=calendar.get(Calendar.HOUR_OF_DAY);
         int dayIndex=calendar.get(Calendar.DAY_OF_WEEK);
         switch (dayIndex){
@@ -584,7 +578,7 @@ public class fragment_running extends Fragment
         walkState = false;
     }
 
-    public void onButtonEnd() throws IOException {
+    public void onButtonEnd() {
         walkState = false;
         // 액티비티에도 종료 사실 알려주기, 운동이 종료되지 않았는데 화면 전환 시도시 경고 문구 표시
         ((MainActivity)getActivity()).setRunningState(false);
@@ -593,7 +587,8 @@ public class fragment_running extends Fragment
         String msg="";
 
         //end position
-        endAddress=geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),10).get(0);
+        endAddress=location;
+
 
         //running time
         String min=Integer.toString((runningTime/100)/60);
@@ -639,7 +634,7 @@ public class fragment_running extends Fragment
 
         msg="얼마나 달렸을까? "+min+"분 "+sec+"초\n";
         msg+="얼만큼 뛰었을까? "+Integer.toString(distance)+"m\n";
-        msg+="뛴만큼 빠졌을까? "+Float.toString(calories)+"Kcal\n"+day+"\n"+Integer.toString(startTime)+"\n"+endAddress+"\n"+startAddress;       //소숫점 첫째 자리까지 표현
+        msg+="뛴만큼 빠졌을까? "+Float.toString(calories)+"Kcal\n";       //소숫점 첫째 자리까지 표현
         dlg.setMessage(msg); // 메시지
 
         dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
@@ -662,8 +657,4 @@ public class fragment_running extends Fragment
         polyline.setPoints(checkpoints);
     }
 
-    public boolean getWalkstate()
-    {
-        return walkState;
-    }
 }

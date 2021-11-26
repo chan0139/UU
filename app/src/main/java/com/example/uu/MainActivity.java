@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.Address;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -243,6 +244,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     }
 
 
+
     @Override
     public void loginComplete() {
         title.setText("Crew");
@@ -271,7 +273,9 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     }
 
     // record to db if running ends
-    public void recordRunningState(String date, int distance, int time, float calories, int startTime, String runningDay, Address startAddress, Address endAddress){
+    public void recordRunningState(String date, int distance, int time, float calories, int startTime, String runningDay, Location startAddress, Location endAddress)
+    {
+        // on local DB
         //only record actual running data
         if(distance!=0) {
             sqLiteDb = dbHelper.getWritableDatabase();
@@ -288,7 +292,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
                 Log.e("DB Error","data insertion error");
             else
                 Log.d("DB Record","db 저장 완료"+date);
-        }
+        
 
         //on FireBase
         database = FirebaseDatabase.getInstance();
@@ -320,6 +324,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
             }
         });
+        }
 
         // date는 시작 시간 yy:mm:dd:hh:mm:ss
         // distance는 총 운동 거리 (m단위)
