@@ -2,8 +2,6 @@ package com.example.uu;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -469,7 +467,9 @@ public class fragment_running extends Fragment
     // For drawing polyline after running finished
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void onButtonStart() throws IOException {
+    public void onButtonStart()
+    {
+
         checkpoints.clear();
         mMap.clear();
         Toast.makeText(getContext(), "운동 시작!", Toast.LENGTH_SHORT).show();
