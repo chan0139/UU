@@ -109,8 +109,8 @@ public class fragment_running extends Fragment
 
     private View mLayout;  // Snackbar 사용하기 위해서는 View가 필요
 
-    //checkpoint
-    private HashMap<String,List<com.example.uu.LatLng>> recruitment_checkpoint=new HashMap<>();
+    //personal recruitment obj
+    private HashMap<String,recruit_object> recruitObject=new HashMap<>();
     //현재 참가중인 러닝 key
     private HashMap<Integer,String> runningKey=new HashMap<>();
 
@@ -169,10 +169,7 @@ public class fragment_running extends Fragment
                 for (DataSnapshot Snapshot : dataSnapshot.getChildren()) {
                     recruit_object recruit = Snapshot.getValue(recruit_object.class);
                     if(runningKey.containsValue(recruit.getRecruitId())){
-                        recruitment_checkpoint.put(recruit.getRecruitId(),recruit.getCheckpoint());
-
-                        //쓰는 예시 --> 체크포인트의 첫번째 Latitude
-                        //Log.d("getCheckpoint",recruitment_checkpoint.get(runningKey.get(0)).get(0).getLatitude()+"");
+                        recruitObject.put(recruit.getRecruitId(),recruit);
                     }
                 }
             }
@@ -655,6 +652,14 @@ public class fragment_running extends Fragment
         PolylineOptions options = new PolylineOptions().width(15).color(Color.BLACK).geodesic(true);
         Polyline polyline=mMap.addPolyline(options);
         polyline.setPoints(checkpoints);
+    }
+
+    private boolean checkNearSchedule(){
+        for(int i=0;i<recruitObject.size();i++){
+            //쓰는 예시 --> 체크포인트의 첫번째 Latitude
+            Log.d("getCheckpoint",recruitObject.get(runningKey.get(i)).getCheckpoint().get(0).getLatitude()+" , "+recruitObject.get(runningKey.get(i)).getCheckpoint().get(0).getLongitude());
+        }
+        return true;
     }
 
 }
