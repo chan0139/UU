@@ -268,7 +268,7 @@ public class fragment_running extends Fragment
                 currentPosition
                         = new LatLng(location.getLatitude(), location.getLongitude());
 
-              
+
                 // Add location to drawing buffer if walkState is true(button clicked)
                 if(walkState)
                     checkpoints.add(currentPosition);
@@ -380,7 +380,7 @@ public class fragment_running extends Fragment
     }
 
 
-     //ActivityCompat.requestPermissions 을 사용한 퍼미션 요청의 결과를 리턴
+    //ActivityCompat.requestPermissions 을 사용한 퍼미션 요청의 결과를 리턴
     @Override
     public void onRequestPermissionsResult(int permsRequestCode,
                                            @NonNull String[] permissions,

@@ -25,7 +25,6 @@ import android.widget.Toast;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -215,17 +214,20 @@ public class fragment_login extends Fragment{
         List<Integer> starttime=new ArrayList<>();
         while(starttime.size()!=24){
             starttime.add(0);
-            day.add(0);
-            if(starttime.size()==7){
-                mfitTestData.setDay(day);
+            if(day.size()<7){
+                day.add(0);
             }
         }
+        mfitTestData.setDay(day);
         mfitTestData.setStartTime(starttime);
-        List<LatLng> start=new ArrayList<>();
-        start.add(new LatLng(0,0));
+        List<com.example.uu.LatLng> start=new ArrayList<>();
+        LatLng temp=new LatLng();
+        temp.setLatitude((double) 0);
+        temp.setLongitude((double) 0);
+        start.add(temp);
         mfitTestData.setStartAddress(start);
-        List<LatLng> end=new ArrayList<>();
-        end.add(new LatLng(0,0));
+        List<com.example.uu.LatLng> end=new ArrayList<>();
+        end.add(temp);
         mfitTestData.setEndAddress(end);
         return mfitTestData;
     }

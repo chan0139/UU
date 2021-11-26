@@ -18,6 +18,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
@@ -98,6 +99,7 @@ public class fragment_record_achievements extends Fragment {
         mFirebaseAuth = FirebaseAuth.getInstance();
         databaseReference = database.getReference("UU");
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
+
         adapter=new achievementAdapter();
 
         level = 1;

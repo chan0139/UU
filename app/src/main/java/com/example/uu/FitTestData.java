@@ -1,7 +1,6 @@
 package com.example.uu;
 
-import com.google.android.gms.maps.model.LatLng;
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class FitTestData {
@@ -11,11 +10,11 @@ public class FitTestData {
     private int distance;// 한번에 몇미터 2
     // 0  1  2  3  4  5  6
     // 월 화 수  목 금 토 일
-    private List<Integer> day;//무슨요일에 주로? 4
+    private List<Integer> day=new ArrayList<>();//무슨요일에 주로? 4
     //0 1 ~ 24
-    private List<Integer> startTime;//운동 시작시간 5
-    private List<LatLng> startAddress;  // 6
-    private List<LatLng> endAddress;     // 6
+    private List<Integer> startTime=new ArrayList<>();//운동 시작시간 5
+    private List<com.example.uu.LatLng> startAddress=new ArrayList<>();  // 6
+    private List<com.example.uu.LatLng> endAddress=new ArrayList<>();     // 6
 
     public FitTestData() {
     }

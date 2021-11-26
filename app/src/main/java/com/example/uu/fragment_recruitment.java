@@ -77,6 +77,10 @@ public class fragment_recruitment extends Fragment{
 
     int which_layout=R.id.show_recruitment;
 
+    private ArrayAdapter spinnerAdapter;
+    private String selectedGu;
+    private TextView title;
+
 
 
     fragment_recruitment(int id_layout){
@@ -92,12 +96,21 @@ public class fragment_recruitment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         rootview=(ViewGroup) inflater.inflate(R.layout.fragment_recruitment,container,false);
-
+        title = getActivity().findViewById(R.id.title);
         database = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
 
         databaseReference = database.getReference("UU");
+
+        if(firebaseUser == null){
+            Toast.makeText(rootview.getContext(), "Need to login", Toast.LENGTH_SHORT).show();
+            title.setText("Login");
+            fragment_login login = new fragment_login();
+            ((MainActivity) getActivity()).replaceFragment(login);
+            return rootview;
+        }
+
 
         databaseReference.child("UserAccount").child(firebaseUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -137,6 +150,10 @@ public class fragment_recruitment extends Fragment{
 
         //******* linear_recruitment 부분 코딩
 
+        Spinner recruitSpinner = (Spinner) rootview.findViewById(R.id.recruitSpinner);
+        spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.seoul_gu, android.R.layout.simple_spinner_item);
+        recruitSpinner.setAdapter(spinnerAdapter);
+
         recyclerView = rootview.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
@@ -144,50 +161,56 @@ public class fragment_recruitment extends Fragment{
         arrayList = new ArrayList<>();
         database = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
+        databaseReferenceRecruit = database.getReference("Recruit");
+
+        recruitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedGu = (String) adapterView.getSelectedItem();
+                databaseReferenceRecruit.orderByChild("date").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        // DB data를 받아오는곳
+                        arrayList.clear(); // 기존 배열리스트 초기화
+                        for (DataSnapshot Snapshot : dataSnapshot.getChildren()) {
+                            recruit_object recruit = Snapshot.getValue(recruit_object.class);
+                            if(selectedGu.equals("지역선택")){
+                                arrayList.add(recruit);
+                                continue;
+                            }
+                            if (recruit.getOrigin().equals(selectedGu)) {
+                                arrayList.add(recruit);
+                            }
 
 
-        if (firebaseUser != null) {
-            databaseReferenceRecruit = database.getReference("Recruit");
-
-            databaseReferenceRecruit.orderByChild("date").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    // DB data를 받아오는곳
-                    arrayList.clear(); // 기존 배열리스트 초기화
-                    for (DataSnapshot Snapshot : dataSnapshot.getChildren()) {
-                        recruit_object recruit = Snapshot.getValue(recruit_object.class);
-                        arrayList.add(recruit);
+                        }
+                        adapter.notifyDataSetChanged(); //리스트 저장 및 새로고침
                     }
-                    adapter.notifyDataSetChanged(); //리스트 저장 및 새로고침
-                }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        //DB 받아오던 중 에러 발생하는 경우
+                        Log.e("Error", String.valueOf(error.toException()));
+                    }
+                });
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    //DB 받아오던 중 에러 발생하는 경우
-                    Log.e("Error", String.valueOf(error.toException()));
-                }
-            });
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
 
-            adapter = new recruitAdapter(arrayList, getContext(),0);
-            recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
+        adapter = new recruitAdapter(arrayList, getContext(), 0);
+        recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
 
-            Button recruit = (Button) rootview.findViewById(R.id.recruit);
-            recruit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    customDialog dialog = new customDialog(getActivity());
-                    dialog.show();
-                }
-            });
-
-        } else {
-
-            Toast.makeText(rootview.getContext(), "Need to login", Toast.LENGTH_SHORT).show();
-
-            fragment_login login = new fragment_login();
-            ((MainActivity) getActivity()).replaceFragment(login);
-        }
+        Button recruit = (Button) rootview.findViewById(R.id.recruit);
+        recruit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                customDialog dialog = new customDialog();
+                dialog.show(getChildFragmentManager(), "recruit");
+            }
+        });
         //
 
         //******* linear_lounge 부분 코딩
