@@ -538,6 +538,7 @@ public class fragment_running extends Fragment
         checkNearSchedule();
 
         checkpoints.clear();
+        reservedCheckpoints.clear();
         mMap.clear();
         Toast.makeText(getContext(), "운동 시작!", Toast.LENGTH_SHORT).show();
         walkState = true;

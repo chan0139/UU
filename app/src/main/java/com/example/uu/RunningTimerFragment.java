@@ -92,9 +92,10 @@ public class RunningTimerFragment extends Fragment {
                     v.setVisibility(View.GONE);
                     StartTimer();
                 }
-                else
+                else {
                     v.setVisibility(View.GONE);
                     parentFragment.showNearSchedule();
+                }
             }
         });
 
