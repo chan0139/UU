@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".LoungeActivity">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/message_recycler_view"
         android:layout_width="match_parent"

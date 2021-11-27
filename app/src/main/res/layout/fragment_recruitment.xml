@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <LinearLayout
@@ -61,7 +62,7 @@
                         android:id="@+id/recruitSpinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/custom_font"
                         android:layout_marginLeft="10dp">
                     </Spinner>
 
@@ -82,6 +83,27 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/recruitGif"
+                        android:layout_width="120dp"
+                        android:layout_height="100dp"
+                        android:layout_marginLeft="10dp"
+                        android:scaleType="fitXY"
+                        tools:srcCompat="@tools:sample/avatars" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_gravity="center_vertical"
+                        android:text="\u003E join recruit list and make running mate!\n\n\u003E you can also create recruit schedule"/>
+
+                </LinearLayout>
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView"
                     android:layout_width="match_parent"
@@ -90,10 +112,36 @@
 
         </LinearLayout>
 
+
+
         <LinearLayout
             android:id="@+id/linear_lounge"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/chatGif"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="10dp"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="17dp"
+                    android:text="Click join button\nand start chat with\nyour running mate!"/>
+
+            </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/joinedRunning"
                 android:layout_width="match_parent"

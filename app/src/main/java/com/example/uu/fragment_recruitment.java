@@ -98,6 +98,9 @@ public class fragment_recruitment extends Fragment{
 
         rootview=(ViewGroup) inflater.inflate(R.layout.fragment_recruitment,container,false);
         title = getActivity().findViewById(R.id.title);
+
+        ImageView recruitGif = (ImageView) rootview.findViewById(R.id.recruitGif);
+        Glide.with(this).load(R.raw.finding_route).into(recruitGif);
         database = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
@@ -152,7 +155,8 @@ public class fragment_recruitment extends Fragment{
         //******* linear_recruitment 부분 코딩
 
         Spinner recruitSpinner = (Spinner) rootview.findViewById(R.id.recruitSpinner);
-        spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.seoul_gu, android.R.layout.simple_spinner_item);
+
+        spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.seoul_gu, android.R.layout.simple_spinner_dropdown_item);
         recruitSpinner.setAdapter(spinnerAdapter);
 
         recyclerView = rootview.findViewById(R.id.recyclerView);
@@ -220,6 +224,9 @@ public class fragment_recruitment extends Fragment{
         //
 
         //******* linear_lounge 부분 코딩
+
+        ImageView chatGif = (ImageView) rootview.findViewById(R.id.chatGif);
+        Glide.with(this).load(R.raw.chat).into(chatGif);
         userRecruitList = new ArrayList<>();
         loungeArrayList = new ArrayList<>();
         loungeRecruitRecyclerView = rootview.findViewById(R.id.joinedRunning);
@@ -271,6 +278,7 @@ public class fragment_recruitment extends Fragment{
         loungeAdapter = new recruitAdapter(loungeArrayList, getContext(),1);
 
         loungeRecruitRecyclerView.setAdapter(loungeAdapter); //리사이클러뷰에 어댑터 연결
+        loungeRecruitRecyclerView.addItemDecoration(spaceDecoration);
 
         return rootview;
     }

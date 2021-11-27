@@ -126,6 +126,10 @@ public class fragment_crew extends Fragment{
 
         rootview=(ViewGroup) inflater.inflate(R.layout.fragment_crew,container,false);
         title = getActivity().findViewById(R.id.title);
+
+        ImageView crewGif = (ImageView) rootview.findViewById(R.id.crewGif);
+        Glide.with(this).load(R.raw.friends).into(crewGif);
+
         database = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
@@ -185,7 +189,7 @@ public class fragment_crew extends Fragment{
 
         //지역구별 검색 스피너
         guSpinner = (Spinner) rootview.findViewById(R.id.guSpinner);
-        guAdapter = ArrayAdapter.createFromResource(getContext(), R.array.seoul_gu, android.R.layout.simple_spinner_item);
+        guAdapter = ArrayAdapter.createFromResource(getContext(), R.array.seoul_gu, android.R.layout.simple_spinner_dropdown_item);
         guSpinner.setAdapter(guAdapter);
 
 

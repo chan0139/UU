@@ -12,8 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -41,6 +43,8 @@ public class fragment_recruitment_crew extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootview=(ViewGroup) inflater.inflate(R.layout.fragment_recruitment_crew,container,false);
+
+
 
         recyclerView = rootview.findViewById(R.id.crewUserRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -94,6 +98,7 @@ public class fragment_recruitment_crew extends Fragment {
 
             adapter = new crewUserAdapter(arrayList);
             recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
+
         }
         return rootview;
     }

@@ -16,7 +16,7 @@
         <!--custom font-family 적용-->
         <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
         <item name="android:buttonStyle">@style/customButtonFontStyle</item>
-        <item name="android:editTextStyle">@style/customEditTextFontStyle</item>
+        <item name="android:spinnerDropDownItemStyle">@style/customSpinnerFontStyle</item>
         <item name="android:radioButtonStyle">@style/customRadioButtonFontStyle</item>
         <item name="android:checkboxStyle">@style/customCheckboxFontStyle</item>
     </style>
@@ -26,15 +26,15 @@
         <item name="android:fontFamily">@font/font_family</item>
     </style>
 
-    <style name="customButtonFontStyle" parent="android:Widget.DeviceDefault.Button.Borderless">
+    <style name="customButtonFontStyle" parent="@android:style/Widget.Button">
         <item name="android:fontFamily">@font/font_family</item>
     </style>
 
-    <style name="customEditTextFontStyle" parent="@style/Widget.AppCompat.EditText">
+    <style name="customSpinnerFontStyle" parent="@android:style/Widget.DeviceDefault.DropDownItem.Spinner">
         <item name="android:fontFamily">@font/font_family</item>
     </style>
 
-    <style name="customRadioButtonFontStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.RadioButton">
+    <style name="customRadioButtonFontStyle" parent="android:Widget.DeviceDefault.Button.Borderless">
         <item name="android:fontFamily">@font/font_family</item>
     </style>
 
