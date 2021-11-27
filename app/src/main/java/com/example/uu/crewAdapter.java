@@ -84,9 +84,8 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
         FirebaseStorage storage = FirebaseStorage.getInstance("gs://doubleu-2df72.appspot.com");
         StorageReference storageReference = storage.getReference();
         StorageReference crewImg = storageReference.child("crew/" + arrayList.get(position).getCrewName() + ".png");
-        while(crewImg==null){
-            crewImg=storageReference.child("crew/"+arrayList.get(position).getCrewName()+".png");
-        }
+
+
         crewImg.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -96,6 +95,16 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
             }
 
         });
+        crewImg.getDownloadUrl().addOnFailureListener(new OnFailureListener(){
+
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Glide.with(holder.itemView)
+                        .load(R.drawable.ic_sneakers)
+                        .into(holder.crewImage);
+            }
+        });
+
 
 
         holder.crewName.setText(arrayList.get(position).getCrewName());
