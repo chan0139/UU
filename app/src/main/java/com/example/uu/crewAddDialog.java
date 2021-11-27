@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.bumptech.glide.Glide;
 import com.github.drjacky.imagepicker.ImagePicker;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -90,6 +92,7 @@ public class crewAddDialog extends DialogFragment {
                         // Use the uri to load the image
                     } else if (result.getResultCode() == ImagePicker.RESULT_ERROR) {
                         // Use ImagePicker.Companion.getError(result.getData()) to show an error
+
                     }
                 });
 
@@ -184,7 +187,10 @@ public class crewAddDialog extends DialogFragment {
         //저장소에 크루 사진 정보 저장..
         StorageReference storageReference = storage.getReference();
         StorageReference riversRef = storageReference.child("crew/" + getCrewName + ".png");
-        UploadTask uploadTask = riversRef.putFile(uri);
+        if(uri != null) {
+            UploadTask uploadTask = riversRef.putFile(uri);
+        }
+
 
         //DB에 크루 정보 저장
         Map<String, Object> addUser = new HashMap<String, Object>();

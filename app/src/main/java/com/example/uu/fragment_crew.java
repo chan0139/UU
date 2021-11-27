@@ -318,7 +318,9 @@ public class fragment_crew extends Fragment{
                     crewYesImg.getDownloadUrl().addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            recallCrewImgFromStorage(crewYesImg);
+                            Glide.with(rootview)
+                                    .load(R.drawable.ic_sneakers)
+                                    .into(crewImg);
                         }
                     });
                     crewYesImg.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
