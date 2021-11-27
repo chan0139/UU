@@ -52,6 +52,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -540,7 +541,7 @@ public class fragment_running extends Fragment
         checkpoints.clear();
         reservedCheckpoints.clear();
         mMap.clear();
-        Toast.makeText(getContext(), "운동 시작!", Toast.LENGTH_SHORT).show();
+        FancyToast.makeText(getContext(),"운동 시작!",FancyToast.LENGTH_LONG,FancyToast.INFO,false).show();
         walkState = true;
 
         //시작 시간 계산, db에 저장할때 기본키로 사용
@@ -645,7 +646,7 @@ public class fragment_running extends Fragment
 
         dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getActivity(),"운동 종료!",Toast.LENGTH_SHORT).show();
+                FancyToast.makeText(getContext(),"운동 종료!",FancyToast.LENGTH_LONG,FancyToast.INFO,false).show();
                 drawPath(checkpoints,Color.BLACK);
             }
         });
@@ -678,7 +679,6 @@ public class fragment_running extends Fragment
                 int reservedTime=returnDateFormat(recruitObject.get(runningKey.get(i)).getDate(),recruitObject.get(runningKey.get(i)).getTime());
                 if(reservedTime!=-1){
                     // calculate between current time and reserved time, and push if reservation time is near by
-                    Log.d("timegap",Math.abs(currentTime-reservedTime)+"");
                     if(Math.abs(currentTime-reservedTime)<=60)
                         nearSchedule.add(recruitObject.get(runningKey.get(i)));
                 }
@@ -713,9 +713,11 @@ public class fragment_running extends Fragment
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                scheduleName.clear();
                 RunningTimerFragment timerFragment=(RunningTimerFragment) getChildFragmentManager().findFragmentById(R.id.fragmentContainerView);
                 timerFragment.StartTimer();
+
+                Log.d("running",scheduleName.size()+"");
+                Log.d("running",which+"");
 
                 if(which!=scheduleName.size()-1) {
                     for(int i=0;i<nearSchedule.get(which).getCheckpoint().size();i++)

@@ -73,7 +73,7 @@
                 android:backgroundTint="?android:attr/panelBackground"
                 android:backgroundTintMode="add"
                 android:fontFamily="@font/custom_font"
-                android:text="중지"
+                android:text="종료"
                 android:textColor="#000000"
                 android:textSize="16sp"
                 android:visibility="invisible" />
