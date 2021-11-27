@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
@@ -32,12 +33,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
 
 public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomViewHolder> {
     private DatabaseReference mDatabaseRef;
@@ -148,11 +151,14 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
                         //Log.e("test", String.valueOf(userRecruitList.size()));
                         for(int i = 0; i < userRecruitList.size(); i ++){
                             if(userRecruitList.get(i).equals(arrayList.get(position).getRecruitId())){
+                                FancyToast.makeText(context.getApplicationContext(),"Already participating in this Schedule",FancyToast.LENGTH_LONG, FancyToast.ERROR,false).show();
+
                                 return; //유저가 이미 신청한 recruit의 경우 조인 불가능 처리
                             }
                         }
 
                         if(arrayList.get(position).getHostId().equals(firebaseUser.getUid())){
+
                             return;  //자신이 만든 recruit 조인 불가능 처리
                         }
 
@@ -165,6 +171,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
                         Log.e("getNUm",Integer.toString(getUserRecruitJoinNumber));
                         mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("userRecruitJoinNumber").setValue(getUserRecruitJoinNumber+1);
                         mDatabaseRef.child(arrayList.get(position).getRecruitId()).child("users").updateChildren(addUser); // DB에 현재인원 추가
+                        FancyToast.makeText(context.getApplicationContext(),"Join In Recruit Schedule!",FancyToast.LENGTH_LONG,FancyToast.SUCCESS,false).show();
                         break;
                     case LoungeList:
                         Intent intent = new Intent(context.getApplicationContext(),LoungeActivity.class);
@@ -176,6 +183,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
                         mDatabaseRef.child(arrayList.get(position).getRecruitId()).child("users").child(firebaseUser.getUid()).removeValue();
                         mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("recruitList").child(arrayList.get(position).getRecruitId()).removeValue();
                         mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("userRecruitJoinNumber").setValue(getUserRecruitJoinNumber - 1);
+                        FancyToast.makeText(context.getApplicationContext(),"Cancel the Recruit Schedule!",FancyToast.LENGTH_LONG,FancyToast.SUCCESS,false).show();
 
                         FragmentTransaction tr = ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction();
                         bar_profile bar_profile = new bar_profile();

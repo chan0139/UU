@@ -338,7 +338,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
         //위치를 알고싶으면( ~동 기준)
         //startAddress.getThoroughfare();
     }
-    public FitTestData updateData(FitTestData mFitTestData,int distance, int time,int startTime, String runningDay, Address startAddress, Address endAddress){
+    public FitTestData updateData(FitTestData mFitTestData,int distance, int time,int startTime, String runningDay, Location startAddress, Location endAddress){
 
         if(mFitTestData.getNumberOfRunning()!=0){
            mFitTestData.setNumberOfRunning(mFitTestData.getNumberOfRunning()+1);

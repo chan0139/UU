@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -203,6 +204,10 @@ public class fragment_recruitment extends Fragment{
 
         adapter = new recruitAdapter(arrayList, getContext(), 0);
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
+
+
+        RecyclerDecoration spaceDecoration = new RecyclerDecoration(30);
+        recyclerView.addItemDecoration(spaceDecoration);
 
         Button recruit = (Button) rootview.findViewById(R.id.recruit);
         recruit.setOnClickListener(new View.OnClickListener() {
