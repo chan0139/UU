@@ -83,6 +83,7 @@ public class fragment_running extends Fragment
 
     private LocationManager locationManager;
     private List<LatLng> checkpoints=new ArrayList<>();
+    private List<LatLng> reservedCheckpoints=new ArrayList<>();
     private LatLng currentPosition;
 
 
@@ -644,7 +645,7 @@ public class fragment_running extends Fragment
         dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(getActivity(),"운동 종료!",Toast.LENGTH_SHORT).show();
-                drawPath();
+                drawPath(checkpoints,Color.BLACK);
             }
         });
         dlg.show();
@@ -655,14 +656,16 @@ public class fragment_running extends Fragment
         formatedNow="";distance=0;calories=0;runningTime=0;endAddress=null;
     }
 
-    private void drawPath(){        //polyline을 그려주는 메소드
-        PolylineOptions options = new PolylineOptions().width(15).color(Color.BLACK).geodesic(true);
+    private void drawPath(List<LatLng> targetPoints, int color){        //polyline을 그려주는 메소드
+        PolylineOptions options = new PolylineOptions().width(15).color(color).geodesic(true);
         Polyline polyline=mMap.addPolyline(options);
-        polyline.setPoints(checkpoints);
+        polyline.setPoints(targetPoints);
     }
 
     // checking for near running schedule from now before starts running, if so, show dialog for user
     public boolean checkNearSchedule(){
+
+        nearSchedule.clear();
 
         Calendar now = Calendar.getInstance();
         int currentTime=0;
@@ -712,6 +715,13 @@ public class fragment_running extends Fragment
                 scheduleName.clear();
                 RunningTimerFragment timerFragment=(RunningTimerFragment) getChildFragmentManager().findFragmentById(R.id.fragmentContainerView);
                 timerFragment.StartTimer();
+
+                if(which!=scheduleName.size()-1) {
+                    for(int i=0;i<nearSchedule.get(which).getCheckpoint().size();i++)
+                        reservedCheckpoints.add(new LatLng(nearSchedule.get(which).getCheckpoint().get(i).getLatitude(),nearSchedule.get(which).getCheckpoint().get(i).getLongitude()));
+                    drawPath(reservedCheckpoints,Color.RED);
+                    reservedCheckpoints.clear();
+                }
             }
         });
 
