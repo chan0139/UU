@@ -53,10 +53,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -113,12 +116,11 @@ public class fragment_running extends Fragment
     private HashMap<String,recruit_object> recruitObject=new HashMap<>();
     //현재 참가중인 러닝 key
     private HashMap<Integer,String> runningKey=new HashMap<>();
+    private List<recruit_object> nearSchedule=new ArrayList<>();
 
     //Firebase realtime DB
     private FirebaseDatabase database;
     private DatabaseReference mDatabaseRef;
-    private DatabaseReference databaseReferenceRecruit;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -170,9 +172,11 @@ public class fragment_running extends Fragment
                     recruit_object recruit = Snapshot.getValue(recruit_object.class);
                     if(runningKey.containsValue(recruit.getRecruitId())){
                         recruitObject.put(recruit.getRecruitId(),recruit);
+                        Log.d("datecheck","hihi");
                     }
                 }
             }
+
 
 
             @Override
@@ -181,6 +185,7 @@ public class fragment_running extends Fragment
                 Log.e("Error", String.valueOf(error.toException()));
             }
         });
+
 
         //특정 작업시 화면이 꺼지지않게 유지
         getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -529,6 +534,8 @@ public class fragment_running extends Fragment
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void onButtonStart()  {
 
+        checkNearSchedule();
+
         checkpoints.clear();
         mMap.clear();
         Toast.makeText(getContext(), "운동 시작!", Toast.LENGTH_SHORT).show();
@@ -654,12 +661,80 @@ public class fragment_running extends Fragment
         polyline.setPoints(checkpoints);
     }
 
-    private boolean checkNearSchedule(){
-        for(int i=0;i<recruitObject.size();i++){
-            //쓰는 예시 --> 체크포인트의 첫번째 Latitude
-            Log.d("getCheckpoint",recruitObject.get(runningKey.get(i)).getCheckpoint().get(0).getLatitude()+" , "+recruitObject.get(runningKey.get(i)).getCheckpoint().get(0).getLongitude());
-        }
-        return true;
+    // checking for near running schedule from now before starts running, if so, show dialog for user
+    public boolean checkNearSchedule(){
+
+        Calendar now = Calendar.getInstance();
+        int currentTime=0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMddHHmm");
+            currentTime=Integer.parseInt(dateFormat.format(now.getTime()));
+
+            for(int i=0;i<recruitObject.size();i++){
+                int reservedTime=returnDateFormat(recruitObject.get(runningKey.get(i)).getDate(),recruitObject.get(runningKey.get(i)).getTime());
+                if(reservedTime!=-1){
+                    // calculate between current time and reserved time, and push if reservation time is near by
+                    Log.d("timegap",Math.abs(currentTime-reservedTime)+"");
+                    if(Math.abs(currentTime-reservedTime)<=60)
+                        nearSchedule.add(recruitObject.get(runningKey.get(i)));
+                }
+                else{Log.e("time format error","Time format error");}
+            }
+        }else{Log.d("date format error","API level doesn't match");}
+
+
+        if(nearSchedule.isEmpty())
+            return false;
+        else
+            return true;
+
+        /*
+        쓰는 예시
+        recruitObject.get(runningKey.get(i)).getCheckpoint().get(0).getLatitude();
+        recruitObject.get(runningKey.get(i)).getCheckpoint().get(0).getLongitude();
+        */
+    }
+
+    public void showNearSchedule(){
+
+        AlertDialog.Builder dlg = new AlertDialog.Builder(getActivity());
+        dlg.setTitle("근처에 예약된 러닝 일정이 있네요!");
+        dlg.setIcon(R.drawable.ic_runningdlg);
+        List<String> scheduleName=new ArrayList<>();
+        for(int i=0;i<nearSchedule.size();i++)
+            scheduleName.add(nearSchedule.get(i).getDate()+"일 "+nearSchedule.get(i).getTime()+"에 예약된 러닝을 시작할게요!");
+        scheduleName.add("모집 일정에 참여하지 않고 달려볼게요~!");
+
+        dlg.setItems(scheduleName.toArray(new String[scheduleName.size()]), new DialogInterface.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                scheduleName.clear();
+                RunningTimerFragment timerFragment=(RunningTimerFragment) getChildFragmentManager().findFragmentById(R.id.fragmentContainerView);
+                timerFragment.StartTimer();
+            }
+        });
+
+        dlg.show();
+    }
+
+    private int returnDateFormat(String date,String time){
+        String returnDate="";
+        String returnTime="";
+
+        if(time.length()==4)
+            returnTime=time.substring(0,2)+"0"+time.substring(3);
+        else if(time.length()==5)
+            returnTime=time.substring(0,2)+time.substring(3);
+        else
+            return -1;
+
+        if(date.length()==4 || time.length()==5)
+            returnDate=date.replace(".","");
+        else
+            return -1;
+
+        return Integer.parseInt(returnDate+returnTime);
     }
 
 }

@@ -1,8 +1,10 @@
 package com.example.uu;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
@@ -34,6 +36,8 @@ public class RunningTimerFragment extends Fragment {
     private TextView mTimeTextView;
     private Thread timeThread = null;
     private Boolean walkState = false;
+
+    fragment_running parentFragment;
 
     int time = 0;
 
@@ -78,11 +82,19 @@ public class RunningTimerFragment extends Fragment {
         mPauseBtn = (Button) v.findViewById(R.id.Fbtn_pause);
         mTimeTextView = (TextView) v.findViewById(R.id.FtimeView);
 
+        parentFragment=(fragment_running) getParentFragment();
+
         mStartBtn.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                v.setVisibility(View.GONE);
-                StartTimer();
+                if(!parentFragment.checkNearSchedule()) {
+                    v.setVisibility(View.GONE);
+                    StartTimer();
+                }
+                else
+                    v.setVisibility(View.GONE);
+                    parentFragment.showNearSchedule();
             }
         });
 
@@ -104,8 +116,10 @@ public class RunningTimerFragment extends Fragment {
         return v;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void StartTimer()
     {
+
         mTimeTextView.setVisibility(View.VISIBLE);
         mStopBtn.setVisibility(View.VISIBLE);
         mPauseBtn.setVisibility(View.VISIBLE);
@@ -113,7 +127,6 @@ public class RunningTimerFragment extends Fragment {
         timeThread = new Thread(new timeThread());
         timeThread.start();
         try {
-            fragment_running parentFragment=(fragment_running) getParentFragment();
             parentFragment.onButtonStart();
         }catch (Exception e){
             Log.d("FragmentReferenceError","cannot resolve parent fragment");
@@ -129,7 +142,6 @@ public class RunningTimerFragment extends Fragment {
             mPauseBtn.setText("시작");
         }
         try {
-            fragment_running parentFragment=(fragment_running) getParentFragment();
             parentFragment.onButtonPause();
         }catch (Exception e){
             Log.d("FragmentReferenceError","cannot resolve parent fragment");
@@ -149,7 +161,6 @@ public class RunningTimerFragment extends Fragment {
             result.putInt("bundleKey", time);
             getParentFragmentManager().setFragmentResult("requestKey", result);
 
-            fragment_running parentFragment=(fragment_running) getParentFragment();
             parentFragment.onButtonEnd();
 
             time=0;
