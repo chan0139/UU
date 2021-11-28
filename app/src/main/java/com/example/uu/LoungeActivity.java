@@ -37,7 +37,10 @@ import java.util.Date;
 import java.util.StringTokenizer;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
+interface whatKindOfLounge{
+    int Crew=0;
+    int Recruitment=1;
+}
 public class LoungeActivity extends AppCompatActivity {
     //Fierbase 인스턴스
     private FirebaseAuth mFirebaseAuth;
@@ -96,8 +99,10 @@ public class LoungeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lounge);
 
         Intent intent = getIntent();
-        String RecruitID = intent.getStringExtra("RecruitID");
+        int Lounge=intent.getIntExtra("whatKindOfLounge",-1);
+        String LoungeID = intent.getStringExtra("LoungeID");
 
+        Log.d("testkang",LoungeID+Lounge);
         mMessageRecyclerView=findViewById(R.id.message_recycler_view);
         //Firebase 인증 초기화
         mFirebaseAuth=FirebaseAuth.getInstance();
@@ -118,11 +123,16 @@ public class LoungeActivity extends AppCompatActivity {
         });
 
         //Firebase 실시간 데이터베이스 초기화
-        mFirebaseDatabaseReference= FirebaseDatabase.getInstance().getReference("Recruit");
+        if(Lounge==whatKindOfLounge.Crew){
+            mFirebaseDatabaseReference= FirebaseDatabase.getInstance().getReference("Crew");
+        }
+        else if(Lounge==whatKindOfLounge.Recruitment){
+            mFirebaseDatabaseReference= FirebaseDatabase.getInstance().getReference("Recruit");
+        }
         mMessageEditText=findViewById(R.id.message_edit);
 
         //쿼리 수행
-        Query query = mFirebaseDatabaseReference.child(RecruitID).child(MESSAGES_CHILD).limitToLast(50);
+        Query query = mFirebaseDatabaseReference.child(LoungeID).child(MESSAGES_CHILD).limitToLast(50);
         //옵션
         options = new FirebaseRecyclerOptions.Builder<ChatMessage>().setQuery(query,ChatMessage.class).build();
 
@@ -165,7 +175,7 @@ public class LoungeActivity extends AppCompatActivity {
                 Date now=new Date();
                 ChatMessage chatMessage=new ChatMessage(messageFormatter(mMessageEditText.getText().toString()),
                         username,userProfileUrl,format_sendedTime.format(now),null);
-                mFirebaseDatabaseReference.child(RecruitID).child(MESSAGES_CHILD)
+                mFirebaseDatabaseReference.child(LoungeID).child(MESSAGES_CHILD)
                         .push().setValue(chatMessage);
                 mMessageEditText.setText("");
             }
