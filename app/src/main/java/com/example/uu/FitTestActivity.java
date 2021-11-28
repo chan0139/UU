@@ -208,15 +208,14 @@ public class FitTestActivity extends AppCompatActivity implements SectionsPagerA
                             break;
                         case IntegerPriority.whatDayDoYouRun:
                             //<# of running you did at that day,day>
-                            List<Integer> mostFavorite=new ArrayList<>();
-                            mostFavorite.addAll(myData.getDay());
-                            mostFavorite.sort(Collections.reverseOrder());
-                            int myFavorite=mostFavorite.get(0);
+                            List<Integer> mostFavoriteDay = new ArrayList<>(myData.getDay());
+                            mostFavoriteDay.sort(Collections.reverseOrder());
+                            int myFavoriteDay=mostFavoriteDay.get(0);
 
-                            mostFavorite.clear();
-                            mostFavorite.addAll(crewData.getDay());
-                            mostFavorite.sort(Collections.reverseOrder());
-                            int crewFavorite=mostFavorite.get(0);
+                            mostFavoriteDay.clear();
+                            mostFavoriteDay.addAll(crewData.getDay());
+                            mostFavoriteDay.sort(Collections.reverseOrder());
+                            int crewFavoriteDay=mostFavoriteDay.get(0);
 
                             Map<Integer,Integer> myDay=new LinkedHashMap<>();
                             Map<Integer,Integer>crewDay=new LinkedHashMap<>();
@@ -227,7 +226,7 @@ public class FitTestActivity extends AppCompatActivity implements SectionsPagerA
                             myDay=sortMapByKey(myDay);
                             crewDay=sortMapByKey(crewDay);
 
-                            if(myDay.get(myFavorite)==crewDay.get(crewFavorite)){
+                            if(myDay.get(myFavoriteDay)==crewDay.get(crewFavoriteDay)){
                                 result=100;
                             }
                             else{
@@ -256,7 +255,55 @@ public class FitTestActivity extends AppCompatActivity implements SectionsPagerA
                             score+=result;
                             break;
                         case IntegerPriority.whatTimeDoYouRun:
+                            //<# of running you did at that startTime,startTime>
+                            List<Integer> mostFavoriteTime = new ArrayList<>(myData.getStartTime());
+                            mostFavoriteTime.sort(Collections.reverseOrder());
+                            int myFavoriteTime=mostFavoriteTime.get(0);
+
+                            mostFavoriteTime.clear();
+                            mostFavoriteTime.addAll(crewData.getStartTime());
+                            mostFavoriteTime.sort(Collections.reverseOrder());
+                            int crewFavoriteTime=mostFavoriteTime.get(0);
+
+                            Map<Integer,Integer> myStartTime=new LinkedHashMap<>();
+                            Map<Integer,Integer>crewStartTime=new LinkedHashMap<>();
+                            for(int k=0;k<24;k++){
+                                myStartTime.put(myData.getStartTime().get(k),k);
+                                crewStartTime.put(crewData.getStartTime().get(k),k);
+                            }
+                            myStartTime=sortMapByKey(myStartTime);
+                            crewStartTime=sortMapByKey(crewStartTime);
+
+                            if(myStartTime.get(myFavoriteTime)==crewStartTime.get(crewFavoriteTime)){
+                                result=100;
+                            }
+                            else{
+                                int numOfOverlap=0;
+                                for(Map.Entry<Integer,Integer>entry:myStartTime.entrySet()){
+                                    if(crewStartTime.containsValue(entry.getValue())){
+                                        numOfOverlap+=1;
+                                    }
+                                }
+                                switch (numOfOverlap){
+                                    case 0:
+                                        result=0;
+                                        break;
+                                    case 1:
+                                        result=50;
+                                        break;
+                                    case 2:
+                                        result=70;
+                                        break;
+                                    case 3:
+                                        result=90;
+                                        break;
+                                }
+                            }
+                            result=result*(integerPriority.length-j);
+                            score+=result;
+                            break;
                         case IntegerPriority.whereDoYouRun:
+
                     }
                 }
                 score=score/sumOfPriority;
