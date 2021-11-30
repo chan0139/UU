@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -541,7 +542,14 @@ public class fragment_running extends Fragment
         checkpoints.clear();
         reservedCheckpoints.clear();
         mMap.clear();
-        FancyToast.makeText(getContext(),"운동 시작!",FancyToast.LENGTH_LONG,FancyToast.INFO,false).show();
+        Toast toast=FancyToast.makeText(getContext(),
+                "운동 시작!",
+                FancyToast.LENGTH_LONG,
+                FancyToast.INFO,
+                false);
+        toast.setGravity(Gravity.BOTTOM,0,250);
+        toast.show();
+
         walkState = true;
 
         //시작 시간 계산, db에 저장할때 기본키로 사용
@@ -646,7 +654,13 @@ public class fragment_running extends Fragment
 
         dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int which) {
-                FancyToast.makeText(getContext(),"운동 종료!",FancyToast.LENGTH_LONG,FancyToast.WARNING,false).show();
+                Toast toast=FancyToast.makeText(getContext(),
+                        "운동 종료!",
+                        FancyToast.LENGTH_LONG,
+                        FancyToast.WARNING,
+                        false);
+                toast.setGravity(Gravity.BOTTOM,0,250);
+                toast.show();
                 drawPath(checkpoints,Color.BLACK);
             }
         });
