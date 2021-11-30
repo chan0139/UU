@@ -235,7 +235,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
         TextView location;
         TextView distance;
         TextView speed;
-        Button joinButton;
+        TextView joinButton;
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);

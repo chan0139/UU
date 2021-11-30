@@ -646,7 +646,7 @@ public class fragment_running extends Fragment
 
         dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int which) {
-                FancyToast.makeText(getContext(),"운동 종료!",FancyToast.LENGTH_LONG,FancyToast.INFO,false).show();
+                FancyToast.makeText(getContext(),"운동 종료!",FancyToast.LENGTH_LONG,FancyToast.WARNING,false).show();
                 drawPath(checkpoints,Color.BLACK);
             }
         });
@@ -722,7 +722,7 @@ public class fragment_running extends Fragment
                 if(which!=scheduleName.size()-1) {
                     for(int i=0;i<nearSchedule.get(which).getCheckpoint().size();i++)
                         reservedCheckpoints.add(new LatLng(nearSchedule.get(which).getCheckpoint().get(i).getLatitude(),nearSchedule.get(which).getCheckpoint().get(i).getLongitude()));
-                    drawPath(reservedCheckpoints,Color.RED);
+                    drawPath(reservedCheckpoints,Color.BLUE);
                     reservedCheckpoints.clear();
                 }
             }
