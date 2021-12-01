@@ -56,8 +56,6 @@ public class fragment_crew extends Fragment{
     private ImageButton show_crew;
     private ImageButton show_lounge;
 
-    private TextView detail_name;
-
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
@@ -160,7 +158,6 @@ public class fragment_crew extends Fragment{
             }
         });
 
-        detail_name=(TextView)rootview.findViewById(R.id.detail_name);
         linear_crew_no = (LinearLayout) rootview.findViewById(R.id.linear_crew_no);
         linear_crew_yes = (LinearLayout) rootview.findViewById(R.id.linear_crew_yes);
         linear_lounge=(LinearLayout)rootview.findViewById(R.id.linear_lounge);
@@ -469,7 +466,6 @@ public class fragment_crew extends Fragment{
     public void layoutConverter(int which_layout){
         if(which_layout==R.id.show_crew){
             if(currentCrew.equals("none")){
-                detail_name.setText("Crew list");
                 show_crew.setBackgroundResource(R.drawable.ic_crew_selected);
                 show_lounge.setBackgroundResource(R.drawable.ic_lounge);
                 linear_crew_no.setVisibility(View.VISIBLE);
@@ -477,7 +473,6 @@ public class fragment_crew extends Fragment{
                 linear_lounge.setVisibility(View.INVISIBLE);
             }
             else {
-                detail_name.setText(currentCrew+" Home");
                 show_crew.setBackgroundResource(R.drawable.ic_crew_selected);
                 show_lounge.setBackgroundResource(R.drawable.ic_lounge);
                 linear_crew_no.setVisibility(View.INVISIBLE);
@@ -486,7 +481,6 @@ public class fragment_crew extends Fragment{
             }
         }
         else if(which_layout==R.id.show_lounge){
-            detail_name.setText("Lounge list");
             show_crew.setBackgroundResource(R.drawable.ic_crew);
             show_lounge.setBackgroundResource(R.drawable.ic_lounge_selected);
             linear_crew_no.setVisibility(View.INVISIBLE);

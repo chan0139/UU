@@ -144,7 +144,7 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
         TextView crewName;
         TextView crewLoc;
         TextView crewUserNum;
-        Button crewJoinBtn;
+        TextView crewJoinBtn;
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);

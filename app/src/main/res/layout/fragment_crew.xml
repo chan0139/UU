@@ -213,10 +213,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginLeft="20dp"
                         android:layout_gravity="center_vertical"
-                        android:text="We will recommend a crew\nthat suits your style!"/>
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:text="  We will recommend a crew\nthat suits your style!" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -241,15 +241,16 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_gravity="center_vertical"
-                        android:text="or find crew in your neighbor\nand make running mates :)"/>
+                        android:layout_marginTop="5dp"
+                        android:text="  or find crew in your neighbor\nand make running mates :)" />
                 </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#DCDCDC" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="5dp"
+                    android:background="#DCDCDC" />
 
             </LinearLayout>
 
@@ -264,10 +265,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="18dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="Crew List"
                     android:textColor="#000000"
-                    android:text="Crew List"/>
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="0dp"
@@ -288,6 +290,12 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="5dp"
+                android:background="#DCDCDC" />
 
 
             <androidx.recyclerview.widget.RecyclerView
