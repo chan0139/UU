@@ -68,6 +68,9 @@ public class fragment_running extends Fragment
         OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback {
 
+    private String whoseRecord="Personal";
+    private String hostId="Personal";;
+
     public static fragment_running newInstance() {
         return new fragment_running();
     }
@@ -652,7 +655,7 @@ public class fragment_running extends Fragment
         dlg.show();
 
         //write on db
-        ((MainActivity)getActivity()).recordRunningState(formatedNow,distance,(runningTime/100)/60,calories,startTime,day,startAddress,endAddress);
+        ((MainActivity)getActivity()).recordRunningState(whoseRecord,hostId,formatedNow,distance,(runningTime/100)/60,calories,startTime,day,startAddress,endAddress);
 
         formatedNow="";distance=0;calories=0;runningTime=0;endAddress=null;
     }
@@ -713,15 +716,21 @@ public class fragment_running extends Fragment
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
                 scheduleName.clear();
                 RunningTimerFragment timerFragment=(RunningTimerFragment) getChildFragmentManager().findFragmentById(R.id.fragmentContainerView);
                 timerFragment.StartTimer();
 
                 if(which!=scheduleName.size()-1) {
+                    whoseRecord=nearSchedule.get(which).getLeader();
+                    hostId=nearSchedule.get(which).getHostId();
                     for(int i=0;i<nearSchedule.get(which).getCheckpoint().size();i++)
                         reservedCheckpoints.add(new LatLng(nearSchedule.get(which).getCheckpoint().get(i).getLatitude(),nearSchedule.get(which).getCheckpoint().get(i).getLongitude()));
                     drawPath(reservedCheckpoints,Color.RED);
                     reservedCheckpoints.clear();
+                }
+                else{
+                    whoseRecord="Personal";
                 }
             }
         });
