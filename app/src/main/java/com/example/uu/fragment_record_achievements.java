@@ -1,8 +1,11 @@
 package com.example.uu;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,7 +16,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -164,7 +169,7 @@ public class fragment_record_achievements extends Fragment {
         adapter.addItem(new achievementObject("프로 마라토너","한번에 5km 달리기",flag_maxDistance_5,Math.round(percentage_maxDistance_5*1000)/10));
         adapter.addItem(new achievementObject("전생에 말","한번에 10km 달리기",flag_maxDistance_10,Math.round(percentage_maxDistance_10*1000)/10));
 
-        adapter.addItem(new achievementObject("뛰는게 즐겁다!","총 10km 달리기",flag_totalDistance_10,Math.round(percentage_totalDistance_10*1000)/10));
+        adapter.addItem(new achievementObject("뛰는게 즐겁다!","  러닝 입문자로 가는 첫 걸음!\n\n총 10KM를 달려서 러닝의 즐거움을\n\n발견해보세요!!",flag_totalDistance_10,Math.round(percentage_totalDistance_10*1000)/10));
         adapter.addItem(new achievementObject("섹시한 말벅지","총 50km 달리기",flag_totalDistance_50,Math.round(percentage_totalDistance_50*1000)/10));
         adapter.addItem(new achievementObject("꾸준함의 미덕","총 100km 달리기",flag_totalDistance_100,Math.round(percentage_totalDistance_100*1000)/10));
 
@@ -185,16 +190,26 @@ public class fragment_record_achievements extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 achievementObject item=(achievementObject) adapter.getItem(i);
 
-                // 해당 아이템 클릭시, 상세정보 표시 ( 제목, 내용, 달성률, 달성 일자)
-                AlertDialog.Builder dlg = new AlertDialog.Builder(getContext());
-                dlg.setTitle(item.getObjName());
-                dlg.setMessage(item.getDescription()+"\n\n달성률 : "+item.getAchievement()+"%");
-                dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
-                    public void onClick(DialogInterface dialog, int which) {
-                        return;
-                    }
-                });
-                dlg.show();
+                Dialog achievementDlg=new Dialog(getActivity());
+                achievementDlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                achievementDlg.setContentView(R.layout.dialog_achievement);
+                achievementDlg.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                TextView title=achievementDlg.findViewById(R.id.achTitle);
+                TextView body=achievementDlg.findViewById(R.id.achBody);
+                TextView percentage=achievementDlg.findViewById(R.id.achPercentage);
+                Button button=achievementDlg.findViewById(R.id.achBtn);
+
+                title.setText(item.getObjName());
+                body.setText(item.getDescription());
+                percentage.setText("달성률 : "+item.getAchievement()+"%");
+
+                achievementDlg.show();
+
+                button.setOnClickListener(new View.OnClickListener() {@Override public void onClick(View view) { achievementDlg.dismiss(); }});
+
+
+
             }
         });
 
