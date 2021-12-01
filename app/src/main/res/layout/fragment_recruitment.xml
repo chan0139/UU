@@ -64,13 +64,14 @@
                         android:scaleType="fitXY"
                         android:background="#F0F8FF"
                         tools:srcCompat="@tools:sample/avatars" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginLeft="20dp"
                         android:layout_gravity="center_vertical"
-                        android:text="Join recruit list and make running mate!"/>
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="5dp"
+                        android:text="  Join recruit list and make running mate!" />
 
                 </LinearLayout>
                 <LinearLayout
@@ -96,16 +97,22 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
                         android:layout_gravity="center_vertical"
-                        android:text="You can also create recruit schedule!"/>
+                        android:layout_marginTop="5dp"
+                        android:text="  You can also create recruit schedule!" />
 
                 </LinearLayout>
 
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#DCDCDC" />
+
             <LinearLayout
+                android:id="@+id/addRecruitListContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
@@ -116,10 +123,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textSize="18dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="Recruit List"
                     android:textColor="#000000"
-                    android:text="Recruit List"/>
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="0dp"
@@ -140,6 +148,13 @@
                     android:textStyle="bold" />
 
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="12dp"
+                android:background="#DCDCDC" />
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -177,8 +192,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
-                    android:textSize="17dp"
-                    android:text="Click join button\nand start chat with\nyour running mate!"/>
+                    android:text="  Click join button\nand start chatting with\nyour running mate!"
+                    android:textSize="17dp" />
 
             </LinearLayout>
 

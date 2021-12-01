@@ -153,9 +153,6 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
             this.crewLoc = itemView.findViewById(R.id.crewLocation);
             this.crewUserNum = itemView.findViewById(R.id.crewUserNum);
             this.crewJoinBtn = itemView.findViewById(R.id.joinCrewButton);
-
-
-
         }
     }
 
