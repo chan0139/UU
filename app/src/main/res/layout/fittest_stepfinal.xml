@@ -14,28 +14,32 @@
            android:id="@+id/Description"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:layout_above="@id/score"
+           android:layout_above="@id/recommandCrew"
            android:layout_centerHorizontal="true"
-           android:layout_marginBottom="100dp"
+           android:layout_marginBottom="80dp"
            android:background="@color/white"
-           android:text="The Best Fitness is"
+           android:text="This is for you"
            android:textSize="40sp" />
+
+       <TextView
+           android:id="@+id/recommandCrew"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_centerInParent="true"
+           android:layout_marginBottom="20dp"
+           android:background="@color/white"
+           android:text="Test"
+           android:textAlignment="center"
+           android:textSize="50dp" />
        <TextView
            android:id="@+id/score"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:layout_centerInParent="true"
+           android:layout_centerHorizontal="true"
+           android:layout_below="@id/recommandCrew"
            android:text="43%"
-           android:textSize="60sp"
+           android:textSize="40sp"
            android:background="@color/white"/>
-       <Button
-           android:id="@+id/moredetails"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:text="More Details"
-           android:layout_below="@id/score"
-           android:layout_marginTop="80dp"
-           android:layout_centerHorizontal="true"/>
 
 
 </RelativeLayout>
