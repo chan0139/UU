@@ -3,4 +3,5 @@
     <item android:drawable="@drawable/image_cancel"
         android:width="25dp"
         android:height="25dp"/>
+
 </layer-list>

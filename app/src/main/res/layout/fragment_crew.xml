@@ -8,16 +8,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:background="#F0F8FF"
         android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/show_crew"
             android:layout_width="24dp"
-            android:layout_height="30dp"
+            android:layout_height="27dp"
             android:layout_marginLeft="3dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="4dp"
             android:background="@drawable/ic_crew" />
 
         <ImageButton
@@ -77,12 +77,14 @@
                 <Button
                     android:id="@+id/secessionBtn"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="37dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
-
+                    android:background="@drawable/default_button_teduri"
                     android:fontFamily="@font/custom_font"
-                    android:text="탈퇴"/>
+                    android:text="탈퇴"
+                    app:backgroundTint="?android:attr/panelBackground"
+                    app:backgroundTintMode="add"/>
 
             </LinearLayout>
 
@@ -165,13 +167,18 @@
             <com.google.android.material.tabs.TabLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:tabTextColor="@color/black"
+                app:tabSelectedTextColor="@color/black"
+                app:tabIndicatorColor="#696969"
                 android:layout_marginTop="10dp"
+
                 android:id="@+id/tabLayout"/>
 
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/crewPager"
                 android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
                 android:layout_height="wrap_content">
 
             </androidx.viewpager2.widget.ViewPager2>
@@ -188,9 +195,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="110dp"
                 android:background="#F0F8FF"
-
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -202,7 +208,7 @@
                         android:layout_width="115dp"
                         android:layout_height="35dp"
                         android:layout_marginTop="10dp"
-                        android:background="@drawable/create_button_teduri"
+                        android:background="@drawable/recommend_button_teduri"
                         android:fontFamily="@font/custom_font"
                         android:text="@string/fittest_Btn"
                         android:textColor="@color/black"
@@ -221,6 +227,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="17dp"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -246,13 +253,15 @@
                         android:text="  or find crew in your neighbor\nand make running mates :)" />
                 </LinearLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:layout_marginTop="5dp"
-                    android:background="#DCDCDC" />
+
 
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+
+                android:background="#DCDCDC" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -301,7 +310,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/crewRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_height="wrap_content"/>
 
 

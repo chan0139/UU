@@ -122,8 +122,11 @@ public class bar_profile extends Fragment {
                 userName = info.getUserName();
                 userProfileUrl = info.getUserProfileUrl();
                 currentCrew = info.getCurrentCrew();
-                if (currentCrew!="none")
-                    crew.setText(currentCrew);
+                if (!currentCrew.equals("none"))
+                    crew.setText(currentCrew + " Crew");
+                else
+                    crew.setText("No Crew");
+
                 email.setText(userId);
                 name.setText(userName);
                 Glide.with(getContext()).load(userProfileUrl).into(profile);

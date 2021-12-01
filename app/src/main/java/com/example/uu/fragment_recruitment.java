@@ -282,11 +282,13 @@ public class fragment_recruitment extends Fragment{
 
     public void layoutConverter(int which_layout){
         if(which_layout==R.id.show_recruitment){
+            show_recruitment.setBackgroundResource(R.drawable.ic_recruitment_selected);
             show_lounge.setBackgroundResource(R.drawable.ic_lounge);
             linear_recruitment.setVisibility(View.VISIBLE);
             linear_lounge.setVisibility(View.INVISIBLE);
         }
         else if(which_layout==R.id.show_lounge){
+            show_recruitment.setBackgroundResource(R.drawable.ic_recruitment_2);
             show_lounge.setBackgroundResource(R.drawable.ic_lounge_selected);
             linear_recruitment.setVisibility(View.INVISIBLE);
             linear_lounge.setVisibility(View.VISIBLE);

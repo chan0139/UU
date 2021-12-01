@@ -40,7 +40,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="주관 :  " />
+            android:text="주관  " />
 
         <EditText
             android:id="@+id/editTextLeader"
@@ -62,7 +62,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="모집인원 :  " />
+            android:text="모집인원  " />
 
         <EditText
             android:id="@+id/editTextUserNum"
@@ -83,7 +83,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="날짜 : "/>
+            android:text="날짜 "/>
         <Button
             android:id="@+id/dateButton"
             android:layout_width="wrap_content"
@@ -106,7 +106,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="시간 : "/>
+            android:text="시간 "/>
         <Button
             android:id="@+id/timeButton"
             android:layout_width="wrap_content"
@@ -132,7 +132,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="스피드 : "/>
+            android:text="스피드 "/>
 
         <Spinner
             android:id="@+id/spinner"

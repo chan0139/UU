@@ -7,16 +7,17 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:background="#F0F8FF"
         android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/show_recruitment"
-            android:layout_width="28dp"
+            android:layout_width="26dp"
             android:layout_height="32dp"
-            android:layout_marginTop="5dp"
-            android:background="@drawable/ic_recruitment" />
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/ic_recruitment_2" />
 
         <ImageButton
             android:id="@+id/show_lounge"
@@ -47,7 +48,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="110dp"
                 android:background="#F0F8FF"
                 android:orientation="vertical">
                 <LinearLayout
@@ -176,7 +177,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="110dp"
                 android:background="#F0F8FF"
                 android:orientation="horizontal">
 
@@ -197,8 +198,15 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+
+                android:background="#DCDCDC" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/joinedRunning"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
