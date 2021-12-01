@@ -39,7 +39,7 @@ public class bar_profile extends Fragment {
     private DatabaseReference mDatabaseRef;
     private DatabaseReference databaseReferenceRecruit;
     private String userId, userProfileUrl;
-    private String userName, userGender;
+    private String userName;
     private ArrayList<recruit_object> arrayList;
     private RecyclerView.Adapter adapter;
     private RecyclerView recyclerView;
@@ -62,8 +62,8 @@ public class bar_profile extends Fragment {
         Button button = rootview.findViewById(R.id.logoutButton);
         TextView email = rootview.findViewById(R.id.email);
         ImageView profile = rootview.findViewById(R.id.profile);
+        TextView crew=rootview.findViewById(R.id.textCrew);
         TextView name = rootview.findViewById(R.id.name);
-        TextView gender = rootview.findViewById(R.id.gender);
         title = getActivity().findViewById(R.id.title);
 
         recyclerView = rootview.findViewById(R.id.profileRecyclerView);
@@ -80,7 +80,6 @@ public class bar_profile extends Fragment {
 
             profile.setImageResource(R.drawable.no_login_user_image);
             name.setText("  익 명");
-            gender.setText("/  성 별");
             email.setText("이 메 일");
             button.setText("로그인 먼저 진행해주세요.");
             button.setOnClickListener(new View.OnClickListener() {
@@ -121,16 +120,13 @@ public class bar_profile extends Fragment {
                 userObject info = snapshot.getValue(userObject.class);
                 userId = info.getUserId();
                 userName = info.getUserName();
-                userGender = info.getUserGender();
                 userProfileUrl = info.getUserProfileUrl();
                 currentCrew = info.getCurrentCrew();
+                if (currentCrew!="none")
+                    crew.setText(currentCrew);
                 email.setText(userId);
                 name.setText(userName);
-                gender.setText("/  " + userGender);
                 Glide.with(getContext()).load(userProfileUrl).into(profile);
-
-
-
             }
 
             @Override

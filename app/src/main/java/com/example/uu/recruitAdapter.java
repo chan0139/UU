@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
@@ -130,7 +134,8 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
             }
         });
         if(which_detailPage == 2){
-            holder.joinButton.setText("cancel");
+            holder.joinButton.setText("");
+            holder.joinButton.setBackground(ContextCompat.getDrawable(context,R.drawable.ic_cancel));
         }
 
 
@@ -142,9 +147,6 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
                 mDatabaseRef = database.getReference("Recruit");
                 switch (which_detailPage){
                     case RecruitRunningMateList:
-                        //Toast.makeText(view.getContext(), "tlqfk", Toast.LENGTH_SHORT).show();
-
-
                         int index = arrayList.get(position).getDate().indexOf("/");                 //date 인덱싱
                         String day = arrayList.get(position).getDate().substring(index+1);
 
