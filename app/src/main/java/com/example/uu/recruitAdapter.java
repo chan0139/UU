@@ -168,7 +168,8 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
                         break;
                     case LoungeList:
                         Intent intent = new Intent(context.getApplicationContext(),LoungeActivity.class);
-                        intent.putExtra("RecruitID",arrayList.get(position).getRecruitId());
+                        intent.putExtra("whatKindOfLounge",1);
+                        intent.putExtra("LoungeID",arrayList.get(position).getRecruitId());
                         context.startActivity(intent);
                         break;
                     case UserPageList:
