@@ -134,14 +134,13 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
 
             }
         });
+
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
         params.setMargins(0, 110, 50, 0);
         if(which_detailPage == 2){
-
-
             holder.joinButton.setText("");
             holder.joinButton.setLayoutParams(params);
             holder.joinButton.setBackground(ContextCompat.getDrawable(context,R.drawable.ic_cancel));

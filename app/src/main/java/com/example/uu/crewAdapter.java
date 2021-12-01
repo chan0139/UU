@@ -125,6 +125,7 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
                 Map<String, Object> addUser = new HashMap<String, Object>();
                 addUser.put(firebaseUser.getUid(), "id");
                 mDatabaseRef.child(arrayList.get(position).getCrewName()).child("userList").updateChildren(addUser); // DB에 현재인원 추가
+                mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("crewRole").setValue("Member");
                 mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("currentCrew").setValue(arrayList.get(position).getCrewName()); //유저 소속크루 설정
                 FancyToast.makeText(context.getApplicationContext(),"Success to join CREW!",FancyToast.LENGTH_LONG,FancyToast.SUCCESS,false).show();
                 crewListener.OnCrewAdded();

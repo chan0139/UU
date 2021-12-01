@@ -207,6 +207,7 @@ public class crewAddDialog extends DialogFragment {
         mDatabaseRef.child(getCrewName).setValue(crew);
         mDatabaseRef.child(getCrewName).child("FitTest").setValue(initFitTestData());
         mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("currentCrew").setValue(getCrewName);
+        mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("crewRole").setValue("Leader");
         Toast.makeText(getContext(), "Success to save in DB", Toast.LENGTH_SHORT).show();
     }
 

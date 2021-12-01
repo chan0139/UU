@@ -226,6 +226,9 @@ public class fragment_crew extends Fragment{
                             /*kangtest*/
                             //crew.setFitTestData(new FitTestData(1330,55,new Address()));
                             /*kangtest*/
+                            if(crew.getTotalUserNum() == 0){
+                                databaseReference.removeValue();
+                            }
 
                             if(selectedGu.equals("지역선택")){
                                 crewArrayList.add(crew);
@@ -234,6 +237,7 @@ public class fragment_crew extends Fragment{
                             if (crew.getLocation().equals(selectedGu)) {
                                 crewArrayList.add(crew);
                             }
+
 
                         }
                         crewAdapter.notifyDataSetChanged(); //리스트 저장 및 새로고침
@@ -290,27 +294,29 @@ public class fragment_crew extends Fragment{
                 if(currentCrew.equals("none")){
                 }
                 else{
-                    databaseReferenceCrew.child(currentCrew).addValueEventListener(new ValueEventListener() {
+                    databaseReferenceCrew.child(currentCrew).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             crewObject crewInfo = snapshot.getValue(crewObject.class);
+
                             getCrewName = crewInfo.getCrewName();
                             getCrewUserNum = String.valueOf(crewInfo.getTotalUserNum());
                             getCrewLoc = crewInfo.getLocation();
                             getCrewExp = crewInfo.getExplanation();
 
-
                             crewName.setText(getCrewName);
                             crewUserNum.setText(getCrewUserNum);
                             crewLoc.setText(getCrewLoc);
                             crewExp.setText(getCrewExp);
-                        }
+                            }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
 
                         }
                     });
+
+
                     crewYesImg = storageReference.child("crew/" + currentCrew + ".png");
                     crewYesImg.getDownloadUrl().addOnFailureListener(new OnFailureListener() {
                         @Override

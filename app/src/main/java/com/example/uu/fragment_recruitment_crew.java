@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -45,7 +46,6 @@ public class fragment_recruitment_crew extends Fragment {
         ViewGroup rootview=(ViewGroup) inflater.inflate(R.layout.fragment_recruitment_crew,container,false);
 
 
-
         recyclerView = rootview.findViewById(R.id.crewUserRecyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
@@ -71,6 +71,7 @@ public class fragment_recruitment_crew extends Fragment {
                             arrayList.clear(); // 기존 배열리스트 초기화
                             for (DataSnapshot Snapshot : dataSnapshot.getChildren()) {
                                 userObject info = Snapshot.getValue(userObject.class);
+                                String level = String.valueOf(info.getUserLevel());
                                 if(userCrew.equals(info.getCurrentCrew())){
                                     arrayList.add(info);
                                 }

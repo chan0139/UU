@@ -11,9 +11,18 @@ public class userObject {
     private String userName;
     private String idToken;
     private String currentCrew;
+    private String crewRole;
     private int userLevel;
     private int userRecruitJoinNumber;
     private Map<String, Object> recruitList = new HashMap<String, Object>();
+
+    public String getCrewRole() {
+        return crewRole;
+    }
+
+    public void setCrewRole(String crewRole) {
+        this.crewRole = crewRole;
+    }
 
     public Map<String, Object> getRecruitList() {
         return recruitList;

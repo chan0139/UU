@@ -37,6 +37,9 @@ public class crewUserAdapter extends RecyclerView.Adapter<crewUserAdapter.Custom
                 .load(arrayList.get(position).getUserProfileUrl())
                 .into(holder.crewYesUserImg);
         holder.crewYesName.setText(arrayList.get(position).getUserName());
+        String level = String.valueOf(arrayList.get(position).getUserLevel());
+        holder.crewYesLevel.setText("Level " + level);
+        holder.crewYesRole.setText(arrayList.get(position).getCrewRole());
         //holder.crewYesRole.setText(arrayList.get(position).getLeader());
         //holder.crewYesLevel.setText(String.valueOf(arrayList.get(position).getCurrentUserNum()));
 
