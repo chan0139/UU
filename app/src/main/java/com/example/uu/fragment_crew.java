@@ -127,8 +127,8 @@ public class fragment_crew extends Fragment{
         rootview=(ViewGroup) inflater.inflate(R.layout.fragment_crew,container,false);
         title = getActivity().findViewById(R.id.title);
 
-        ImageView crewGif = (ImageView) rootview.findViewById(R.id.crewGif);
-        Glide.with(this).load(R.raw.friends).into(crewGif);
+        //ImageView crewGif = (ImageView) rootview.findViewById(R.id.crewGif);
+        //Glide.with(this).load(R.raw.friends).into(crewGif);
 
         database = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -193,7 +193,7 @@ public class fragment_crew extends Fragment{
         guSpinner.setAdapter(guAdapter);
 
 
-        Button createCrewBtn = (Button) rootview.findViewById(R.id.crewAdd);
+        TextView createCrewBtn = (TextView) rootview.findViewById(R.id.crewAdd);
         createCrewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
