@@ -3,6 +3,8 @@ package com.example.uu;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.net.Uri;
 import android.os.Bundle;
@@ -195,7 +197,6 @@ public class fragment_crew extends Fragment{
             @Override
             public void onClick(View view) {
                 crewAddDialog crewDialog = new crewAddDialog();
-                //crewDialog.show(getActivity().getFragmentManager(), "test");
                 crewDialog.show(getChildFragmentManager(), "crew");
             }
         });
