@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -228,24 +229,41 @@ public class fragment_record_results extends Fragment {
     }
 
     private void resetAchievement(){    //사용자가 개인 목표를 다시 설정할경우, 그에 맞춰 최신화
-        AlertDialog.Builder dlg = new AlertDialog.Builder(getContext());
-        dlg.setTitle("어떤 목표를 향해 달려볼까요?");
-        final String[] versionArray = new String[] {"많이 뛰고 싶어요!","오래 달리고 싶어요!","함께 운동하고 싶어요!","오늘은 쉬고싶어요."};
-        dlg.setIcon(R.drawable.ic_trophy_selected); // 아이콘 설정
+        Dialog personalDialog=new Dialog(getActivity());
+        personalDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        personalDialog.setContentView(R.layout.dialog_personal_achievement);
+        personalDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        dlg.setItems(versionArray, new DialogInterface.OnClickListener() {
+        personalDialog.show();
+
+        TextView ach0=personalDialog.findViewById(R.id.achievement0);
+        ach0.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                drawDialog(which);
+            public void onClick(View view) { drawDialog(0); personalDialog.dismiss(); }});
+
+        TextView ach1=personalDialog.findViewById(R.id.achievement1);
+        ach1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { drawDialog(1); personalDialog.dismiss(); }});
+
+        TextView ach2=personalDialog.findViewById(R.id.achievement2);
+        ach2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { drawDialog(2); personalDialog.dismiss(); }});
+
+        TextView ach3=personalDialog.findViewById(R.id.achievement3);
+        ach3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) { drawDialog(3); personalDialog.dismiss(); }});
+
+        TextView button=personalDialog.findViewById(R.id.closePersonalAchievement);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                personalDialog.dismiss();
             }
         });
 
-        dlg.setPositiveButton("취소",new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int which) {
-                return;
-            }
-        });
-        dlg.show();
     }
 
     private void drawDialog(int index){

@@ -169,7 +169,7 @@ public class fragment_record_achievements extends Fragment {
         adapter.addItem(new achievementObject("프로 마라토너","한번에 5km 달리기",flag_maxDistance_5,Math.round(percentage_maxDistance_5*1000)/10));
         adapter.addItem(new achievementObject("전생에 말","한번에 10km 달리기",flag_maxDistance_10,Math.round(percentage_maxDistance_10*1000)/10));
 
-        adapter.addItem(new achievementObject("뛰는게 즐겁다!","  러닝 입문자로 가는 첫 걸음!\n\n총 10KM를 달려서 러닝의 즐거움을\n\n발견해보세요!!",flag_totalDistance_10,Math.round(percentage_totalDistance_10*1000)/10));
+        adapter.addItem(new achievementObject("뛰는게 즐겁다!","러닝 입문자로 가는 첫 걸음!\n\n총 10KM를 달려서 러닝의 즐거움을\n\n발견해보세요!!",flag_totalDistance_10,Math.round(percentage_totalDistance_10*1000)/10));
         adapter.addItem(new achievementObject("섹시한 말벅지","총 50km 달리기",flag_totalDistance_50,Math.round(percentage_totalDistance_50*1000)/10));
         adapter.addItem(new achievementObject("꾸준함의 미덕","총 100km 달리기",flag_totalDistance_100,Math.round(percentage_totalDistance_100*1000)/10));
 
