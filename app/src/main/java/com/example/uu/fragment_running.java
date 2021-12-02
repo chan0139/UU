@@ -3,9 +3,11 @@ package com.example.uu;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -650,6 +652,11 @@ public class fragment_running extends Fragment
         runningDlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
         runningDlg.setContentView(R.layout.dialog_running);
         runningDlg.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager windowManager=(WindowManager)getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display=windowManager.getDefaultDisplay();
+        Point deviceSize=new Point();
+        display.getSize(deviceSize);
+        runningDlg.getWindow().setLayout((int)(deviceSize.x*(0.8)),(int)(deviceSize.y*(0.3)));
 
         TextView body=runningDlg.findViewById(R.id.runningBody);
         Button button=runningDlg.findViewById(R.id.runningBtn);
