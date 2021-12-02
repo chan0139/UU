@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     private static final String API_KEY="AIzaSyCtR1gj33Jv0oDKpb7PyHVYlXXJsFRp_KQ";
     private GeoApiContext mGeoApiContext=null;
 
-    Toolbar toolbar;
+    private Toolbar toolbar;
     TextView title;
     Fragment selectedFragment = null;
 
@@ -247,13 +247,14 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
     @Override
     public void hideNavigation() {
-
+        findViewById(R.id.appBar).setVisibility(View.INVISIBLE);
         bottomNavigationView.setVisibility(View.INVISIBLE);
     }
 
 
     @Override
     public void loginComplete() {
+        findViewById(R.id.appBar).setVisibility(View.VISIBLE);
         bottomNavigationView.setVisibility(View.VISIBLE);
         title.setText("Crew");
         showCrewFragment();
