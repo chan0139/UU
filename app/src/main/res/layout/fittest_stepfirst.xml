@@ -2,100 +2,96 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp">
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBaseline_toTopOf="parent">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/Description"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="20dp">
+
+        <TextView
+            android:id="@+id/Description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="top|start"
+            android:text="Check the items\nyou think are important for Running with"
+            android:textSize="30sp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/priorityChipGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/Description"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="40dp">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip0"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="top|start"
-                android:text="Check the items\nyou think are important for Running with"
-                android:textSize="30sp" />
+                android:text="Average Running Time"
+                android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/targetCrewName"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip1"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/Description"
-                android:layout_marginBottom="20dp"
-                android:textSize="35sp" />
+                android:text="Average Running Distance"
+                android:textSize="20sp" />
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/priorityChipGroup"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip2"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/targetCrewName">
+                android:text="What Day do you usually run"
+                android:textSize="20sp" />
 
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip0"
-                    style="@style/Widget.MaterialComponents.Chip.Filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Average Running Time"
-                    android:textSize="20sp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip1"
-                    style="@style/Widget.MaterialComponents.Chip.Filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Average Running Distance"
-                    android:textSize="20sp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip2"
-                    style="@style/Widget.MaterialComponents.Chip.Filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="What Day do you usually run"
-                    android:textSize="20sp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip3"
-                    style="@style/Widget.MaterialComponents.Chip.Filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="What Time do you usually run"
-                    android:textSize="20sp" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chip4"
-                    style="@style/Widget.MaterialComponents.Chip.Filter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Where do you usually run"
-                    android:textSize="20sp" />
-            </com.google.android.material.chip.ChipGroup>
-
-            <Button
-                android:id="@+id/fittestClose"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip3"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/priorityChipGroup"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="20dp"
-                android:text="close" />
-            <Button
-                android:id="@+id/fittestGotoSecond"
+                android:text="What Time do you usually run"
+                android:textSize="20sp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip4"
+                style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Next"
-                android:layout_below="@id/priorityChipGroup"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="30dp"/>
-        </RelativeLayout>
-    </ScrollView>
+                android:text="Where do you usually run"
+                android:textSize="20sp" />
+        </com.google.android.material.chip.ChipGroup>
 
+        <Button
+            android:id="@+id/fittestClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/priorityChipGroup"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="40dp"
+            android:text="close" />
+
+        <Button
+            android:id="@+id/fittestGotoSecond"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/priorityChipGroup"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="30dp"
+            android:text="Next" />
+    </RelativeLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

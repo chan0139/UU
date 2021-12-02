@@ -62,11 +62,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -74,6 +76,9 @@ public class fragment_running extends Fragment
         implements
         OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback {
+
+    private String whoseRecord="Personal";
+    private String hostId="Personal";;
 
     public static fragment_running newInstance() {
         return new fragment_running();
@@ -547,13 +552,6 @@ public class fragment_running extends Fragment
         checkpoints.clear();
         reservedCheckpoints.clear();
         mMap.clear();
-        Toast toast=FancyToast.makeText(getContext(),
-                "운동 시작!",
-                FancyToast.LENGTH_LONG,
-                FancyToast.INFO,
-                false);
-        toast.setGravity(Gravity.BOTTOM,0,250);
-        toast.show();
 
         walkState = true;
 
@@ -667,10 +665,12 @@ public class fragment_running extends Fragment
         body.setText(msg);
         runningDlg.show();
 
-        button.setOnClickListener(new View.OnClickListener() {@Override public void onClick(View view) { runningDlg.dismiss(); }});
+        button.setOnClickListener(new View.OnClickListener() {@Override public void onClick(View view) {
+            drawPath(checkpoints,Color.BLACK);
+            runningDlg.dismiss(); }});
 
         //write on db
-        ((MainActivity)getActivity()).recordRunningState(formatedNow,distance,(runningTime/100)/60,calories,startTime,day,startAddress,endAddress);
+        ((MainActivity)getActivity()).recordRunningState(whoseRecord,hostId,formatedNow,distance,(runningTime/100)/60,calories,startTime,day,startAddress,endAddress);
 
         formatedNow="";distance=0;calories=0;runningTime=0;endAddress=null;
     }
@@ -696,6 +696,7 @@ public class fragment_running extends Fragment
                 int reservedTime=returnDateFormat(recruitObject.get(runningKey.get(i)).getDate(),recruitObject.get(runningKey.get(i)).getTime());
                 if(reservedTime!=-1){
                     // calculate between current time and reserved time, and push if reservation time is near by
+                    Log.d("timegap",Math.abs(currentTime-reservedTime)+"");
                     if(Math.abs(currentTime-reservedTime)<=60)
                         nearSchedule.add(recruitObject.get(runningKey.get(i)));
                 }
@@ -737,10 +738,15 @@ public class fragment_running extends Fragment
                 Log.d("running",which+"");
 
                 if(which!=scheduleName.size()-1) {
+                    whoseRecord=nearSchedule.get(which).getLeader();
+                    hostId=nearSchedule.get(which).getHostId();
                     for(int i=0;i<nearSchedule.get(which).getCheckpoint().size();i++)
                         reservedCheckpoints.add(new LatLng(nearSchedule.get(which).getCheckpoint().get(i).getLatitude(),nearSchedule.get(which).getCheckpoint().get(i).getLongitude()));
                     drawPath(reservedCheckpoints,Color.BLUE);
                     reservedCheckpoints.clear();
+                }
+                else{
+                    whoseRecord="Personal";
                 }
             }
         });

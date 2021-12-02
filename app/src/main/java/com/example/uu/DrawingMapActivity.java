@@ -82,7 +82,7 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
     private double distance = 0;
     private String distance2;
     private Object Context;
-
+    private boolean hasMap=false;
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +137,7 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
         savemap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 getURLOfMap();
             }
         });
@@ -146,54 +147,60 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View view) {
 
-                float[] results = new float[3];
-                for (int i = 0; i < checkpoint.size() - 1; i++) {
-                    Location.distanceBetween(checkpoint.get(i).latitude,
-                            checkpoint.get(i).longitude,
-                            checkpoint.get(i + 1).latitude,
-                            checkpoint.get(i + 1).longitude, results);
-                    distance += (int) results[0];
+                if(hasMap){
+                    float[] results = new float[3];
+                    for (int i = 0; i < checkpoint.size() - 1; i++) {
+                        Location.distanceBetween(checkpoint.get(i).latitude,
+                                checkpoint.get(i).longitude,
+                                checkpoint.get(i + 1).latitude,
+                                checkpoint.get(i + 1).longitude, results);
+                        distance += (int) results[0];
+                    }
+                    distance /= 1000.0;
+                    DecimalFormat form = new DecimalFormat("#.#");
+                    distance2 = form.format(distance);
+
+
+                    DirectionsApiRequest converter = new DirectionsApiRequest(mGeoApiContext);
+                    converter.language("ko");
+                    converter.mode(TravelMode.TRANSIT);
+                    converter.alternatives(false);
+                    converter.origin(
+                            new com.google.maps.model.LatLng(checkpoint.get(0).latitude, checkpoint.get(0).longitude)
+                    );
+                    converter.destination(
+                            new com.google.maps.model.LatLng(checkpoint.get(checkpoint.size() - 1).latitude, checkpoint.get(checkpoint.size() - 1).longitude)
+                    )
+                            .setCallback(new PendingResult.Callback<DirectionsResult>() {
+                                @Override
+                                public void onResult(DirectionsResult result) {
+
+                                    startAddress = result.routes[0].legs[0].startAddress;
+                                    endAddress = result.routes[0].legs[0].endAddress;
+                                    String[] splitStr = startAddress.split(" ");
+                                    String[] splitStr2 = endAddress.split(" ");
+                                    //Log.d("Tlqkf",startAddress+"");
+                                    //Log.d("Tlqkf",endAddress+"");
+                                    sendData.putExtra("address", startAddress);
+                                    sendData.putExtra("startAddress", splitStr[2]);
+                                    sendData.putExtra("endAddress", splitStr2[2]);
+                                    sendData.putExtra("mapUri", mapUri);
+                                    sendData.putExtra("distance", distance2);
+                                    sendData.putParcelableArrayListExtra("checkpoint", (ArrayList<? extends Parcelable>) checkpoint);
+                                    setResult(Activity.RESULT_OK, sendData);
+                                    finish();
+                                }
+
+                                @Override
+                                public void onFailure(Throwable e) {
+                                    Log.d("Tlqkf", "direction fail");
+                                }
+                            });
                 }
-                distance /= 1000.0;
-                DecimalFormat form = new DecimalFormat("#.#");
-                distance2 = form.format(distance);
-
-
-                DirectionsApiRequest converter = new DirectionsApiRequest(mGeoApiContext);
-                converter.language("ko");
-                converter.mode(TravelMode.TRANSIT);
-                converter.alternatives(false);
-                converter.origin(
-                        new com.google.maps.model.LatLng(checkpoint.get(0).latitude, checkpoint.get(0).longitude)
-                );
-                converter.destination(
-                        new com.google.maps.model.LatLng(checkpoint.get(checkpoint.size() - 1).latitude, checkpoint.get(checkpoint.size() - 1).longitude)
-                )
-                        .setCallback(new PendingResult.Callback<DirectionsResult>() {
-                            @Override
-                            public void onResult(DirectionsResult result) {
-
-                                startAddress = result.routes[0].legs[0].startAddress;
-                                endAddress = result.routes[0].legs[0].endAddress;
-                                String[] splitStr = startAddress.split(" ");
-                                String[] splitStr2 = endAddress.split(" ");
-                                //Log.d("Tlqkf",startAddress+"");
-                                //Log.d("Tlqkf",endAddress+"");
-                                sendData.putExtra("address", startAddress);
-                                sendData.putExtra("startAddress", splitStr[2]);
-                                sendData.putExtra("endAddress", splitStr2[2]);
-                                sendData.putExtra("mapUri", mapUri);
-                                sendData.putExtra("distance", distance2);
-                                sendData.putParcelableArrayListExtra("checkpoint", (ArrayList<? extends Parcelable>) checkpoint);
-                                setResult(Activity.RESULT_OK, sendData);
-                                finish();
-                            }
-
-                            @Override
-                            public void onFailure(Throwable e) {
-                                Log.d("Tlqkf", "direction fail");
-                            }
-                        });
+                else {
+                    Toast.makeText(getApplicationContext(), "The Running Map is not set", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
 
             }
         });
@@ -286,5 +293,12 @@ public class DrawingMapActivity extends AppCompatActivity implements OnMapReadyC
         bmp.compress(Bitmap.CompressFormat.PNG, 100, bao); // bmp is bitmap from user image file
         String path=MediaStore.Images.Media.insertImage(this.getContentResolver(),bmp,"Title",null);
         mapUri = Uri.parse(path);
+        hasMap=true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

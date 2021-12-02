@@ -9,13 +9,14 @@
 
     <com.layer_net.stepindicator.StepIndicator
         android:id="@+id/step_indicator"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        app:siBackgroundColor="@color/background_default"
-        app:siStepColor="@color/step_default"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="20dp"
+        app:siBackgroundColor="#9BDAFB"
+        app:siStepColor="#018FCF" />
 
     <com.example.uu.NoSwipeViewPager
         android:id="@+id/stepViewPager"
@@ -50,13 +51,15 @@
             android:layout_below="@+id/denyDescription"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="40dp"/>
+
         <Button
             android:id="@+id/gotoRecruitment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="see Recruitment"
             android:layout_below="@+id/rUUn"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:backgroundTint="#03A9F4"
+            android:text="see Recruit" />
 
     </RelativeLayout>
 

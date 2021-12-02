@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
                             selectedFragment = new fragment_crew(R.id.show_crew);
                             break;
                         case R.id.recruitment:
-                            title.setText("Recruitment");
+                            title.setText("Recruit");
                             selectedFragment = new fragment_recruitment(R.id.show_recruitment);
                             break;
                         case R.id.running:
@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
 
                         dlg.setPositiveButton("확인", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                FancyToast.makeText(getApplicationContext(),"운동 종료!",FancyToast.LENGTH_LONG,FancyToast.WARNING,false).show();
+
                                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
                             }
                         });
@@ -245,9 +245,16 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     }
 
 
+    @Override
+    public void hideNavigation() {
+
+        bottomNavigationView.setVisibility(View.INVISIBLE);
+    }
+
 
     @Override
     public void loginComplete() {
+        bottomNavigationView.setVisibility(View.VISIBLE);
         title.setText("Crew");
         showCrewFragment();
     }
@@ -274,7 +281,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     }
 
     // record to db if running ends
-    public void recordRunningState(String date, int distance, int time, float calories, int startTime, String runningDay, Location startAddress, Location endAddress)
+    public void recordRunningState(String whoseRecord,String hostId,String date, int distance, int time, float calories, int startTime, String runningDay, Location startAddress, Location endAddress)
     {
         // on local DB
         //only record actual running data
@@ -293,38 +300,74 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
                 Log.e("DB Error","data insertion error");
             else
                 Log.d("DB Record","db 저장 완료"+date);
-        
-
-        //on FireBase
-        database = FirebaseDatabase.getInstance();
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
-        databaseReference = database.getReference("UU");
-        databaseReference.child("UserAccount").child(firebaseUser.getUid()).child("FitTest").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                FitTestData mFitTestData;
-                mFitTestData =snapshot.getValue(FitTestData.class);
-                assert mFitTestData != null;
-                mFitTestData=updateData(mFitTestData,
-                        distance,
-                        time,
-                        startTime,
-                        runningDay,
-                        startAddress,
-                        endAddress);
 
 
-                databaseReference.child("UserAccount").child(firebaseUser.getUid()).child("FitTest").setValue(mFitTestData);
-                mFitTestData.setCrewName("exampleFittest");
-                FirebaseDatabase.getInstance().getReference("Crew").child("exampleFittest").child("FitTest").setValue(mFitTestData);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            //on FireBase
+            database = FirebaseDatabase.getInstance();
+            mFirebaseAuth = FirebaseAuth.getInstance();
+            FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
 
-            }
-        });
+            FirebaseDatabase.getInstance().getReference("UU")
+                    .child("UserAccount").child(hostId).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    userObject info = snapshot.getValue(userObject.class);
+                    if(info.getCurrentCrew().equals(whoseRecord)){
+                        FirebaseDatabase.getInstance().getReference("Crew").child(whoseRecord).child("FitTest").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                FitTestData mFitTestData;
+                                mFitTestData =snapshot.getValue(FitTestData.class);
+                                assert mFitTestData != null;
+                                mFitTestData=updateData(mFitTestData,
+                                        distance,
+                                        time,
+                                        startTime,
+                                        runningDay,
+                                        startAddress,
+                                        endAddress);
+                                databaseReference.child("Crew").child(whoseRecord).child("FitTest").setValue(mFitTestData);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+            databaseReference = database.getReference("UU");
+            databaseReference.child("UserAccount").child(firebaseUser.getUid()).child("FitTest").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    FitTestData mFitTestData;
+                    mFitTestData =snapshot.getValue(FitTestData.class);
+                    assert mFitTestData != null;
+                    mFitTestData=updateData(mFitTestData,
+                            distance,
+                            time,
+                            startTime,
+                            runningDay,
+                            startAddress,
+                            endAddress);
+                    databaseReference.child("UserAccount").child(firebaseUser.getUid()).child("FitTest").setValue(mFitTestData);
+
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
         }
 
         // date는 시작 시간 yy:mm:dd:hh:mm:ss

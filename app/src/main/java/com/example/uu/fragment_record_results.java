@@ -13,6 +13,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -78,6 +80,8 @@ public class fragment_record_results extends Fragment {
     int total_goal;
     int current_state;
 
+    private ArrayList<RecentData>recentData=new ArrayList<>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -118,6 +122,16 @@ public class fragment_record_results extends Fragment {
         getRecordData();
 
         barchart(mBarchart,barEntries,xAxisName);
+
+        //testkang
+        for(int i=0;i<10;i++){
+            recentData.add(new RecentData("https://firebasestorage.googleapis.com/v0/b/doubleu-2df72.appspot.com/o/recruitment%2FX0632jt7bMTs72MlsT2M.png?alt=media","12.01","종로구","3.4","34"));
+        }
+
+        PersonalRecentDataAdapter personalRecentDataAdapter=new PersonalRecentDataAdapter(recentData);
+        RecyclerView recyclerView=(RecyclerView) rootView.findViewById(R.id.mypersonalRecord);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(personalRecentDataAdapter);
 
         return rootView;
     }

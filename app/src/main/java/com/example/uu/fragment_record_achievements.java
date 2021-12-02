@@ -256,90 +256,90 @@ public class fragment_record_achievements extends Fragment {
     {
         if(max_distance>3000) {
             flag_maxDistance_3 = true;
-            levelBar.incrementProgressBy(20);
+            levelBar.incrementProgressBy(25);
             checkLevelBar();
         }
 
         if(max_distance>5000) {
             flag_maxDistance_5 = true;
-            levelBar.incrementProgressBy(20);
+            levelBar.incrementProgressBy(25);
             checkLevelBar();
         }
         if(max_distance>10000) {
             flag_maxDistance_10 = true;
-            levelBar.incrementProgressBy(20);
+            levelBar.incrementProgressBy(25);
             checkLevelBar();
         }
 
         if(total_distance>10000) {
             flag_totalDistance_10 = true;
-            levelBar.incrementProgressBy(20);
+            levelBar.incrementProgressBy(25);
             checkLevelBar();
         }
 
         if(total_distance>50000) {
             flag_totalDistance_50 = true;
-            levelBar.incrementProgressBy(20);
+            levelBar.incrementProgressBy(25);
             checkLevelBar();
         }
 
         if(total_distance>100000) {
             flag_totalDistance_100 = true;
-            levelBar.incrementProgressBy(20);
+            levelBar.incrementProgressBy(25);
             checkLevelBar();
         }
 
         if(max_time>20) {
             flag_maxTime_20 = true;
-            levelBar.incrementProgressBy(20);
+            levelBar.incrementProgressBy(25);
             checkLevelBar();
         }
 
         if(max_time>40) {
             flag_maxTime_40 = true;
-            levelBar.incrementProgressBy(20);
+            levelBar.incrementProgressBy(25);
             checkLevelBar();
         }
 
         if(max_time>60) {
             flag_maxTime_60 = true;
-            levelBar.incrementProgressBy(20);
+            levelBar.incrementProgressBy(25);
             checkLevelBar();
         }
 
         if(total_time>300) {
             flag_totalTime_300 = true;
-            levelBar.incrementProgressBy(20);
+            levelBar.incrementProgressBy(25);
             checkLevelBar();
         }
 
         if(total_time>500) {
             flag_totalTime_500 = true;
-            levelBar.incrementProgressBy(20);
+            levelBar.incrementProgressBy(25);
             checkLevelBar();
         }
 
         if(total_time>1000) {
             flag_totalTime_1000 = true;
-            levelBar.incrementProgressBy(20);
+            levelBar.incrementProgressBy(25);
             checkLevelBar();
         }
 
         if(total_recruit_time>=5) {
             flag_recruitJoinTime_5 = true;
-            levelBar.incrementProgressBy(20);
+            levelBar.incrementProgressBy(25);
             checkLevelBar();
         }
 
         if(total_recruit_time>=10) {
             flag_recruitJoinTime_10 = true;
-            levelBar.incrementProgressBy(20);
+            levelBar.incrementProgressBy(25);
             checkLevelBar();
         }
 
         if(total_recruit_time>=30) {
             flag_recruitJoinTime_30 = true;
-            levelBar.incrementProgressBy(20);
+            levelBar.incrementProgressBy(25);
             checkLevelBar();
         }
 

@@ -104,7 +104,7 @@ public class customDialog extends DialogFragment {
         Point deviceSize = new Point();
         display.getSize(deviceSize);
         width = (int) (deviceSize.x *(0.8));
-        height = (int) (deviceSize.y *(0.8));
+        height = (int) (deviceSize.y *(0.75));
 
 
         getDialog().getWindow().setLayout(width,height);
@@ -191,7 +191,8 @@ public class customDialog extends DialogFragment {
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), android.R.style.Theme_DeviceDefault_Light_Dialog,  new TimePickerDialog.OnTimeSetListener() {
+
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), android.R.style.Theme_DeviceDefault_Light_Dialog, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         selectedHour = hourOfDay;
