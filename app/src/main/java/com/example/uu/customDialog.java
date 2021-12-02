@@ -191,6 +191,7 @@ public class customDialog extends DialogFragment {
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), android.R.style.Theme_DeviceDefault_Light_Dialog, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -199,6 +200,7 @@ public class customDialog extends DialogFragment {
                         TextView setDate=rootview.findViewById(R.id.settime);
                         setDate.setText(selectedHour+" 시 "+selectedMin+" 분   ");
                     }
+
                 }, 14, 00, true);
                 timePickerDialog.show();
             }

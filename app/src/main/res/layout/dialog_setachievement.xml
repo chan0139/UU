@@ -2,19 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="300dp"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="@drawable/round_bg"
     android:orientation="vertical">
+
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/blue"
         android:gravity="center"
         android:text="Dialog"
-        android:textColor="#ffffff"
+        android:textColor="#000000"
         android:textSize="16dp"
         tools:ignore="TextContrastCheck" />
 
@@ -62,14 +62,15 @@
 
     <Button
         android:id="@+id/setBtn"
-        android:layout_width="match_parent"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="#2196F3"
+        android:layout_gravity="center"
+        android:backgroundTint="#F0F8FF"
         android:text="확인" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#000000"/>
+        android:background="#000000" />
 
 </LinearLayout>
