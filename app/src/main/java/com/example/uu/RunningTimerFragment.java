@@ -1,5 +1,6 @@
 package com.example.uu;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -33,7 +36,7 @@ public class RunningTimerFragment extends Fragment {
     private String mParam2;
 
     private Button mStartBtn, mStopBtn, mPauseBtn;
-    private TextView mTimeTextView;
+    private TextView mTimeTextView, mstartRunningTextView;
     private Thread timeThread = null;
     private Boolean walkState = false;
 
@@ -81,6 +84,8 @@ public class RunningTimerFragment extends Fragment {
         mStopBtn = (Button) v.findViewById(R.id.Fbtn_stop);
         mPauseBtn = (Button) v.findViewById(R.id.Fbtn_pause);
         mTimeTextView = (TextView) v.findViewById(R.id.FtimeView);
+        mstartRunningTextView = (TextView)v.findViewById(R.id.startRunning);
+
 
         parentFragment=(fragment_running) getParentFragment();
 
@@ -88,12 +93,55 @@ public class RunningTimerFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
+                v.setVisibility(View.GONE);
                 if(!parentFragment.checkNearSchedule()) {
-                    v.setVisibility(View.GONE);
+                    //ObjectAnimator objectAnimator_toRight=ObjectAnimator.ofFloat(mStopBtn,"translationX",200f);
+                    //objectAnimator_toRight.setDuration(2000);
+                    //ObjectAnimator objectAnimator_toLeft=ObjectAnimator.ofFloat(mPauseBtn,"translationX",-200f);
+                    //objectAnimator_toLeft.setDuration(2000);
+                    //objectAnimator_toRight.start();
+                    //objectAnimator_toLeft.start();
+
+                    mstartRunningTextView.animate()
+                            .setDuration(1000)
+                            .withStartAction(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mstartRunningTextView.setVisibility(View.VISIBLE);
+                                }
+                            })
+                            .withEndAction(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mstartRunningTextView.setVisibility(View.INVISIBLE);
+                                }
+                            }).start();
+
+                    mStopBtn.animate()
+                            .scaleY(0.6f)
+                            .scaleX(0.8f)
+                            .translationX(200f)
+                            .setDuration(1000)
+                            .withEndAction(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mStopBtn.setScaleY(1f);
+                                }
+                            }).start();
+                    mPauseBtn.animate()
+                            .scaleY(0.6f)
+                            .scaleX(0.8f)
+                            .translationX(-200f)
+                            .setDuration(1000)
+                            .withEndAction(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mPauseBtn.setScaleY(1f);
+                                }
+                            }).start();
                     StartTimer();
                 }
                 else {
-                    v.setVisibility(View.GONE);
                     parentFragment.showNearSchedule();
                 }
             }
@@ -102,8 +150,20 @@ public class RunningTimerFragment extends Fragment {
         mStopBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                v.setVisibility(View.GONE);
+                mStopBtn.animate()
+                        .scaleY(1f)
+                        .scaleX(1f)
+                        .translationX(0)
+                        .setDuration(1000)
+                        .start();
+                mPauseBtn.animate()
+                        .scaleY(1f)
+                        .scaleX(1f)
+                        .translationX(0)
+                        .setDuration(1000)
+                        .start();
                 StopTimer();
+
             }
         });
 
@@ -138,9 +198,9 @@ public class RunningTimerFragment extends Fragment {
     {
         walkState = !walkState;
         if (!walkState) {
-            mPauseBtn.setText("일시정지");
+            mPauseBtn.setText("❚❚");
         } else {
-            mPauseBtn.setText("시작");
+            mPauseBtn.setText("▶");
         }
         try {
             parentFragment.onButtonPause();
@@ -151,9 +211,15 @@ public class RunningTimerFragment extends Fragment {
 
     public void StopTimer()
     {
-        mTimeTextView.setVisibility(View.GONE);
-        mStartBtn.setVisibility(View.VISIBLE);
-        mPauseBtn.setVisibility(View.GONE);
+        mTimeTextView.setVisibility(View.INVISIBLE);
+        mStartBtn.animate()
+                .setDuration(1000)
+                .withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        mStartBtn.setVisibility(View.VISIBLE);
+                    }
+                }).start();
         walkState=true;
         timeThread.interrupt();
         walkState=false;

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,6 +69,9 @@ public class fragment_running extends Fragment
         implements
         OnMapReadyCallback,
         ActivityCompat.OnRequestPermissionsResultCallback {
+
+    private String whoseRecord="Personal";
+    private String hostId="Personal";;
 
     public static fragment_running newInstance() {
         return new fragment_running();
@@ -541,7 +545,10 @@ public class fragment_running extends Fragment
         checkpoints.clear();
         reservedCheckpoints.clear();
         mMap.clear();
-        FancyToast.makeText(getContext(),"운동 시작!",FancyToast.LENGTH_LONG,FancyToast.INFO,false).show();
+        //Toast toast=Toast.makeText(getActivity(),"운동 시작!",FancyToast.LENGTH_LONG);
+        //toast.setGravity(Gravity.CENTER,0,0);
+        //toast.show();
+        //FancyToast.makeText(getContext(),"운동 시작!",FancyToast.LENGTH_LONG,FancyToast.INFO,false).show();
         walkState = true;
 
         //시작 시간 계산, db에 저장할때 기본키로 사용
@@ -646,14 +653,14 @@ public class fragment_running extends Fragment
 
         dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int which) {
-                FancyToast.makeText(getContext(),"운동 종료!",FancyToast.LENGTH_LONG,FancyToast.INFO,false).show();
+                //FancyToast.makeText(getContext(),"운동 종료!",FancyToast.LENGTH_LONG,FancyToast.INFO,false).show();
                 drawPath(checkpoints,Color.BLACK);
             }
         });
         dlg.show();
 
         //write on db
-        ((MainActivity)getActivity()).recordRunningState(formatedNow,distance,(runningTime/100)/60,calories,startTime,day,startAddress,endAddress);
+        ((MainActivity)getActivity()).recordRunningState(whoseRecord,hostId,formatedNow,distance,(runningTime/100)/60,calories,startTime,day,startAddress,endAddress);
 
         formatedNow="";distance=0;calories=0;runningTime=0;endAddress=null;
     }
@@ -679,6 +686,7 @@ public class fragment_running extends Fragment
                 int reservedTime=returnDateFormat(recruitObject.get(runningKey.get(i)).getDate(),recruitObject.get(runningKey.get(i)).getTime());
                 if(reservedTime!=-1){
                     // calculate between current time and reserved time, and push if reservation time is near by
+                    Log.d("timegap",Math.abs(currentTime-reservedTime)+"");
                     if(Math.abs(currentTime-reservedTime)<=60)
                         nearSchedule.add(recruitObject.get(runningKey.get(i)));
                 }
@@ -713,6 +721,7 @@ public class fragment_running extends Fragment
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                scheduleName.clear();
                 RunningTimerFragment timerFragment=(RunningTimerFragment) getChildFragmentManager().findFragmentById(R.id.fragmentContainerView);
                 timerFragment.StartTimer();
 
@@ -720,10 +729,15 @@ public class fragment_running extends Fragment
                 Log.d("running",which+"");
 
                 if(which!=scheduleName.size()-1) {
+                    whoseRecord=nearSchedule.get(which).getLeader();
+                    hostId=nearSchedule.get(which).getHostId();
                     for(int i=0;i<nearSchedule.get(which).getCheckpoint().size();i++)
                         reservedCheckpoints.add(new LatLng(nearSchedule.get(which).getCheckpoint().get(i).getLatitude(),nearSchedule.get(which).getCheckpoint().get(i).getLongitude()));
                     drawPath(reservedCheckpoints,Color.RED);
                     reservedCheckpoints.clear();
+                }
+                else{
+                    whoseRecord="Personal";
                 }
             }
         });

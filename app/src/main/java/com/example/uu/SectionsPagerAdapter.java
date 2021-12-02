@@ -136,25 +136,16 @@ public class SectionsPagerAdapter extends PagerAdapter {
                 view=inflater.inflate(R.layout.fittest_stepfinal,container,false);
                 Animation animation= AnimationUtils.loadAnimation(mContext,R.anim.fade);
                 TextView score=view.findViewById(R.id.score);
+                TextView recommandCrew=view.findViewById(R.id.recommandCrew);
                 if(isDone){
-                    score.setText(recommendCrew.get(0).getCrewName()+"/"+recommendCrew.get(0).getScore());
+                    recommandCrew.setText(recommendCrew.get(0).getCrewName());
+                    score.setText(Math.round(recommendCrew.get(0).getScore()*100)/100.0+"%");
                 }
-                TextView description=view.findViewById(R.id.Description);
+
+                recommandCrew.startAnimation(animation);
                 score.startAnimation(animation);
 
-                
 
-                SpringAnimation springAnimation_score=new SpringAnimation(score, DynamicAnimation.TRANSLATION_Y,0);
-                SpringAnimation springAnimation_description=new SpringAnimation(description,DynamicAnimation.Y,0);
-                view.findViewById(R.id.moredetails).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        springAnimation_description.getSpring().setDampingRatio(SpringForce.DAMPING_RATIO_HIGH_BOUNCY);
-                        springAnimation_score.getSpring().setDampingRatio(SpringForce.DAMPING_RATIO_HIGH_BOUNCY);
-                        springAnimation_description.animateToFinalPosition(-200);
-                        springAnimation_score.animateToFinalPosition(-400);
-                    }
-                });
 
                 break;
         }

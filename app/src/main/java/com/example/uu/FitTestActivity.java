@@ -207,56 +207,134 @@ public class FitTestActivity extends AppCompatActivity implements SectionsPagerA
                             score+=result;
                             break;
                         case IntegerPriority.whatDayDoYouRun:
-                            //<# of running you did at that day,day>
-                            List<Integer> mostFavorite=new ArrayList<>();
-                            mostFavorite.addAll(myData.getDay());
-                            mostFavorite.sort(Collections.reverseOrder());
-                            int myFavorite=mostFavorite.get(0);
+                            //<day,# of running you did at that day>
+                            List<Integer> mostFavoriteDay = new ArrayList<>(myData.getDay());
+                            mostFavoriteDay.sort(Collections.reverseOrder());
+                            int myFavoriteDay=mostFavoriteDay.get(0);
 
-                            mostFavorite.clear();
-                            mostFavorite.addAll(crewData.getDay());
-                            mostFavorite.sort(Collections.reverseOrder());
-                            int crewFavorite=mostFavorite.get(0);
+                            mostFavoriteDay.clear();
+                            mostFavoriteDay.addAll(crewData.getDay());
+                            mostFavoriteDay.sort(Collections.reverseOrder());
+                            int crewFavoriteDay=mostFavoriteDay.get(0);
 
                             Map<Integer,Integer> myDay=new LinkedHashMap<>();
                             Map<Integer,Integer>crewDay=new LinkedHashMap<>();
                             for(int k=0;k<7;k++){
-                                myDay.put(myData.getDay().get(k),k);
-                                crewDay.put(crewData.getDay().get(k),k);
+                                myDay.put(k,myData.getDay().get(k));
+                                crewDay.put(k,crewData.getDay().get(k));
                             }
-                            myDay=sortMapByKey(myDay);
-                            crewDay=sortMapByKey(crewDay);
+                            myDay=sortMapByValue(myDay);
+                            crewDay=sortMapByValue(crewDay);
 
-                            if(myDay.get(myFavorite)==crewDay.get(crewFavorite)){
-                                result=100;
-                            }
-                            else{
-                                int numOfOverlap=0;
-                                for(Map.Entry<Integer,Integer>entry:myDay.entrySet()){
-                                    if(crewDay.containsValue(entry.getValue())){
+                            int numOfOverlap=0;
+                            for(Map.Entry<Integer,Integer>entry:myDay.entrySet()){
+                                if(entry.getValue()!=0){
+                                    if(crewDay.containsKey(entry.getKey())){
                                         numOfOverlap+=1;
                                     }
                                 }
-                                switch (numOfOverlap){
-                                    case 0:
-                                        result=0;
-                                        break;
-                                    case 1:
-                                        result=50;
-                                        break;
-                                    case 2:
-                                        result=70;
-                                        break;
-                                    case 3:
-                                        result=90;
-                                        break;
-                                }
                             }
+                            switch (numOfOverlap){
+                                case 0:
+                                    result=0;
+                                    break;
+                                case 1:
+                                    result=50;
+                                    break;
+                                case 2:
+                                    result=70;
+                                    break;
+                                case 3:
+                                    result=95;
+                                    if(myDay.get(myFavoriteDay)==crewDay.get(crewFavoriteDay)){
+                                        result+=5;
+                                    }
+                                    break;
+                            }
+
                             result=result*(integerPriority.length-j);
                             score+=result;
                             break;
                         case IntegerPriority.whatTimeDoYouRun:
+                            //<startTime,# of running you did at that startTime>
+                            List<Integer> mostFavoriteTime = new ArrayList<>(myData.getStartTime());
+                            mostFavoriteTime.sort(Collections.reverseOrder());
+                            int myFavoriteTime=mostFavoriteTime.get(0);
+
+                            mostFavoriteTime.clear();
+                            mostFavoriteTime.addAll(crewData.getStartTime());
+                            mostFavoriteTime.sort(Collections.reverseOrder());
+                            int crewFavoriteTime=mostFavoriteTime.get(0);
+
+                            Map<Integer,Integer> myStartTime=new LinkedHashMap<>();
+                            Map<Integer,Integer>crewStartTime=new LinkedHashMap<>();
+                            for(int k=0;k<24;k++){
+                                myStartTime.put(k,myData.getStartTime().get(k));
+                                crewStartTime.put(k,crewData.getStartTime().get(k));
+                            }
+
+                            myStartTime=sortMapByValue(myStartTime);
+                            crewStartTime=sortMapByValue(crewStartTime);
+
+                            numOfOverlap=0;
+                            for(Map.Entry<Integer,Integer>entry:myStartTime.entrySet()){
+                                if(entry.getValue()!=0){
+                                    if(crewStartTime.containsKey(entry.getKey())){
+                                        numOfOverlap+=1;
+                                    }
+                                }
+                            }
+                            switch (numOfOverlap){
+                                case 0:
+                                    result=0;
+                                    break;
+                                case 1:
+                                    result=50;
+                                    break;
+                                case 2:
+                                    result=70;
+                                    break;
+                                case 3:
+                                    result=95;
+                                    if(myStartTime.get(myFavoriteTime)==crewStartTime.get(crewFavoriteTime)){
+                                        result=+5;
+                                    }
+                                    break;
+                            }
+
+                            result=result*(integerPriority.length-j);
+                            score+=result;
+                            break;
                         case IntegerPriority.whereDoYouRun:
+                            int goodLocation=0;
+                            for(int k=0;k<myData.getStartAddress().size();k++){
+                                for(int h=0;h<crewData.getStartAddress().size();h++){
+                                    Log.d("testkang",""+distance(myData.getStartAddress().get(k).getLatitude(),myData.getStartAddress().get(k).getLongitude(),
+                                            crewData.getStartAddress().get(h).getLatitude(),crewData.getStartAddress().get(h).getLongitude()));
+                                    if(distance(myData.getStartAddress().get(k).getLatitude(),myData.getStartAddress().get(k).getLongitude(),
+                                            crewData.getStartAddress().get(h).getLatitude(),crewData.getStartAddress().get(h).getLongitude())<=600){
+                                        goodLocation+=1;
+                                        break;
+                                    }
+                                }
+                            }
+                            for(int k=0;k<myData.getEndAddress().size();k++){
+                                for(int h=0;h<crewData.getEndAddress().size();h++){
+                                    Log.d("testkang",distance(myData.getEndAddress().get(k).getLatitude(),myData.getEndAddress().get(k).getLongitude(),
+                                            crewData.getEndAddress().get(h).getLatitude(),crewData.getEndAddress().get(h).getLongitude())+"");
+                                    if(distance(myData.getEndAddress().get(k).getLatitude(),myData.getEndAddress().get(k).getLongitude(),
+                                            crewData.getEndAddress().get(h).getLatitude(),crewData.getEndAddress().get(h).getLongitude())<=600){
+                                        goodLocation+=1;
+                                        break;
+                                    }
+                                }
+                            }
+                            result=(float) myData.getStartAddress().size()+myData.getEndAddress().size();
+                            result=(float)100/result;
+                            result= result *goodLocation;
+                            result=result*(integerPriority.length-j);
+                            score+=result;
+                            break;
                     }
                 }
                 score=score/sumOfPriority;
@@ -266,9 +344,25 @@ public class FitTestActivity extends AppCompatActivity implements SectionsPagerA
         }
         Collections.sort(recommendCrew);
     }
-    public static LinkedHashMap<Integer, Integer> sortMapByKey(Map<Integer, Integer> map) {
+    public static double distance(double startLat,double startLng,double endLat,double endLng){
+        if((startLat==endLat)&&(startLng==endLng)){
+            return 0;
+        }
+        else{
+            double theta=startLng-endLng;
+            double dist= Math.sin(Math.toRadians(startLat))*Math.sin(Math.toRadians(endLat))+Math.cos(Math.toRadians(startLat))*
+                    Math.cos(Math.toRadians(endLat))*Math.cos(Math.toRadians(theta));
+            dist=Math.acos(dist);
+            dist=Math.toDegrees(dist);
+            dist=dist*60*1.1515;
+            //return meter type
+            return dist*1609.344;
+        }
+    }
+    public static LinkedHashMap<Integer, Integer> sortMapByValue(Map<Integer, Integer> map) {
         List<Map.Entry<Integer, Integer>> entries = new LinkedList<>(map.entrySet());
-        Collections.sort(entries, (o1, o2) -> o2.getKey().compareTo(o1.getKey()));
+        Collections.sort(entries, (o1, o2) -> o2.getValue().compareTo(o1.getValue()));
+
 
         LinkedHashMap<Integer, Integer> result = new LinkedHashMap<>();
         int size = 3;
