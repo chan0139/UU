@@ -169,7 +169,7 @@ public class customDialog extends DialogFragment {
                 int currentY = today.get(Calendar.YEAR);
                 int currentM = today.get(Calendar.MONTH);
                 int currentD = today.get(Calendar.DATE);
-                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), android.R.style.Theme_DeviceDefault_Light_Dialog, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         selectedYear = year;
@@ -191,7 +191,7 @@ public class customDialog extends DialogFragment {
         timeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), android.R.style.Theme_DeviceDefault_Light_Dialog,  new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         selectedHour = hourOfDay;
@@ -199,6 +199,7 @@ public class customDialog extends DialogFragment {
                         TextView setDate=rootview.findViewById(R.id.settime);
                         setDate.setText(selectedHour+" 시 "+selectedMin+" 분   ");
                     }
+
                 }, 14, 00, true);
                 timePickerDialog.show();
             }
