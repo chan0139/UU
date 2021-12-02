@@ -287,7 +287,7 @@ public class fragment_crew extends Fragment{
 
 
         //유저가 속한 크루 정보 가져오기
-        databaseReference.child("UserAccount").child(firebaseUser.getUid()).child("currentCrew").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("UserAccount").child(firebaseUser.getUid()).child("currentCrew").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(currentCrew.equals("none")){
@@ -316,15 +316,8 @@ public class fragment_crew extends Fragment{
                     });
 
 
+
                     crewYesImg = storageReference.child("crew/" + currentCrew + ".png");
-                    crewYesImg.getDownloadUrl().addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Glide.with(rootview)
-                                    .load(R.drawable.ic_sneakers)
-                                    .into(crewImg);
-                        }
-                    });
                     crewYesImg.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
@@ -333,6 +326,13 @@ public class fragment_crew extends Fragment{
                                     .into(crewImg);
                         }
                     });
+                    crewYesImg.getDownloadUrl().addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            recallCrewImgFromStorage(crewYesImg);
+                        }
+                    });
+
 
                 }
             }

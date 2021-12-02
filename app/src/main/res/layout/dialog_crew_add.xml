@@ -16,7 +16,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_sneakers" />
+        app:srcCompat="@drawable/ic_sneakers2" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -140,7 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/custom_font"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="20dp"
             android:text="Create" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

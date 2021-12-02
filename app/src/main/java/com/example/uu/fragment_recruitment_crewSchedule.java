@@ -58,7 +58,7 @@ public class fragment_recruitment_crewSchedule extends Fragment {
 
         if(firebaseUser != null) {
 
-            databaseReferenceUser.child("UserAccount").child(firebaseUser.getUid()).child("currentCrew").addValueEventListener(new ValueEventListener() {
+            databaseReferenceUser.child("UserAccount").child(firebaseUser.getUid()).child("currentCrew").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     userCrew = snapshot.getValue(String.class);

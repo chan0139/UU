@@ -7,23 +7,23 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="41dp"
         android:background="#F0F8FF"
         android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/show_record"
-            android:layout_width="22dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="4dp"
+            android:layout_width="28dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/ic_record_selected" />
 
         <ImageButton
             android:id="@+id/show_trophy"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
-            android:layout_marginLeft="3dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginLeft="11dp"
             android:layout_marginTop="6dp"
             android:background="@drawable/ic_trophy" />
 

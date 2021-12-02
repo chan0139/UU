@@ -4,15 +4,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -61,6 +64,7 @@ public class crewAddDialog extends DialogFragment {
     ImageView clubImg;
     FloatingActionButton fab;
     Uri uri;
+    Uri defaultUri;
     String selectedGu;
     String getCrewName;
     String getCrewExp;
@@ -68,11 +72,27 @@ public class crewAddDialog extends DialogFragment {
     private DatabaseReference mDatabaseRef;
     private DatabaseReference mDatabaseRefUser;
     private FirebaseStorage storage;
+    private int width;
+    private int height;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         crewAddedListener=(OnCrewAddedListener) context;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        WindowManager windowManager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        Point deviceSize = new Point();
+        display.getSize(deviceSize);
+        width = (int) (deviceSize.x *(0.85));
+        height = (int) (deviceSize.y *(0.8));
+
+
+        getDialog().getWindow().setLayout(width,height);
     }
 
     @Nullable
@@ -89,6 +109,8 @@ public class crewAddDialog extends DialogFragment {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("Crew");
         mDatabaseRefUser = FirebaseDatabase.getInstance().getReference("UU");
         storage = FirebaseStorage.getInstance();
+
+        defaultUri = Uri.parse("android.resource://"+ R.class.getPackage().getName()+"/"+R.drawable.default_crew_img);
 
         clubImg = rootview.findViewById(R.id.clubImg);
         ActivityResultLauncher<Intent> launcher =
@@ -195,9 +217,14 @@ public class crewAddDialog extends DialogFragment {
         //저장소에 크루 사진 정보 저장..
         StorageReference storageReference = storage.getReference();
         StorageReference riversRef = storageReference.child("crew/" + getCrewName + ".png");
+        Log.e("uri", String.valueOf(uri));
         if(uri != null) {
             UploadTask uploadTask = riversRef.putFile(uri);
         }
+        else{
+            UploadTask uploadTask2 = riversRef.putFile(defaultUri);
+        }
+
 
 
         //DB에 크루 정보 저장
@@ -216,7 +243,7 @@ public class crewAddDialog extends DialogFragment {
         mDatabaseRef.child(getCrewName).child("FitTest").setValue(initFitTestData());
         mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("currentCrew").setValue(getCrewName);
         mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("crewRole").setValue("Leader");
-        Toast.makeText(getContext(), "Success to save in DB", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getContext(), "Success to save in DB", Toast.LENGTH_SHORT).show();
     }
 
     public FitTestData initFitTestData(){
