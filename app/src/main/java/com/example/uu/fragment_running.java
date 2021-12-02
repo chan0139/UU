@@ -1,7 +1,9 @@
 package com.example.uu;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -36,7 +38,10 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -55,13 +60,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shashank.sony.fancytoastlib.FancyToast;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -643,28 +646,21 @@ public class fragment_running extends Fragment
         double Kcal=userWeight*Met*time;
         calories=(float) Math.round((Kcal*10)/10.0);
 
+        Dialog runningDlg=new Dialog(getActivity());
+        runningDlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        runningDlg.setContentView(R.layout.dialog_running);
+        runningDlg.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        // Dialog for running info
-        dlg.setTitle("오늘의 운동!"); //제목
+        TextView body=runningDlg.findViewById(R.id.runningBody);
+        Button button=runningDlg.findViewById(R.id.runningBtn);
 
         msg="얼마나 달렸을까? "+min+"분 "+sec+"초\n";
         msg+="얼만큼 뛰었을까? "+Integer.toString(distance)+"m\n";
-        msg+="뛴만큼 빠졌을까? "+Float.toString(calories)+"Kcal\n";       //소숫점 첫째 자리까지 표현
-        dlg.setMessage(msg); // 메시지
+        msg+="뛴만큼 빠졌을까? "+Float.toString(calories)+"Kcal\n";
+        body.setText(msg);
+        runningDlg.show();
 
-        dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int which) {
-                Toast toast=FancyToast.makeText(getContext(),
-                        "운동 종료!",
-                        FancyToast.LENGTH_LONG,
-                        FancyToast.WARNING,
-                        false);
-                toast.setGravity(Gravity.BOTTOM,0,250);
-                toast.show();
-                drawPath(checkpoints,Color.BLACK);
-            }
-        });
-        dlg.show();
+        button.setOnClickListener(new View.OnClickListener() {@Override public void onClick(View view) { runningDlg.dismiss(); }});
 
         //write on db
         ((MainActivity)getActivity()).recordRunningState(formatedNow,distance,(runningTime/100)/60,calories,startTime,day,startAddress,endAddress);
