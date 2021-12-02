@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.UU" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#F0F8FF</item>
-        <item name="colorPrimaryVariant">#AECEEA</item>
+        <item name="colorPrimary">@color/main</item>
+        <item name="colorPrimaryVariant">@color/sub</item>
         <item name="colorOnPrimary">#696969</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>

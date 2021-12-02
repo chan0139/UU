@@ -271,6 +271,8 @@ public class fragment_record_results extends Fragment {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_setachievement);
 
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         TextView title=dialog.findViewById(R.id.title);
         SeekBar setGoal=dialog.findViewById(R.id.setGoal);
         TextView goalMin=dialog.findViewById(R.id.goalMin);
