@@ -7,29 +7,32 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
+        android:background="#F0F8FF"
         android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/show_record"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-
-            android:background="@drawable/ic_record_selected"
-            android:minWidth="48dp"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:layout_width="22dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/ic_record_selected" />
 
         <ImageButton
             android:id="@+id/show_trophy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_trophy"
-            android:minWidth="48dp"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/ic_trophy" />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#DCDCDC" />
 
     <FrameLayout
         android:id="@+id/recordContainer"

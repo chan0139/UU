@@ -3,6 +3,8 @@ package com.example.uu;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.net.Uri;
 import android.os.Bundle;
@@ -50,6 +52,7 @@ public class fragment_crew extends Fragment{
     private View linear_recruitment;
     private View linear_crew_no;
     private View linear_crew_yes;
+    private View linear_lounge;
 
     private ImageButton show_recruitment;
     private ImageButton show_crew;
@@ -122,8 +125,8 @@ public class fragment_crew extends Fragment{
         rootview=(ViewGroup) inflater.inflate(R.layout.fragment_crew,container,false);
         title = getActivity().findViewById(R.id.title);
 
-        ImageView crewGif = (ImageView) rootview.findViewById(R.id.crewGif);
-        Glide.with(this).load(R.raw.friends).into(crewGif);
+        //ImageView crewGif = (ImageView) rootview.findViewById(R.id.crewGif);
+        //Glide.with(this).load(R.raw.friends).into(crewGif);
 
         database = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -187,12 +190,11 @@ public class fragment_crew extends Fragment{
         guSpinner.setAdapter(guAdapter);
 
 
-        Button createCrewBtn = (Button) rootview.findViewById(R.id.crewAdd);
+        TextView createCrewBtn = (TextView) rootview.findViewById(R.id.crewAdd);
         createCrewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 crewAddDialog crewDialog = new crewAddDialog();
-                //crewDialog.show(getActivity().getFragmentManager(), "test");
                 crewDialog.show(getChildFragmentManager(), "crew");
             }
         });
@@ -223,6 +225,9 @@ public class fragment_crew extends Fragment{
                             /*kangtest*/
                             //crew.setFitTestData(new FitTestData(1330,55,new Address()));
                             /*kangtest*/
+                            if(crew.getTotalUserNum() == 0){
+                                databaseReference.removeValue();
+                            }
 
                             if(selectedGu.equals("지역선택")){
                                 crewArrayList.add(crew);
@@ -231,6 +236,7 @@ public class fragment_crew extends Fragment{
                             if (crew.getLocation().equals(selectedGu)) {
                                 crewArrayList.add(crew);
                             }
+
 
                         }
                         crewAdapter.notifyDataSetChanged(); //리스트 저장 및 새로고침
@@ -287,27 +293,29 @@ public class fragment_crew extends Fragment{
                 if(currentCrew.equals("none")){
                 }
                 else{
-                    databaseReferenceCrew.child(currentCrew).addValueEventListener(new ValueEventListener() {
+                    databaseReferenceCrew.child(currentCrew).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             crewObject crewInfo = snapshot.getValue(crewObject.class);
+
                             getCrewName = crewInfo.getCrewName();
                             getCrewUserNum = String.valueOf(crewInfo.getTotalUserNum());
                             getCrewLoc = crewInfo.getLocation();
                             getCrewExp = crewInfo.getExplanation();
 
-
                             crewName.setText(getCrewName);
                             crewUserNum.setText(getCrewUserNum);
                             crewLoc.setText(getCrewLoc);
                             crewExp.setText(getCrewExp);
-                        }
+                            }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
 
                         }
                     });
+
+
                     crewYesImg = storageReference.child("crew/" + currentCrew + ".png");
                     crewYesImg.getDownloadUrl().addOnFailureListener(new OnFailureListener() {
                         @Override

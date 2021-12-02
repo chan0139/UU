@@ -57,6 +57,12 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="12dp"
+        android:background="#DCDCDC" />
+
     <GridView
         android:id="@+id/achievementContainer"
         android:layout_width="match_parent"

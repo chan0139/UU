@@ -55,8 +55,6 @@ public class fragment_recruitment extends Fragment{
     private ImageButton show_recruitment;
     private ImageButton show_lounge;
 
-    private TextView detail_name;
-
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
@@ -129,8 +127,6 @@ public class fragment_recruitment extends Fragment{
 
             }
         });
-
-        detail_name=(TextView)rootview.findViewById(R.id.detail_name);
 
         linear_recruitment = (LinearLayout) rootview.findViewById(R.id.linear_Recruitment);
         linear_lounge=(LinearLayout)rootview.findViewById(R.id.linear_lounge);
@@ -213,7 +209,7 @@ public class fragment_recruitment extends Fragment{
         RecyclerDecoration spaceDecoration = new RecyclerDecoration(30);
         recyclerView.addItemDecoration(spaceDecoration);
 
-        Button recruit = (Button) rootview.findViewById(R.id.recruit);
+        TextView recruit = (TextView) rootview.findViewById(R.id.recruit);
         recruit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -286,13 +282,13 @@ public class fragment_recruitment extends Fragment{
 
     public void layoutConverter(int which_layout){
         if(which_layout==R.id.show_recruitment){
-            detail_name.setText("Recruit Running mate list");
+            show_recruitment.setBackgroundResource(R.drawable.ic_recruitment_selected);
             show_lounge.setBackgroundResource(R.drawable.ic_lounge);
             linear_recruitment.setVisibility(View.VISIBLE);
             linear_lounge.setVisibility(View.INVISIBLE);
         }
         else if(which_layout==R.id.show_lounge){
-            detail_name.setText("Lounge list");
+            show_recruitment.setBackgroundResource(R.drawable.ic_recruitment_2);
             show_lounge.setBackgroundResource(R.drawable.ic_lounge_selected);
             linear_recruitment.setVisibility(View.INVISIBLE);
             linear_lounge.setVisibility(View.VISIBLE);

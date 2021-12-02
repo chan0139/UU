@@ -545,10 +545,8 @@ public class fragment_running extends Fragment
         checkpoints.clear();
         reservedCheckpoints.clear();
         mMap.clear();
-        //Toast toast=Toast.makeText(getActivity(),"운동 시작!",FancyToast.LENGTH_LONG);
-        //toast.setGravity(Gravity.CENTER,0,0);
-        //toast.show();
-        //FancyToast.makeText(getContext(),"운동 시작!",FancyToast.LENGTH_LONG,FancyToast.INFO,false).show();
+
+
         walkState = true;
 
         //시작 시간 계산, db에 저장할때 기본키로 사용
@@ -653,7 +651,6 @@ public class fragment_running extends Fragment
 
         dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface dialog, int which) {
-                //FancyToast.makeText(getContext(),"운동 종료!",FancyToast.LENGTH_LONG,FancyToast.INFO,false).show();
                 drawPath(checkpoints,Color.BLACK);
             }
         });
@@ -733,7 +730,7 @@ public class fragment_running extends Fragment
                     hostId=nearSchedule.get(which).getHostId();
                     for(int i=0;i<nearSchedule.get(which).getCheckpoint().size();i++)
                         reservedCheckpoints.add(new LatLng(nearSchedule.get(which).getCheckpoint().get(i).getLatitude(),nearSchedule.get(which).getCheckpoint().get(i).getLongitude()));
-                    drawPath(reservedCheckpoints,Color.RED);
+                    drawPath(reservedCheckpoints,Color.BLUE);
                     reservedCheckpoints.clear();
                 }
                 else{

@@ -23,9 +23,10 @@
         android:layout_width="wrap_content"
         android:layout_height="?attr/actionBarSize"
         android:layout_gravity="center"
-        android:textColor="#454545"
+        android:gravity="center"
         android:text="Running"
-        android:textSize="40dp" />
+        android:textColor="#454545"
+        android:textSize="24sp" />
 
     <ImageButton
         android:id="@+id/settings"
