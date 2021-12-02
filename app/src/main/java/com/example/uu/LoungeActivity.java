@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -32,12 +33,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.StringTokenizer;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
+interface whatKindOfLounge{
+    int Crew=0;
+    int Recruitment=1;
+}
 public class LoungeActivity extends AppCompatActivity {
     //Fierbase 인스턴스
     private FirebaseAuth mFirebaseAuth;
@@ -96,8 +102,10 @@ public class LoungeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lounge);
 
         Intent intent = getIntent();
-        String RecruitID = intent.getStringExtra("RecruitID");
+        int Lounge=intent.getIntExtra("whatKindOfLounge",-1);
+        String LoungeID = intent.getStringExtra("LoungeID");
 
+        Log.d("testkang",LoungeID+Lounge);
         mMessageRecyclerView=findViewById(R.id.message_recycler_view);
         //Firebase 인증 초기화
         mFirebaseAuth=FirebaseAuth.getInstance();
@@ -117,12 +125,55 @@ public class LoungeActivity extends AppCompatActivity {
             }
         });
 
+        TextView crewnameLounge=(TextView) findViewById(R.id.crewnameLuonge);
+        RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.summary);
+        TextView summary=(TextView)findViewById(R.id.summaryTitle);
         //Firebase 실시간 데이터베이스 초기화
-        mFirebaseDatabaseReference= FirebaseDatabase.getInstance().getReference("Recruit");
+        if(Lounge==whatKindOfLounge.Crew){
+            mFirebaseDatabaseReference= FirebaseDatabase.getInstance().getReference("Crew");
+            crewnameLounge.setText(LoungeID);
+            relativeLayout.setVisibility(View.INVISIBLE);
+        }
+        else if(Lounge==whatKindOfLounge.Recruitment){
+            mFirebaseDatabaseReference= FirebaseDatabase.getInstance().getReference("Recruit");
+            mFirebaseDatabaseReference.child(LoungeID).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    recruit_object summaryInfo=snapshot.getValue(recruit_object.class);
+                    TextView context=(TextView)findViewById(R.id.firstContext);
+                    context.setText(summaryInfo.getDate());
+                    context=(TextView)findViewById(R.id.secondContext);
+                    context.setText(summaryInfo.getDistance()+" km");
+                    context=(TextView)findViewById(R.id.thirdContext);
+                    context.setText(summaryInfo.getTime());
+                    context=(TextView)findViewById(R.id.fourthContext);
+                    context.setText(summaryInfo.getOrigin());
+                    context=(TextView)findViewById(R.id.lastContext);
+                    context.setText(summaryInfo.getDestination());
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+            mFirebaseDatabaseReference.child(LoungeID).child("leader").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    crewnameLounge.setText(snapshot.getValue(String.class));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.d("testkang","wrong way to access");
+                }
+            });
+        }
         mMessageEditText=findViewById(R.id.message_edit);
 
         //쿼리 수행
-        Query query = mFirebaseDatabaseReference.child(RecruitID).child(MESSAGES_CHILD).limitToLast(50);
+        Query query = mFirebaseDatabaseReference.child(LoungeID).child(MESSAGES_CHILD).limitToLast(50);
         //옵션
         options = new FirebaseRecyclerOptions.Builder<ChatMessage>().setQuery(query,ChatMessage.class).build();
 
@@ -165,9 +216,16 @@ public class LoungeActivity extends AppCompatActivity {
                 Date now=new Date();
                 ChatMessage chatMessage=new ChatMessage(messageFormatter(mMessageEditText.getText().toString()),
                         username,userProfileUrl,format_sendedTime.format(now),null);
-                mFirebaseDatabaseReference.child(RecruitID).child(MESSAGES_CHILD)
+                mFirebaseDatabaseReference.child(LoungeID).child(MESSAGES_CHILD)
                         .push().setValue(chatMessage);
                 mMessageEditText.setText("");
+            }
+        });
+
+        findViewById(R.id.outLounge).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }

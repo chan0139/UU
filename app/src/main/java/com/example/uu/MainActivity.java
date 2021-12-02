@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
                             selectedFragment = new fragment_crew(R.id.show_crew);
                             break;
                         case R.id.recruitment:
-                            title.setText("Recruitment");
+                            title.setText("Recruit");
                             selectedFragment = new fragment_recruitment(R.id.show_recruitment);
                             break;
                         case R.id.running:

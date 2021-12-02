@@ -50,13 +50,15 @@
             android:layout_below="@+id/denyDescription"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="40dp"/>
+
         <Button
             android:id="@+id/gotoRecruitment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="see Recruitment"
             android:layout_below="@+id/rUUn"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:backgroundTint="#03A9F4"
+            android:text="see Recruit" />
 
     </RelativeLayout>
 

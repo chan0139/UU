@@ -85,7 +85,7 @@ public class FitTestActivity extends AppCompatActivity implements SectionsPagerA
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 myData=snapshot.getValue(FitTestData.class);
-                if(myData==null){
+                if(myData.getNumberOfRunning()==0){
                     findViewById(R.id.needRecord).setVisibility(View.VISIBLE);
                     //insert animation
                     findViewById(R.id.step_indicator).setVisibility(View.INVISIBLE);

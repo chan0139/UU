@@ -8,28 +8,213 @@
     android:orientation="vertical"
     tools:context=".LoungeActivity">
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/message_recycler_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <EditText
-            android:id="@+id/message_edit"
-            android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+        <Button
+            android:id="@+id/outLounge"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="메시지를 입력하세요"/>
-        <ImageButton
-            android:id="@+id/send_button"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/ic_send_button"/>
+            android:backgroundTint="@color/white"
+            android:textColor="#03A9F4"
+            android:text="◀"
+            android:textSize="20sp"
+            android:layout_alignParentLeft="true"/>
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/crewnameLuonge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/boundary"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:text="Test"
+            android:textAlignment="center"
+            android:textSize="30sp" />
+        <View
+            android:id="@+id/boundary"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:layout_below="@id/outLounge"
+            android:background="#03A9F4"/>
+
+    </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/summary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/summaryTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginBottom="4dp"
+                    android:text="Summary"
+                    android:textAlignment="center"
+                    android:textSize="15sp" />
+                <TextView
+                    android:id="@+id/firstline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" : "
+                    android:textSize="15sp"
+                    android:textAlignment="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/summaryTitle"/>
+
+                <TextView
+                    android:id="@+id/firstElement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/summaryTitle"
+                    android:layout_toLeftOf="@+id/firstline"
+                    android:text="날짜"
+                    android:textSize="15sp" />
+                <TextView
+                    android:id="@+id/firstContext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="test"
+                    android:textSize="15sp"
+                    android:layout_toRightOf="@id/firstline"
+                    android:layout_below="@id/summaryTitle"/>
+
+                <TextView
+                    android:id="@+id/secondLine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" : "
+                    android:textSize="15sp"
+                    android:textAlignment="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/firstline"/>
+                <TextView
+                    android:id="@+id/secondElement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="거리"
+                    android:textSize="15sp"
+                    android:layout_toLeftOf="@+id/secondLine"
+                    android:layout_below="@id/firstElement"/>
+                <TextView
+                    android:id="@+id/secondContext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="test"
+                    android:textSize="15sp"
+                    android:layout_toRightOf="@id/firstline"
+                    android:layout_below="@id/firstContext"/>
+                <TextView
+                    android:id="@+id/thirdLine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" : "
+                    android:textSize="15sp"
+                    android:textAlignment="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/secondLine"/>
+                <TextView
+                    android:id="@+id/thirdElement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="시작"
+                    android:textSize="15sp"
+                    android:layout_toLeftOf="@+id/thirdLine"
+                    android:layout_below="@id/secondElement"/>
+                <TextView
+                    android:id="@+id/thirdContext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="test"
+                    android:textSize="15sp"
+                    android:layout_toRightOf="@id/firstline"
+                    android:layout_below="@id/secondContext"/>
+                <TextView
+                    android:id="@+id/fourthLine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" : "
+                    android:textSize="15sp"
+                    android:textAlignment="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/thirdLine"/>
+                <TextView
+                    android:id="@+id/fourthElement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="출발"
+                    android:textSize="15sp"
+                    android:layout_toLeftOf="@+id/fourthLine"
+                    android:layout_below="@id/thirdElement"/>
+                <TextView
+                    android:id="@+id/fourthContext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="test"
+                    android:textSize="15sp"
+                    android:layout_toRightOf="@id/firstline"
+                    android:layout_below="@id/thirdContext"/>
+                <TextView
+                    android:id="@+id/lastline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" : "
+                    android:textSize="15sp"
+                    android:textAlignment="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/fourthLine"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="도착"
+                    android:textSize="15sp"
+                    android:layout_toLeftOf="@id/lastline"
+                    android:layout_below="@id/fourthElement"/>
+                <TextView
+                    android:id="@+id/lastContext"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="test"
+                    android:textSize="15sp"
+                    android:layout_toRightOf="@id/firstline"
+                    android:layout_below="@id/fourthContext"/>
+
+            </RelativeLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/message_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:paddingStart="15dp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/message_edit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="메시지를 입력하세요"/>
+                <ImageButton
+                    android:id="@+id/send_button"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/ic_send_button"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
 
 </LinearLayout>
