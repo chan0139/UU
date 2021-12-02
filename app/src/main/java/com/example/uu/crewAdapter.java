@@ -36,6 +36,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,9 +84,8 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
         FirebaseStorage storage = FirebaseStorage.getInstance("gs://doubleu-2df72.appspot.com");
         StorageReference storageReference = storage.getReference();
         StorageReference crewImg = storageReference.child("crew/" + arrayList.get(position).getCrewName() + ".png");
-        while(crewImg==null){
-            crewImg=storageReference.child("crew/"+arrayList.get(position).getCrewName()+".png");
-        }
+
+
         crewImg.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -95,6 +95,16 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
             }
 
         });
+        crewImg.getDownloadUrl().addOnFailureListener(new OnFailureListener(){
+
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Glide.with(holder.itemView)
+                        .load(R.drawable.ic_sneakers)
+                        .into(holder.crewImage);
+            }
+        });
+
 
 
         holder.crewName.setText(arrayList.get(position).getCrewName());
@@ -116,7 +126,7 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
                 addUser.put(firebaseUser.getUid(), "id");
                 mDatabaseRef.child(arrayList.get(position).getCrewName()).child("userList").updateChildren(addUser); // DB에 현재인원 추가
                 mDatabaseRefUser.child("UserAccount").child(firebaseUser.getUid()).child("currentCrew").setValue(arrayList.get(position).getCrewName()); //유저 소속크루 설정
-
+                FancyToast.makeText(context.getApplicationContext(),"Success to join CREW!",FancyToast.LENGTH_LONG,FancyToast.SUCCESS,false).show();
                 crewListener.OnCrewAdded();
             }
         });

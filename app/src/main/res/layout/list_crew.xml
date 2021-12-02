@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
+
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
         android:layout_gravity="center_vertical"
+        android:background="@drawable/recyclerview_boundary"
         android:orientation="horizontal">
 
         <ImageView
@@ -73,14 +76,36 @@
 
         </LinearLayout>
 
+        <!--
+        <info.hoang8f.widget.FButton
+            android:id="@+id/joinCrewButton"
 
-       <Button
-           android:id="@+id/joinCrewButton"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:layout_gravity="center_vertical"
-           android:layout_marginRight="20dp"
-           android:text="join" />
+            android:layout_width="95dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:drawableLeft="@drawable/plus"
+            android:text="Join"
+
+            fbutton:cornerRadius="5dp"
+            fbutton:fButtonColor="@color/fbutton_color_clouds"
+            fbutton:shadowColor="@color/fbutton_color_asbestos"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="5dp"
+            android:backgroundTint="?android:attr/panelBackground"
+            android:textSize="20dp"
+            android:backgroundTintMode="add"/>
+
+            !-->
+
+        <Button
+            android:id="@+id/joinCrewButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/custom_font"
+            android:layout_marginRight="5dp"
+            android:text="join"/>
+
 
     </LinearLayout>
 

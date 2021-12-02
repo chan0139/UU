@@ -42,6 +42,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.shashank.sony.fancytoastlib.FancyToast;
 
 import java.util.ArrayList;
 
@@ -120,6 +121,10 @@ public class fragment_crew extends Fragment{
 
         rootview=(ViewGroup) inflater.inflate(R.layout.fragment_crew,container,false);
         title = getActivity().findViewById(R.id.title);
+
+        ImageView crewGif = (ImageView) rootview.findViewById(R.id.crewGif);
+        Glide.with(this).load(R.raw.friends).into(crewGif);
+
         database = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
@@ -178,7 +183,7 @@ public class fragment_crew extends Fragment{
 
         //지역구별 검색 스피너
         guSpinner = (Spinner) rootview.findViewById(R.id.guSpinner);
-        guAdapter = ArrayAdapter.createFromResource(getContext(), R.array.seoul_gu, android.R.layout.simple_spinner_item);
+        guAdapter = ArrayAdapter.createFromResource(getContext(), R.array.seoul_gu, android.R.layout.simple_spinner_dropdown_item);
         guSpinner.setAdapter(guAdapter);
 
 
@@ -246,6 +251,9 @@ public class fragment_crew extends Fragment{
         crewAdapter = new crewAdapter(crewArrayList, getContext());
         crewRecyclerView.setAdapter(crewAdapter); //리사이클러뷰에 어댑터 연결
 
+        RecyclerDecoration spaceDecoration = new RecyclerDecoration(30);
+        crewRecyclerView.addItemDecoration(spaceDecoration);
+
         rootview.findViewById(R.id.fittest).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -304,7 +312,9 @@ public class fragment_crew extends Fragment{
                     crewYesImg.getDownloadUrl().addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            recallCrewImgFromStorage(crewYesImg);
+                            Glide.with(rootview)
+                                    .load(R.drawable.ic_sneakers)
+                                    .into(crewImg);
                         }
                     });
                     crewYesImg.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -335,7 +345,7 @@ public class fragment_crew extends Fragment{
 
                         crewNum = snapshot.getValue(Integer.class);
                         databaseReferenceCrew.child(currentCrew).child("totalUserNum").setValue(crewNum-1);                       //크루 인원 한명 제거
-                        Log.e("test", currentCrew);
+
                     }
 
                     @Override
@@ -345,6 +355,7 @@ public class fragment_crew extends Fragment{
                 });
                 //HashMap<String, Object> updates = new HashMap<>();
                 //updates.put(firebaseUser.getUid(), FieldValue.delete());
+                FancyToast.makeText(rootview.getContext(),"Success to secession",FancyToast.LENGTH_LONG,FancyToast.SUCCESS,false).show();
                 databaseReferenceCrew.child(currentCrew).child("userList").child(firebaseUser.getUid()).removeValue();              //유저 정보 크루에서 제거
 
                 databaseReferenceUser.child("UserAccount").child(firebaseUser.getUid()).child("currentCrew").setValue("none");      //크루 none 상태로 변경

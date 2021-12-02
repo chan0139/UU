@@ -268,6 +268,11 @@ public class customDialog extends DialogFragment {
         String castHour;
         String castAlarmHour;
         String castmin;
+        String castMonth;
+
+        if(0< selectedMonth && selectedMonth <10){
+            castMonth = '0' + Integer.toString(selectedMonth);
+        } else castMonth = Integer.toString(selectedMonth);
         if(0< selectedDay && selectedDay <10){
             castDay = '0' + Integer.toString(selectedDay);
         } else castDay = Integer.toString(selectedDay);
@@ -278,11 +283,13 @@ public class customDialog extends DialogFragment {
             castHour = Integer.toString(selectedHour);
             castAlarmHour = Integer.toString(selectedHour-1);
         }
-        if(selectedMin == 0) castmin = Integer.toString(selectedMin) + '0';
-        else castmin = Integer.toString(selectedMin);
+        if(0<= selectedMin && selectedMin <10){
+            castmin = '0' + Integer.toString(selectedMin);
+        } else castmin = Integer.toString(selectedMin);
+
         time = castHour + ':' + castmin;
         alarmTime = castAlarmHour + ':' + Integer.toString(selectedMin);
-        date = Integer.toString(selectedMonth) +'.' + castDay;
+        date = castMonth +'.' + castDay;
         FirebaseUser firebaseUser = mFirebaseAuth.getCurrentUser();
         recruit = new recruit_object();
         recruit.setDate(date);

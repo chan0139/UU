@@ -170,6 +170,8 @@ public class bar_profile extends Fragment {
 
         recyclerView.setAdapter(adapter); //리사이클러뷰에 어댑터 연결
 
+        RecyclerDecoration spaceDecoration = new RecyclerDecoration(30);
+        recyclerView.addItemDecoration(spaceDecoration);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

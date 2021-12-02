@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/running_timer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RunningTimerFragment">
+    tools:context=".RunningTimerFragment"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/FtimeView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@drawable/timer"
+        android:layout_weight="0"
         android:backgroundTint="?android:attr/panelBackground"
         android:backgroundTintMode="add"
         android:gravity="center"
@@ -19,67 +20,83 @@
         android:textColor="#000000"
         android:textSize="35dp"
         android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
-        app:layout_constraintVertical_bias="0.992" />
+        android:visibility="invisible" />
+
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_weight="1">
 
         <Button
             android:id="@+id/Fbtn_start"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="70dp"
-            android:background="@drawable/button"
+            android:background="@drawable/round_shape_button"
             android:fontFamily="@font/custom_font"
-            android:text="시작" />
+            android:text="▶"
+            android:textSize="20sp"
+            tools:ignore="TouchTargetSizeCheck"
+            android:layout_marginBottom="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp">
+
+                <TextView
+                    android:id="@+id/startRunning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="시작!"
+                    android:textSize="60sp"
+                    android:visibility="invisible"
+                    android:layout_centerInParent="true"/>
 
 
-            <Button
-                android:id="@+id/Fbtn_pause"
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_marginRight="3dp"
-                android:layout_weight="1"
-                android:background="@drawable/button"
-                android:backgroundTint="?android:attr/panelBackground"
-                android:backgroundTintMode="add"
-                android:fontFamily="@font/custom_font"
-                android:text="일시정지"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:visibility="invisible" />
+                <Button
+                    android:id="@+id/Fbtn_pause"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:layout_marginRight="3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_shape_button"
+                    android:backgroundTint="?android:attr/panelBackground"
+                    android:backgroundTintMode="add"
+                    android:fontFamily="@font/custom_font"
+                    android:text="❚❚"
+                    android:textSize="20sp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="invisible" />
 
-            <Button
-                android:id="@+id/Fbtn_stop"
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_weight="1"
-                android:background="@drawable/button"
-                android:backgroundTint="?android:attr/panelBackground"
-                android:backgroundTintMode="add"
-                android:fontFamily="@font/custom_font"
-                android:text="중지"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:visibility="invisible" />
+                <Button
+                    android:id="@+id/Fbtn_stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_shape_button"
+                    android:backgroundTint="?android:attr/panelBackground"
+                    android:backgroundTintMode="add"
+                    android:fontFamily="@font/custom_font"
+                    android:text="■"
+                    android:textSize="20sp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="invisible" />
+            </RelativeLayout>
 
         </LinearLayout>
 
     </RelativeLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

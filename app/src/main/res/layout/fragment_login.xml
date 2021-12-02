@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <com.kiprotich.japheth.TextAnim
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:id="@+id/textAnimation"
         android:layout_width="wrap_content"
         android:layout_height="30dp" />
