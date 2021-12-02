@@ -60,7 +60,7 @@ public class fragment_recruitment_crew extends Fragment {
         if(firebaseUser != null) {
             databaseReference = database.getReference("UU");
 
-            databaseReference.child("UserAccount").child(firebaseUser.getUid()).child("currentCrew").addValueEventListener(new ValueEventListener() {
+            databaseReference.child("UserAccount").child(firebaseUser.getUid()).child("currentCrew").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     userCrew = snapshot.getValue(String.class);

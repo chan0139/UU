@@ -8,23 +8,23 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="35dp"
+        android:layout_height="41dp"
         android:background="#F0F8FF"
         android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/show_crew"
-            android:layout_width="24dp"
-            android:layout_height="27dp"
-            android:layout_marginLeft="3dp"
+            android:layout_width="30dp"
+            android:layout_height="33dp"
+            android:layout_marginLeft="7dp"
             android:layout_marginTop="4dp"
             android:background="@drawable/ic_crew" />
 
         <ImageButton
             android:id="@+id/show_lounge"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="3dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="9dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/ic_lounge"/>
         <TextView
@@ -162,6 +162,12 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+
+                android:background="#DCDCDC" />
+
 
 
             <com.google.android.material.tabs.TabLayout
@@ -170,7 +176,6 @@
                 app:tabTextColor="@color/black"
                 app:tabSelectedTextColor="@color/black"
                 app:tabIndicatorColor="#696969"
-                android:layout_marginTop="10dp"
 
                 android:id="@+id/tabLayout"/>
 

@@ -100,7 +100,7 @@ public class crewAdapter extends RecyclerView.Adapter<crewAdapter.CustomViewHold
             @Override
             public void onFailure(@NonNull Exception e) {
                 Glide.with(holder.itemView)
-                        .load(R.drawable.ic_sneakers)
+                        .load(R.drawable.ic_sneakers2)
                         .into(holder.crewImage);
             }
         });
