@@ -139,7 +139,7 @@ public class recruitAdapter extends RecyclerView.Adapter<recruitAdapter.CustomVi
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
-        params.setMargins(0, 110, 50, 0);
+        params.setMargins(0, 90, 50, 0);
         if(which_detailPage == 2){
             holder.joinButton.setText("");
             holder.joinButton.setLayoutParams(params);

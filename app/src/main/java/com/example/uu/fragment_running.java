@@ -1,9 +1,13 @@
 package com.example.uu;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +40,10 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -546,7 +553,6 @@ public class fragment_running extends Fragment
         reservedCheckpoints.clear();
         mMap.clear();
 
-
         walkState = true;
 
         //시작 시간 계산, db에 저장할때 기본키로 사용
@@ -640,21 +646,28 @@ public class fragment_running extends Fragment
         double Kcal=userWeight*Met*time;
         calories=(float) Math.round((Kcal*10)/10.0);
 
+        Dialog runningDlg=new Dialog(getActivity());
+        runningDlg.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        runningDlg.setContentView(R.layout.dialog_running);
+        runningDlg.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        WindowManager windowManager=(WindowManager)getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display=windowManager.getDefaultDisplay();
+        Point deviceSize=new Point();
+        display.getSize(deviceSize);
+        runningDlg.getWindow().setLayout((int)(deviceSize.x*(0.8)),(int)(deviceSize.y*(0.3)));
 
-        // Dialog for running info
-        dlg.setTitle("오늘의 운동!"); //제목
+        TextView body=runningDlg.findViewById(R.id.runningBody);
+        Button button=runningDlg.findViewById(R.id.runningBtn);
 
         msg="얼마나 달렸을까? "+min+"분 "+sec+"초\n";
         msg+="얼만큼 뛰었을까? "+Integer.toString(distance)+"m\n";
-        msg+="뛴만큼 빠졌을까? "+Float.toString(calories)+"Kcal\n";       //소숫점 첫째 자리까지 표현
-        dlg.setMessage(msg); // 메시지
+        msg+="뛴만큼 빠졌을까? "+Float.toString(calories)+"Kcal\n";
+        body.setText(msg);
+        runningDlg.show();
 
-        dlg.setPositiveButton("확인",new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface dialog, int which) {
-                drawPath(checkpoints,Color.BLACK);
-            }
-        });
-        dlg.show();
+        button.setOnClickListener(new View.OnClickListener() {@Override public void onClick(View view) {
+            drawPath(checkpoints,Color.BLACK);
+            runningDlg.dismiss(); }});
 
         //write on db
         ((MainActivity)getActivity()).recordRunningState(whoseRecord,hostId,formatedNow,distance,(runningTime/100)/60,calories,startTime,day,startAddress,endAddress);
@@ -718,7 +731,6 @@ public class fragment_running extends Fragment
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                scheduleName.clear();
                 RunningTimerFragment timerFragment=(RunningTimerFragment) getChildFragmentManager().findFragmentById(R.id.fragmentContainerView);
                 timerFragment.StartTimer();
 

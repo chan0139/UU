@@ -245,9 +245,16 @@ public class MainActivity extends AppCompatActivity  implements customDialog.OnS
     }
 
 
+    @Override
+    public void hideNavigation() {
+
+        bottomNavigationView.setVisibility(View.INVISIBLE);
+    }
+
 
     @Override
     public void loginComplete() {
+        bottomNavigationView.setVisibility(View.VISIBLE);
         title.setText("Crew");
         showCrewFragment();
     }

@@ -68,6 +68,7 @@ public class fragment_login extends Fragment{
 
     private  OnLogInCompleteListener logInCompleteListener;
     interface OnLogInCompleteListener{
+        void hideNavigation();
         void loginComplete();
     }
 
@@ -86,6 +87,7 @@ public class fragment_login extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootview=(ViewGroup) inflater.inflate(R.layout.fragment_login,container,false);
 
+        logInCompleteListener.hideNavigation();
         ImageView runGif = (ImageView) rootview.findViewById(R.id.loginGif);
         Glide.with(this).load(R.raw.mov_location).into(runGif);
 
@@ -198,7 +200,6 @@ public class fragment_login extends Fragment{
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
-
                                     //Toast.makeText(rootview.getContext(), "Success to login", Toast.LENGTH_SHORT).show();
                                     logInCompleteListener.loginComplete();
 
