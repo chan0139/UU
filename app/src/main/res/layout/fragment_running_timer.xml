@@ -33,7 +33,9 @@
             android:id="@+id/Fbtn_start"
             android:layout_width="wrap_content"
             android:layout_height="70dp"
-            android:background="@drawable/round_shape_button"
+            android:background="@drawable/round_shape_startbtn"
+            app:backgroundTint="?android:attr/panelBackground"
+            app:backgroundTintMode="add"
             android:fontFamily="@font/custom_font"
             android:text="▶"
             android:textSize="20sp"
@@ -57,10 +59,11 @@
                     android:id="@+id/startRunning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="시작!"
+                    android:layout_centerInParent="true"
+                    android:text="Start!"
                     android:textSize="60sp"
-                    android:visibility="invisible"
-                    android:layout_centerInParent="true"/>
+                    android:textStyle="bold"
+                    android:visibility="invisible" />
 
 
                 <Button
@@ -70,8 +73,8 @@
                     android:layout_marginRight="3dp"
                     android:layout_weight="1"
                     android:background="@drawable/round_shape_button"
-                    android:backgroundTint="?android:attr/panelBackground"
-                    android:backgroundTintMode="add"
+                    app:backgroundTint="?android:attr/panelBackground"
+                    app:backgroundTintMode="add"
                     android:fontFamily="@font/custom_font"
                     android:text="❚❚"
                     android:textSize="20sp"
@@ -85,14 +88,15 @@
                     android:layout_height="70dp"
                     android:layout_weight="1"
                     android:background="@drawable/round_shape_button"
-                    android:backgroundTint="?android:attr/panelBackground"
-                    android:backgroundTintMode="add"
+                    app:backgroundTint="?android:attr/panelBackground"
+                    app:backgroundTintMode="add"
                     android:fontFamily="@font/custom_font"
                     android:text="■"
                     android:textSize="20sp"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:visibility="invisible" />
+
             </RelativeLayout>
 
         </LinearLayout>

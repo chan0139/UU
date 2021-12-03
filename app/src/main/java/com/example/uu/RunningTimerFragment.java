@@ -103,7 +103,7 @@ public class RunningTimerFragment extends Fragment {
                     //objectAnimator_toLeft.start();
 
                     mstartRunningTextView.animate()
-                            .setDuration(1000)
+                            .setDuration(650)
                             .withStartAction(new Runnable() {
                                 @Override
                                 public void run() {
@@ -121,7 +121,7 @@ public class RunningTimerFragment extends Fragment {
                             .scaleY(0.6f)
                             .scaleX(0.8f)
                             .translationX(200f)
-                            .setDuration(1000)
+                            .setDuration(650)
                             .withEndAction(new Runnable() {
                                 @Override
                                 public void run() {
@@ -132,7 +132,7 @@ public class RunningTimerFragment extends Fragment {
                             .scaleY(0.6f)
                             .scaleX(0.8f)
                             .translationX(-200f)
-                            .setDuration(1000)
+                            .setDuration(650)
                             .withEndAction(new Runnable() {
                                 @Override
                                 public void run() {
@@ -154,13 +154,13 @@ public class RunningTimerFragment extends Fragment {
                         .scaleY(1f)
                         .scaleX(1f)
                         .translationX(0)
-                        .setDuration(1000)
+                        .setDuration(700)
                         .start();
                 mPauseBtn.animate()
                         .scaleY(1f)
                         .scaleX(1f)
                         .translationX(0)
-                        .setDuration(1000)
+                        .setDuration(700)
                         .start();
                 StopTimer();
 
