@@ -21,10 +21,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.BaseInterpolator;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.components.Legend;
@@ -42,6 +44,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.owl93.dpb.CircularProgressView;
+import com.owl93.dpb.DeterminateProgressViewListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -122,6 +125,7 @@ public class fragment_record_results extends Fragment {
         getRecordData();
 
         barchart(mBarchart,barEntries,xAxisName);
+        mBarchart.animateY(2000);
 
         //testkang
         for(int i=0;i<10;i++){
@@ -145,7 +149,7 @@ public class fragment_record_results extends Fragment {
 
         barChart.setDrawGridBackground(true);
         BarDataSet barDataSet = new BarDataSet(arrayList, "M(미터)");
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        barDataSet.setColors(0XFF00BFFF);
         BarData barData = new BarData(barDataSet);
         barData.setBarWidth(0.9f);
         barData.setValueTextSize(0f);
@@ -203,25 +207,25 @@ public class fragment_record_results extends Fragment {
 
         switch (dayNum) {
             case 1:
-                day = "Sun";
+                day = "일";
                 break;
             case 2:
-                day = "Mon";
+                day = "월";
                 break;
             case 3:
-                day = "Tue";
+                day = "화";
                 break;
             case 4:
-                day = "Wed";
+                day = "수";
                 break;
             case 5:
-                day = "Thu";
+                day = "목";
                 break;
             case 6:
-                day = "Fri";
+                day = "금";
                 break;
             case 7:
-                day = "Sat";
+                day = "토";
                 break;
             default:
                 day=null;
@@ -368,7 +372,7 @@ public class fragment_record_results extends Fragment {
                 break;
             default:
                 achievementText.setText("재충전은\n필수라구요!!Zzz");
-                personalAchievement.setProgress(100);
+                personalAchievement.animateProgressChange(100,2000);
                 break;
         }
 
@@ -377,8 +381,7 @@ public class fragment_record_results extends Fragment {
             cursor = sqLiteDb.rawQuery(queryDistanceSum, null);
             cursor.moveToFirst();
             current_state = cursor.getInt(0);
-
-            personalAchievement.setProgress(((float)current_state/total_goal)*100);
+            personalAchievement.animateProgressChange(((float)current_state/total_goal)*100,2000);
         }
         else if(index==2){
             readData(databaseReference.child("UserAccount").child(firebaseUser.getUid()).child("userRecruitJoinNumber"), new fragment_record_achievements.OnGetDataListener() {
@@ -396,8 +399,7 @@ public class fragment_record_results extends Fragment {
 
                 }
             });
-
-            personalAchievement.setProgress(((float)current_state/total_goal)*100);
+            personalAchievement.animateProgressChange(((float)current_state/total_goal)*100,2000);
         }
     }
 

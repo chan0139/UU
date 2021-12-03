@@ -79,6 +79,7 @@ public class fragment_running extends Fragment
 
     private String whoseRecord="Personal";
     private String hostId="Personal";;
+    private String recruitID="Personal";
 
     public static fragment_running newInstance() {
         return new fragment_running();
@@ -670,7 +671,7 @@ public class fragment_running extends Fragment
             runningDlg.dismiss(); }});
 
         //write on db
-        ((MainActivity)getActivity()).recordRunningState(whoseRecord,hostId,formatedNow,distance,(runningTime/100)/60,calories,startTime,day,startAddress,endAddress);
+        ((MainActivity)getActivity()).recordRunningState(recruitID,whoseRecord,hostId,formatedNow,distance,(runningTime/100)/60,calories,startTime,day,startAddress,endAddress);
 
         formatedNow="";distance=0;calories=0;runningTime=0;endAddress=null;
     }
@@ -738,6 +739,7 @@ public class fragment_running extends Fragment
                 Log.d("running",which+"");
 
                 if(which!=scheduleName.size()-1) {
+                    recruitID=nearSchedule.get(which).getRecruitId();
                     whoseRecord=nearSchedule.get(which).getLeader();
                     hostId=nearSchedule.get(which).getHostId();
                     for(int i=0;i<nearSchedule.get(which).getCheckpoint().size();i++)
@@ -746,7 +748,9 @@ public class fragment_running extends Fragment
                     reservedCheckpoints.clear();
                 }
                 else{
+                    recruitID="Personal";
                     whoseRecord="Personal";
+                    hostId="Personal";
                 }
             }
         });

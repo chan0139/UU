@@ -10,12 +10,21 @@
             android:layout_width="match_parent"
             android:layout_height="1220dp"
             android:orientation="vertical">
-
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Goal for Me"
+                    android:textSize="30sp"
+                    android:textAlignment="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
                 ** for detail --> https://github.com/owl-93/Determinate-Progress-View
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
 
 
                         <com.owl93.dpb.CircularProgressView
@@ -25,11 +34,10 @@
                             android:layout_gravity="center"
                             android:background="?attr/selectableItemBackground"
                             android:padding="10dp"
-                            app:animationInterpolator="anticipate_overshoot"
                             app:drawTrack="true"
-                            app:gradientCenterColor="@color/purple"
-                            app:gradientEndColor="@color/teal"
-                            app:gradientStartColor="@color/blue"
+                            app:gradientStartColor="#FF00C0EA"
+                            app:gradientCenterColor="#FF00CFEA"
+                            app:gradientEndColor="#FF00DFEA"
                             app:progress="0"
                             app:strokeGradientSize="stroke_only"
                             app:strokeGradientStyle="candy_cane"
@@ -40,7 +48,8 @@
                             app:textSize="24sp"
                             app:trackAlpha="25"
                             app:trackColor="#000000"
-                            app:trackWidth="30dp" />
+                            app:trackWidth="30dp"
+                            app:animationInterpolator="accelerate_decelerate" />
 
                         <TextView
                             android:id="@+id/achievementText"
@@ -57,26 +66,41 @@
                 </FrameLayout>
 
                 <View
+                    android:id="@+id/boundary"
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
+                    android:layout_marginTop="5dp"
                     android:background="#DCDCDC" />
-
-
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Weekly Data"
+                    android:textSize="30sp"
+                    android:textAlignment="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    />
 
                 <com.github.mikephil.charting.charts.HorizontalBarChart
                     android:id="@+id/id_horizontal_barchart"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp"></com.github.mikephil.charting.charts.HorizontalBarChart>
-
+                    android:layout_marginBottom="20dp"
+                    />
+                <View
+                    android:id="@+id/boundary2"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginTop="5dp"
+                    android:background="#DCDCDC" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                        android:text="Recnet Data"
+                        android:text="Recent Data"
                         android:textAlignment="center"
                         android:textSize="30sp"
-                        android:layout_marginTop="15dp"
+                        android:layout_marginTop="10dp"
                     android:layout_marginBottom="5dp"/>
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/mypersonalRecord"

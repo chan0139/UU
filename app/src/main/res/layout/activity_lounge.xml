@@ -32,12 +32,13 @@
             android:text="Test"
             android:textAlignment="center"
             android:textSize="30sp" />
+
         <View
             android:id="@+id/boundary"
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:layout_below="@id/outLounge"
-            android:background="#03A9F4"/>
+            android:background="#03A9F4" />
 
     </RelativeLayout>
     <ScrollView
@@ -53,6 +54,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <ImageView
+                    android:id="@+id/summaryImg"
+                    android:layout_width="80dp"
+                    android:layout_height="120dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="40dp" />
                 <TextView
                     android:id="@+id/summaryTitle"
                     android:layout_width="match_parent"
@@ -70,7 +77,8 @@
                     android:textSize="15sp"
                     android:textAlignment="center"
                     android:layout_centerHorizontal="true"
-                    android:layout_below="@id/summaryTitle"/>
+                    android:layout_below="@id/summaryTitle"
+                    android:layout_marginTop="5dp"/>
 
                 <TextView
                     android:id="@+id/firstElement"
@@ -79,116 +87,150 @@
                     android:layout_below="@id/summaryTitle"
                     android:layout_toLeftOf="@+id/firstline"
                     android:text="날짜"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:layout_marginTop="5dp"/>
+
                 <TextView
                     android:id="@+id/firstContext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/summaryTitle"
+                    android:layout_toRightOf="@id/firstline"
                     android:text="test"
                     android:textSize="15sp"
-                    android:layout_toRightOf="@id/firstline"
-                    android:layout_below="@id/summaryTitle"/>
+                    android:layout_marginTop="5dp"/>
 
                 <TextView
                     android:id="@+id/secondLine"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" : "
-                    android:textSize="15sp"
-                    android:textAlignment="center"
+                    android:layout_below="@id/firstline"
                     android:layout_centerHorizontal="true"
-                    android:layout_below="@id/firstline"/>
+                    android:text=" : "
+                    android:textAlignment="center"
+                    android:textSize="15sp"
+                    android:layout_marginTop="5dp"/>
+
                 <TextView
                     android:id="@+id/secondElement"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/firstElement"
+                    android:layout_toLeftOf="@+id/secondLine"
                     android:text="거리"
                     android:textSize="15sp"
-                    android:layout_toLeftOf="@+id/secondLine"
-                    android:layout_below="@id/firstElement"/>
+                    android:layout_marginTop="5dp"/>
+
                 <TextView
                     android:id="@+id/secondContext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="test"
-                    android:textSize="15sp"
+                    android:layout_below="@id/firstContext"
+                    android:layout_marginTop="5dp"
                     android:layout_toRightOf="@id/firstline"
-                    android:layout_below="@id/firstContext"/>
+                    android:text="test"
+                    android:textSize="15sp" />
+
                 <TextView
                     android:id="@+id/thirdLine"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" : "
-                    android:textSize="15sp"
-                    android:textAlignment="center"
+                    android:layout_below="@id/secondLine"
                     android:layout_centerHorizontal="true"
-                    android:layout_below="@id/secondLine"/>
+                    android:text=" : "
+                    android:textAlignment="center"
+                    android:textSize="15sp"
+                    android:layout_marginTop="5dp"/>
+
                 <TextView
                     android:id="@+id/thirdElement"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/secondElement"
+                    android:layout_toLeftOf="@+id/thirdLine"
                     android:text="시작"
                     android:textSize="15sp"
-                    android:layout_toLeftOf="@+id/thirdLine"
-                    android:layout_below="@id/secondElement"/>
+                    android:layout_marginTop="5dp"/>
+
                 <TextView
                     android:id="@+id/thirdContext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/secondContext"
+                    android:layout_toRightOf="@id/firstline"
                     android:text="test"
                     android:textSize="15sp"
-                    android:layout_toRightOf="@id/firstline"
-                    android:layout_below="@id/secondContext"/>
+                    android:layout_marginTop="5dp"/>
+
                 <TextView
                     android:id="@+id/fourthLine"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" : "
-                    android:textSize="15sp"
-                    android:textAlignment="center"
+                    android:layout_below="@id/thirdLine"
                     android:layout_centerHorizontal="true"
-                    android:layout_below="@id/thirdLine"/>
+                    android:text=" : "
+                    android:textAlignment="center"
+                    android:textSize="15sp"
+                    android:layout_marginTop="5dp"/>
+
                 <TextView
                     android:id="@+id/fourthElement"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/thirdElement"
+                    android:layout_toLeftOf="@+id/fourthLine"
                     android:text="출발"
                     android:textSize="15sp"
-                    android:layout_toLeftOf="@+id/fourthLine"
-                    android:layout_below="@id/thirdElement"/>
+                    android:layout_marginTop="5dp"/>
+
                 <TextView
                     android:id="@+id/fourthContext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/thirdContext"
+                    android:layout_toRightOf="@id/firstline"
                     android:text="test"
                     android:textSize="15sp"
-                    android:layout_toRightOf="@id/firstline"
-                    android:layout_below="@id/thirdContext"/>
+                    android:layout_marginTop="5dp"/>
+
                 <TextView
                     android:id="@+id/lastline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" : "
-                    android:textSize="15sp"
-                    android:textAlignment="center"
+                    android:layout_below="@id/fourthLine"
                     android:layout_centerHorizontal="true"
-                    android:layout_below="@id/fourthLine"/>
+                    android:text=" : "
+                    android:textAlignment="center"
+                    android:textSize="15sp"
+                    android:layout_marginTop="5dp"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/fourthElement"
+                    android:layout_toLeftOf="@id/lastline"
                     android:text="도착"
                     android:textSize="15sp"
-                    android:layout_toLeftOf="@id/lastline"
-                    android:layout_below="@id/fourthElement"/>
+                    android:layout_marginTop="5dp"/>
+
                 <TextView
                     android:id="@+id/lastContext"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/fourthContext"
+                    android:layout_toRightOf="@id/firstline"
                     android:text="test"
                     android:textSize="15sp"
-                    android:layout_toRightOf="@id/firstline"
-                    android:layout_below="@id/fourthContext"/>
+                    android:layout_marginTop="5dp"/>
 
+                <View
+                    android:id="@+id/boundary2"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_below="@id/lastline"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="#03A9F4" />
             </RelativeLayout>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/message_recycler_view"

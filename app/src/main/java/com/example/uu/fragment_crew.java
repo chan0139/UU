@@ -148,6 +148,7 @@ public class fragment_crew extends Fragment{
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userObject info = snapshot.getValue(userObject.class);
+                Log.d("lastFix",""+info.getCurrentCrew());
                 currentCrew = info.getCurrentCrew();
                 layoutConverter(which_layout);
             }
@@ -290,8 +291,7 @@ public class fragment_crew extends Fragment{
         databaseReference.child("UserAccount").child(firebaseUser.getUid()).child("currentCrew").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(currentCrew.equals("none")){
-                }
+                if(currentCrew.equals("none")){}
                 else{
                     databaseReferenceCrew.child(currentCrew).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override

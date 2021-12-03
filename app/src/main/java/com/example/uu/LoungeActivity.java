@@ -55,6 +55,8 @@ public class LoungeActivity extends AppCompatActivity {
     private FirebaseRecyclerAdapter<ChatMessage,MessageViewHolder> mFirebaseAdapter;
     private FirebaseRecyclerOptions<ChatMessage> options;
 
+    private Context context;
+
     public static class MessageViewHolder extends RecyclerView.ViewHolder{
         TextView messageTextView;
         ImageView messageImageView;
@@ -132,14 +134,20 @@ public class LoungeActivity extends AppCompatActivity {
         if(Lounge==whatKindOfLounge.Crew){
             mFirebaseDatabaseReference= FirebaseDatabase.getInstance().getReference("Crew");
             crewnameLounge.setText(LoungeID);
-            relativeLayout.setVisibility(View.INVISIBLE);
+            relativeLayout.setVisibility(View.GONE);
         }
         else if(Lounge==whatKindOfLounge.Recruitment){
+            context=this;
             mFirebaseDatabaseReference= FirebaseDatabase.getInstance().getReference("Recruit");
             mFirebaseDatabaseReference.child(LoungeID).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     recruit_object summaryInfo=snapshot.getValue(recruit_object.class);
+
+                    Glide.with(context)
+                            .load(summaryInfo.getMapUrl())
+                            .into((ImageView)findViewById(R.id.summaryImg));
+
                     TextView context=(TextView)findViewById(R.id.firstContext);
                     context.setText(summaryInfo.getDate());
                     context=(TextView)findViewById(R.id.secondContext);
