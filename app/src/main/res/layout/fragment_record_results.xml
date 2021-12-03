@@ -86,7 +86,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
                     android:layout_marginTop="20dp"
-<<<<<<< HEAD
                     android:layout_marginBottom="20dp"
                     />
                 <View
@@ -103,23 +102,7 @@
                         android:textSize="30sp"
                         android:layout_marginTop="10dp"
                     android:layout_marginBottom="5dp"/>
-=======
-                    android:layout_marginBottom="20dp"></com.github.mikephil.charting.charts.HorizontalBarChart>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="#DCDCDC" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="Recent Data"
-                    android:textAlignment="center"
-                    android:textSize="30sp" />
->>>>>>> d82c21394dc8c27748a36f3fcc8838b3122a82b6
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/mypersonalRecord"
                     android:layout_width="match_parent"
