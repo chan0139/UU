@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="?attr/selectableItemBackground"
-            android:fontFamily="@font/custom_font"
+            android:fontFamily="sans-serif-medium"
             android:text="JOIN >"
             android:textColor="#393939"
             android:textSize="16sp" />

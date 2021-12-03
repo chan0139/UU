@@ -158,7 +158,6 @@ public class fragment_crew extends Fragment{
             }
         });
 
-        detail_name=(TextView)rootview.findViewById(R.id.detail_name);
         linear_crew_no = (LinearLayout) rootview.findViewById(R.id.linear_crew_no);
         linear_crew_yes = (LinearLayout) rootview.findViewById(R.id.linear_crew_yes);
 
@@ -419,14 +418,12 @@ public class fragment_crew extends Fragment{
     public void layoutConverter(int which_layout){
         if(which_layout==R.id.show_crew){
             if(currentCrew.equals("none")){
-                detail_name.setText("Crew list");
                 show_crew.setBackgroundResource(R.drawable.ic_crew_selected);
                 show_lounge.setVisibility(View.INVISIBLE);
                 linear_crew_no.setVisibility(View.VISIBLE);
                 linear_crew_yes.setVisibility(View.INVISIBLE);
             }
             else {
-                detail_name.setText(currentCrew+" Home");
                 show_crew.setBackgroundResource(R.drawable.ic_crew_selected);
                 show_lounge.setBackgroundResource(R.drawable.ic_lounge);
                 linear_crew_no.setVisibility(View.INVISIBLE);
