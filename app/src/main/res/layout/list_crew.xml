@@ -17,7 +17,7 @@
         <ImageView
             android:id="@+id/crewImg"
             android:layout_width="100dp"
-            android:layout_height="80dp"
+            android:layout_height="84dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_launcher_background" />
 
