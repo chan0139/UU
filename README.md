@@ -76,12 +76,15 @@
 
 
 # 상세 설계 내용
-
+![캡처2](https://user-images.githubusercontent.com/33649931/152992849-e99df81a-9844-423c-95be-95f8ef763915.JPG)
 
 # 역할 분담
 
 - WBS( Work Breakdown Structure)
-
+![캡처3](https://user-images.githubusercontent.com/33649931/152992861-be49e115-c0ca-407c-be3e-c478b3eeeba7.JPG)
+![캡처4](https://user-images.githubusercontent.com/33649931/152992873-ec4453fe-a43a-4f42-b045-793aed95c7e0.JPG)
+![캡처5](https://user-images.githubusercontent.com/33649931/152992884-323a0c43-6b3e-47b8-a8a0-a5cc025d0915.JPG)
+![캡처6](https://user-images.githubusercontent.com/33649931/152992892-a5842a2b-c92d-4d03-9e33-645041f921ac.JPG)
 
 # 기대 효과
 
@@ -94,5 +97,14 @@
  앱의 확장성 측면을 고려해보았을때, 러닝 이외에도 함께 즐길 수 있는 운동을 추가하는 것을 계획하고 있습니다. 대표적으로 자전거나 등산 같은 분야도 함께 즐길수록 얻을 수 있는 기대효과가 크기 때문에 이에 맞춰 앱을 개선한다면 더욱 많은 사용자의 유입을 기대해 볼 수 있을 것이라 생각합니다.
 
 # 결과물
-
+![캡처7](https://user-images.githubusercontent.com/33649931/152993326-f28843de-3bec-49b0-be54-c352f060af70.JPG)
+![캡처8](https://user-images.githubusercontent.com/33649931/152993332-ec45c8dd-afa3-4d0a-8710-1dfa311c4922.JPG)
+![캡처9](https://user-images.githubusercontent.com/33649931/152993334-b498ca1a-4b9e-467d-aa80-2c20f8e1fda2.JPG)
+![캡처10](https://user-images.githubusercontent.com/33649931/152993346-04c726b9-421b-44c2-9416-dda0940e2b76.JPG)
+![캡처11](https://user-images.githubusercontent.com/33649931/152993348-d6e897d4-e407-470c-8eb1-b37995b69088.JPG)
+![캡처12](https://user-images.githubusercontent.com/33649931/152993350-b1c9cb7c-bb4b-459c-818e-b38543eb0884.JPG)
+![캡처13](https://user-images.githubusercontent.com/33649931/152993351-2e65888a-2740-4c0a-8e6e-bbe8de273ed1.JPG)
+![캡처14](https://user-images.githubusercontent.com/33649931/152993353-d11d3403-8226-47f9-9e24-65a10542c1ed.JPG)
+![캡처15](https://user-images.githubusercontent.com/33649931/152993354-2df58862-3697-4fbf-a86e-33a134495684.JPG)
+![캡처16](https://user-images.githubusercontent.com/33649931/152993356-af2371cd-d0e6-4ac4-8276-17e7f2959a25.JPG)
 
